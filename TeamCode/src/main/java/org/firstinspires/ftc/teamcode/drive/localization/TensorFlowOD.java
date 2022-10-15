@@ -67,9 +67,8 @@ public class TensorFlowOD extends LinearOpMode {
 
 
     private static final String[] LABELS = {
-            "1 Bolt",
-            "2 Bulb",
-            "3 Panel"
+            "1 Cone",
+            "2 Pole",
     };
 
     /*
@@ -166,7 +165,7 @@ public class TensorFlowOD extends LinearOpMode {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
+        parameters.cameraName = hardwareMap.get(WebcamName.class, "Camera");
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
