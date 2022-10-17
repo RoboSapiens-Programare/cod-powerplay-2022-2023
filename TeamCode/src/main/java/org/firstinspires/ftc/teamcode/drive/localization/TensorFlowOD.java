@@ -52,7 +52,7 @@ import java.util.List;
  * is explained below.
  */
 @TeleOp(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
-@Disabled
+//@Disabled
 public class TensorFlowOD extends LinearOpMode {
 
     /*
@@ -68,7 +68,7 @@ public class TensorFlowOD extends LinearOpMode {
 
     private static final String[] LABELS = {
             "1 Cone",
-            "2 Pole",
+            "2 Pole"
     };
 
     /*
