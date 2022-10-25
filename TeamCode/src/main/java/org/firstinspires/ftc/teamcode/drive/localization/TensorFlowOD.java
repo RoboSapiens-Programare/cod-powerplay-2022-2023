@@ -83,8 +83,7 @@ public class TensorFlowOD extends LinearOpMode {
      * Once you've obtained a license key, copy the string from the Vuforia web site
      * and paste it in to your code on the next line, between the double quotes.
      */
-    private static final String VUFORIA_KEY =
-            "Ae2QZFP/////AAABmVfxmImAikRnhL10xiug8xCOrLCyzZWw/q0FUhT0IuHktQ7GJBVj/BjavVpA21jrvRAZE+mjwqrfDzVaqCMVf0H0AgAEY74n9wQxLdhAsR7GWZlN5JGBlLtO5bySHwEbSn30jM8kdX3IF0Tqa18T7SLQhfDUx6Ufoo12py3bX86fThASlGoTtNx4X1vqZcz03IcaA6AKLkq7ewslFCpQcFWKPchr3LV9o4CUooxyB63QcUaWStOYAbGSvsesMondK3YztaJAKT+nVd3vUBH6tF3VGH/YjE0lzi8U6gjEcSx1r4PPmPWwJhMuvOhAN8ioS/aHP63+VxklINcvqybXMR5Ci4o9MjSHi1BAoBL57btU";
+    private static final String VUFORIA_KEY = "Ae2QZFP/////AAABmVfxmImAikRnhL10xiug8xCOrLCyzZWw/q0FUhT0IuHktQ7GJBVj/BjavVpA21jrvRAZE+mjwqrfDzVaqCMVf0H0AgAEY74n9wQxLdhAsR7GWZlN5JGBlLtO5bySHwEbSn30jM8kdX3IF0Tqa18T7SLQhfDUx6Ufoo12py3bX86fThASlGoTtNx4X1vqZcz03IcaA6AKLkq7ewslFCpQcFWKPchr3LV9o4CUooxyB63QcUaWStOYAbGSvsesMondK3YztaJAKT+nVd3vUBH6tF3VGH/YjE0lzi8U6gjEcSx1r4PPmPWwJhMuvOhAN8ioS/aHP63+VxklINcvqybXMR5Ci4o9MjSHi1BAoBL57btU";
 
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
