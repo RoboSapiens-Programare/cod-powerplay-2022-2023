@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 
-package org.firstinspires.ftc.teamcode.drive.localization;
+package org.firstinspires.ftc.teamcode.drive.visualrecog;
 
 import org.opencv.calib3d.Calib3d;
 import org.opencv.core.CvType;
