@@ -21,6 +21,7 @@
 
 package org.firstinspires.ftc.teamcode.drive.visualrecog;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -90,6 +91,7 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
          * The INIT-loop:
          * This REPLACES waitForStart!
          */
+        FtcDashboard.getInstance().startCameraStream(camera, 0);
         while (!isStarted() && !isStopRequested())
         {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();

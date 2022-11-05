@@ -34,6 +34,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XZY;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.outoftheboxrobotics.photoncore.PhotonLynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -116,6 +117,7 @@ public class VuforiaFieldNavigationWebcam extends LinearOpMode {
         // Connect to the camera we are to use.  This name must match what is set up in Robot Configuration
         webcamName = hardwareMap.get(WebcamName.class, "Camera");
 
+
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
          * We can pass Vuforia the handle to a camera preview resource (on the RC screen);
@@ -189,9 +191,9 @@ public class VuforiaFieldNavigationWebcam extends LinearOpMode {
          *      In this example, it is centered on the robot (left-to-right and front-to-back), and 6 inches above ground level.
          */
 
-        final float CAMERA_FORWARD_DISPLACEMENT  = 0.0f * mmPerInch;   // eg: Enter the forward distance from the center of the robot to the camera lens
-        final float CAMERA_VERTICAL_DISPLACEMENT = 9.44f * mmPerInch;   // eg: Camera is 6 Inches above ground
-        final float CAMERA_LEFT_DISPLACEMENT     = 0.0f * mmPerInch;   // eg: Enter the left distance from the center of the robot to the camera lens
+        final float CAMERA_FORWARD_DISPLACEMENT  = 2.55f * mmPerInch;   // eg: Enter the forward distance from the center of the robot to the camera lens
+        final float CAMERA_VERTICAL_DISPLACEMENT = 5.11f * mmPerInch;   // eg: Camera is 6 Inches above ground
+        final float CAMERA_LEFT_DISPLACEMENT     = 0.19f * mmPerInch;   // eg: Enter the left distance from the center of the robot to the camera lens
 
         OpenGLMatrix cameraLocationOnRobot = OpenGLMatrix
                     .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
@@ -201,7 +203,7 @@ public class VuforiaFieldNavigationWebcam extends LinearOpMode {
         for (VuforiaTrackable trackable : allTrackables) {
             ((VuforiaTrackableDefaultListener) trackable.getListener()).setCameraLocationOnRobot(parameters.cameraName, cameraLocationOnRobot);
         }
-
+        FtcDashboard.getInstance().startCameraStream(vuforia, 0);
         /*
          * WARNING:
          * In this sample, we do not wait for PLAY to be pressed.  Target Tracking is started immediately when INIT is pressed.
