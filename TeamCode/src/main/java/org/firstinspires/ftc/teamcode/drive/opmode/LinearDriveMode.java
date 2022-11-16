@@ -71,6 +71,7 @@ public class LinearDriveMode extends LinearOpMode {
             telemetry.addData("left stick x real", gamepad1.left_stick_x);
             telemetry.addData("stick stick x", calculateThrottle(gamepad1.right_stick_x));
             telemetry.addData("right stick x real", gamepad1.right_stick_x);
+
             telemetry.update();
             }
         }
