@@ -15,8 +15,8 @@ public class OpenCvShapeDetectionPipeline extends OpenCvPipeline {
     Mat mat = new Mat();
     public String cone = "0";
 
-    private final Scalar LOW_RED = new Scalar(20, 10, 15);
-    private final Scalar HIGH_RED = new Scalar(251, 127, 133);
+    private final Scalar LOW_RED = new Scalar(1, 88, 44);
+    private final Scalar HIGH_RED = new Scalar(358, 56, 82);
 
     private static final double PERCENT_COLOR_THRESHOLD_1 = 0.1;
     private static final double PERCENT_COLOR_THRESHOLD_2 = 0.4;
