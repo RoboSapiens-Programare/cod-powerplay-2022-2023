@@ -3,9 +3,6 @@ package org.firstinspires.ftc.teamcode.drive.visualrecog.pipelines;
 
 
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
-
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -14,7 +11,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-public class opencvplangraudetotpipeline extends OpenCvPipeline {
+public class OpenCvShapeDetectionPipeline extends OpenCvPipeline {
     Mat mat = new Mat();
     public String cone = "0";
 
