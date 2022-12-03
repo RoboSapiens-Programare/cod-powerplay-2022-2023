@@ -5,18 +5,20 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class Glisiera {
+public class GlisieraDemo {
     private DcMotor motorGlisiera1;
     private DcMotor motorGlisiera2;
     private Servo cleste;
 
-    public Glisiera(HardwareMap hardwareMap){
+    private static final int GROUND = 0, LOW = 1, MEDIUM = 2, TALL = 3;
+
+    public GlisieraDemo(HardwareMap hardwareMap){
         motorGlisiera1 = hardwareMap.dcMotor.get("motorGlisiera1");
 //        motorGlisiera2 = hardwareMap.dcMotor.get("motorGlisiera2");
         cleste = hardwareMap.servo.get("servoCleste");
 
         //Motor initialization
-        motorGlisiera1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorGlisiera1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorGlisiera1.setDirection(DcMotorSimple.Direction.FORWARD);
         motorGlisiera1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -28,8 +30,8 @@ public class Glisiera {
     }
 
     public void setPower(double power){
+        motorGlisiera1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorGlisiera1.setPower(power);
-//        motorGlisiera2.setPower(power);
     }
 
     public void strangeCleste(){
@@ -40,4 +42,24 @@ public class Glisiera {
         cleste.setPosition(0.5);
     }
 
+    public void groundLevel(){
+        motorGlisiera1.setTargetPosition(GROUND);
+        motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorGlisiera1.setPower(0.75);
+    }
+    public void lowLevel(){
+        motorGlisiera1.setTargetPosition(LOW);
+        motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorGlisiera1.setPower(0.75);
+    }
+    public void mediumLevel(){
+        motorGlisiera1.setTargetPosition(MEDIUM);
+        motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorGlisiera1.setPower(0.75);
+    }
+    public void tallLevel(){
+        motorGlisiera1.setTargetPosition(TALL);
+        motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorGlisiera1.setPower(0.75);
+    }
 }
