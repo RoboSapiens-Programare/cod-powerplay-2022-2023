@@ -15,11 +15,10 @@ public class OpenCvShapeDetectionPipeline extends OpenCvPipeline {
     Mat mat = new Mat();
     public String cone = "0";
 
-    private final Scalar LOW_RED = new Scalar(1, 88, 44);
-    private final Scalar HIGH_RED = new Scalar(358, 56, 82);
+    private final Scalar LOW_RED = new Scalar(6, 99, 19);
+    private final Scalar HIGH_RED = new Scalar(352, 37, 100);
 
-    private static final double PERCENT_COLOR_THRESHOLD_1 = 0.1;
-    private static final double PERCENT_COLOR_THRESHOLD_2 = 0.4;
+    private static final double PERCENT_COLOR_THRESHOLD_1 = 0.3;
 
     static final Rect screen = new Rect(
             new Point(0, 0),
@@ -43,9 +42,9 @@ public class OpenCvShapeDetectionPipeline extends OpenCvPipeline {
         center.release();
 
         boolean isCone1 = value > PERCENT_COLOR_THRESHOLD_1;
-        boolean isCone5 = value > PERCENT_COLOR_THRESHOLD_2;
 
-        if (isCone1 && !isCone5)
+
+        if (isCone1)
         {
 //            telemetry.addLine("cone1");
             cone = "1";

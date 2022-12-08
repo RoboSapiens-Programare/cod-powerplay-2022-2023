@@ -6,7 +6,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.util.BNO055IMUUtil;
+import org.firstinspires.ftc.teamcode.drive.subsystems.MecanumDriveCh;
 import org.firstinspires.ftc.teamcode.util.Encoder;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,32 +15,31 @@ import java.util.List;
 
 public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
     public static double TICKS_PER_REV = 8192;
-    public static double WHEEL_RADIUS = 0.78; // in
+    public static double WHEEL_RADIUS = 0.55; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double PARALLEL_X = -0.98; // X is the forward and back direction
-    public static double PARALLEL_Y = -8.35; // Y is the strafe direction
+    public static double PARALLEL_X = -1.18; // X is the forward and back direction
+    public static double PARALLEL_Y = -6.6; // Y is the strafe direction
 
-    public static double PERPENDICULAR_X = 5.9; // X is the forward and back direction
-    public static double PERPENDICULAR_Y = 0.98; // Y is the strafe direction
+    public static double PERPENDICULAR_X = -5.11; // X is the forward and back direction
+    public static double PERPENDICULAR_Y = 0; // Y is the strafe direction
 
     private Encoder parallelEncoder, perpendicularEncoder;
 
     private BNO055IMU imu;
 
-    private static double X_MULTIPLIER = 1.06;
-    private static double Y_MULTIPLIER = 1.07;
+    private static double X_MULTIPLIER = 1.91;
+    private static double Y_MULTIPLIER = 2.05;
 
-    public TwoWheelTrackingLocalizer(HardwareMap hardwareMap) {
+    public TwoWheelTrackingLocalizer(HardwareMap hardwareMap, MecanumDriveCh mecanumDriveCh) {
 
 
         super(Arrays.asList(
                 new Pose2d(PARALLEL_X, PARALLEL_Y, 0),              //leftEncoder
                 new Pose2d(PERPENDICULAR_X, PERPENDICULAR_Y, Math.toRadians(90))    //frontEncoder
         ));
-        parallelEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront"));
-        perpendicularEncoder = new Encoder((hardwareMap.get(DcMotorEx.class, "leftFront")));
-
+        parallelEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftEncoder"));
+        perpendicularEncoder = new Encoder((hardwareMap.get(DcMotorEx.class, "downEncoder")));
 
 
         parallelEncoder.setDirection(Encoder.Direction.REVERSE);

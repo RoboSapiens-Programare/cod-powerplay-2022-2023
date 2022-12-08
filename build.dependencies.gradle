@@ -1,11 +1,11 @@
 repositories {
     mavenCentral()
     google() // Needed for androidx
+    maven { url = 'https://maven.brott.dev/' }
     flatDir {
         dirs rootProject.file('libs')
     }
     jcenter()  // Needed for tensorflow-lite
-    maven { url = 'https://maven.brott.dev/' }
     maven { url = 'https://jitpack.io' }
 }
 
