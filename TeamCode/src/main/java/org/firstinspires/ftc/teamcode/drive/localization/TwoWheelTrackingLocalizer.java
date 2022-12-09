@@ -19,17 +19,17 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
     public static double PARALLEL_X = 0; // X is the forward and back direction
-    public static double PARALLEL_Y = -4.65; // Y is the strafe direction
+    public static double PARALLEL_Y = -4.2; // Y is the strafe direction
 
-    public static double PERPENDICULAR_X = -3.45; // X is the forward and back direction
+    public static double PERPENDICULAR_X = -3.025; // X is the forward and back direction
     public static double PERPENDICULAR_Y = 0; // Y is the strafe direction
 
     private Encoder parallelEncoder, perpendicularEncoder;
 
     private BNO055IMU imu;
 
-    private static double X_MULTIPLIER = 1.5;
-    private static double Y_MULTIPLIER = 0.9;
+    private static double X_MULTIPLIER = 1;
+    private static double Y_MULTIPLIER = 1;
 
     public TwoWheelTrackingLocalizer(HardwareMap hardwareMap, MecanumDriveCh mecanumDriveCh) {
 
@@ -43,7 +43,7 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
 
 
         parallelEncoder.setDirection(Encoder.Direction.REVERSE);
-        perpendicularEncoder.setDirection(Encoder.Direction.REVERSE);
+        perpendicularEncoder.setDirection(Encoder.Direction.FORWARD);
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
