@@ -77,7 +77,7 @@ public class LinearDriveMode extends LinearOpMode {
 //            robot.drive.setDrivePower(new Pose2d((Math.pow((100.0*(((double)gamepad1.left_stick_y/ 100.0))), 3.3219)), (Math.pow((100.0*(((double)gamepad1.left_stick_x/ 100.0))), 3.3219)), (Math.pow((100.0*(((double)gamepad1.right_stick_x/ 100.0))), 3.3219))));
             //robot.drive.setDrivePower(new Pose2d(calculateThrottle(gamepad1.left_stick_y / 2), calculateThrottle(gamepad1.left_stick_x / 2), calculateThrottle(gamepad1.right_stick_x / 2)));
             // 100*(I/100)^3.3219
-            robot.drive.setDrivePower(new Pose2d(gamepad1.left_stick_y / 2, gamepad1.left_stick_x / 2, gamepad1.right_stick_x / 2));
+            robot.drive.setDrivePower(new Pose2d(gamepad1.left_stick_y / 2, -gamepad1.left_stick_x / 2, gamepad1.right_stick_x / 2));
 //            telemetry.addData("Encoder value", (float)odo.getCurrentPosition() / 8192.0f * Math.PI * 5 + "cm");
 
             telemetry.addData("Slider ticks", robot.glisiera.motorGlisiera1.getCurrentPosition());
