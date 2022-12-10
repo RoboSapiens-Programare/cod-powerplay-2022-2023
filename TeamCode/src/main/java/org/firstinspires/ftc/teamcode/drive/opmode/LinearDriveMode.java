@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.drive.Robot;
 public class LinearDriveMode extends LinearOpMode {
     private Robot robot = null;
 
-    private double calculateThrottle(float x) {
+    public double calculateThrottle(float x) {
         int sign = -1;
         if (x > 0) sign = 1;
         return sign * Math.pow(100 * (abs(x) / 100), 2);
@@ -33,7 +33,6 @@ public class LinearDriveMode extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-//        odo = hardwareMap.get(DcMotorEx.class, "encoder");
         telemetry.addData(">", "Initializing...");
         telemetry.update();
 
@@ -77,7 +76,7 @@ public class LinearDriveMode extends LinearOpMode {
 //            robot.drive.setDrivePower(new Pose2d((Math.pow((100.0*(((double)gamepad1.left_stick_y/ 100.0))), 3.3219)), (Math.pow((100.0*(((double)gamepad1.left_stick_x/ 100.0))), 3.3219)), (Math.pow((100.0*(((double)gamepad1.right_stick_x/ 100.0))), 3.3219))));
             //robot.drive.setDrivePower(new Pose2d(calculateThrottle(gamepad1.left_stick_y / 2), calculateThrottle(gamepad1.left_stick_x / 2), calculateThrottle(gamepad1.right_stick_x / 2)));
             // 100*(I/100)^3.3219
-            robot.drive.setDrivePower(new Pose2d(calculateThrottle(gamepad1.left_stick_y / 2), calculateThrottle(-gamepad1.left_stick_x / 2), calculateThrottle(gamepad1.right_stick_x / 2)));
+            robot.drive.setDrivePower(new Pose2d(calculateThrottle(-gamepad1.left_stick_y / 2), calculateThrottle(gamepad1.left_stick_x / 2), calculateThrottle(-gamepad1.right_stick_x / 2)));
 //            telemetry.addData("Encoder value", (float)odo.getCurrentPosition() / 8192.0f * Math.PI * 5 + "cm");
 
             telemetry.addData("Slider ticks", robot.glisiera.motorGlisiera1.getCurrentPosition());
