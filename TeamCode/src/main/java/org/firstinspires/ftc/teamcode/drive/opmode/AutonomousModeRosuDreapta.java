@@ -57,26 +57,26 @@ public class AutonomousModeRosuDreapta extends LinearOpMode {
         telemetry.update();
 
         robot = new Robot(hardwareMap);
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Camera"), cameraMonitorViewId);
-        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+//        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+//        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Camera"), cameraMonitorViewId);
+//        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
-        camera.setPipeline(aprilTagDetectionPipeline);
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
-            @Override
-            public void onOpened()
-            {
-                camera.startStreaming(1280,720, OpenCvCameraRotation.UPRIGHT);
-            }
-
-            @Override
-            public void onError(int errorCode)
-            {
-
-            }
-        });
-        FtcDashboard.getInstance().startCameraStream(camera, 0);
+//        camera.setPipeline(aprilTagDetectionPipeline);
+//        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+//        {
+//            @Override
+//            public void onOpened()
+//            {
+//                camera.startStreaming(1280,720, OpenCvCameraRotation.UPRIGHT);
+//            }
+//
+//            @Override
+//            public void onError(int errorCode)
+//            {
+//
+//            }
+//        });
+//        FtcDashboard.getInstance().startCameraStream(camera, 0);
 
 
         while (robot.isInitialize() && opModeIsActive()) {
@@ -87,73 +87,67 @@ public class AutonomousModeRosuDreapta extends LinearOpMode {
             waitForStart();
             if (isStopRequested()) return;
 
-            while (opModeIsActive()) {
-                idle();
-                ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
-                if(currentDetections.size() != 0)
-                {
-                    boolean tagFound = false;
+//            ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
+//            if(currentDetections.size() != 0)
+//            {
+//                boolean tagFound = false;
+//
+//                for(AprilTagDetection tag : currentDetections)
+//                {
+//                    if(tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT)
+//                    {
+//                        tagOfInterest = tag;
+//                        tagFound = true;
+//                        break;
+//                    }
+//                }
+//
+//                if(tagFound)
+//                {
+//                    telemetry.addData("Tag of interest is in sight!\n\nLocation data:", tagOfInterest.id);
+//
+//                }
+//                else {
+//                    telemetry.addLine("Don't see tag of interest :(");
+//                }
+//                telemetry.update();
+//                sleep(20);
+//            }
 
-                    for(AprilTagDetection tag : currentDetections)
-                    {
-                        if(tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT)
-                        {
-                            tagOfInterest = tag;
-                            tagFound = true;
-                            break;
-                        }
-                    }
+            Pose2d start = new Pose2d(32, -60, Math.toRadians(90));
+            robot.drive.setPoseEstimate(start);
 
-                    if(tagFound)
-                    {
-                        telemetry.addData("Tag of interest is in sight!\n\nLocation data:", tagOfInterest.id);
+            TrajectorySequence myTrajectory = robot.drive.trajectorySequenceBuilder(start)
+                    .lineToLinearHeading(new Pose2d(32, 0, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(32, -12, Math.toRadians(-90)))
+                    .addDisplacementMarker(() -> {
+                        robot.glisiera.desfaCleste();
+                        robot.glisiera.manualLevel(520);
+                    })
+                    .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(0)))
+                    .addDisplacementMarker(() -> {
+                        robot.glisiera.strangeCleste();
+                        robot.glisiera.mediumLevel();
+                    })
 
-                    }
-                    else {
-                        telemetry.addLine("Don't see tag of interest :(");
-                    }
-                    telemetry.update();
-                    sleep(20);
-                }
+                    .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(-90)))
+                    .forward(1)
+                    .addDisplacementMarker(() -> {
+                        robot.glisiera.manualLevel(1200);
+                        robot.glisiera.desfaCleste();
+                    })
+                    .build();
+            robot.drive.followTrajectorySequence(myTrajectory);
 
-                Pose2d start = new Pose2d(32, -60, Math.toRadians(90));
-                robot.drive.setPoseEstimate(start);
-
-                TrajectorySequence myTrajectory = robot.drive.trajectorySequenceBuilder(start)
-                        .lineToLinearHeading(new Pose2d(32, 0, Math.toRadians(0)))
-                        .lineToLinearHeading(new Pose2d(32, -12, Math.toRadians(-90)))
-                        .addDisplacementMarker(() -> {
-                            robot.glisiera.desfaCleste();
-                            robot.glisiera.manualLevel(520);
-                        })
-                        .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(0)))
-                        .addDisplacementMarker(() -> {
-                            robot.glisiera.strangeCleste();
-                            robot.glisiera.mediumLevel();
-                        })
-
-                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(-90)))
-                        .forward(1)
-                        .addDisplacementMarker(() -> {
-                            robot.glisiera.manualLevel(1200);
-                            robot.glisiera.desfaCleste();
-                        })
-                        .build();
-                robot.drive.followTrajectorySequence(myTrajectory);
-
-                if(tagOfInterest.id == LEFT){
-                    myTrajectory = robot.drive.trajectorySequenceBuilder(new Pose2d())
-
-                            .build();
-                }
-                else if(tagOfInterest.id == MIDDLE){
-                    //trajectory
-                }
-                else {
-                    //trajectory
-                }
+//            if(tagOfInterest.id == LEFT){
+//            }
+//            else if(tagOfInterest.id == MIDDLE){
+//                trajectory
+//            }
+//            else {
+                //trajectory
         }
     }
 
 }
-}
+//}

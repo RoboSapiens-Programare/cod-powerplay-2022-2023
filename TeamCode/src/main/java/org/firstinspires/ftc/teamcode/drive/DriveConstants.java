@@ -47,7 +47,7 @@ public class DriveConstants {
     public static final double FOAM_TILE_INCH = 24;
     public static double WHEEL_RADIUS = 2.36; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 16.06; // in
+    public static double TRACK_WIDTH = 17; // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -68,8 +68,8 @@ public class DriveConstants {
      */
     public static double MAX_VEL = 65.57;
     public static double MAX_ACCEL = 68;
-    public static double MAX_ANG_VEL = Math.toRadians(13);
-    public static double MAX_ANG_ACCEL = Math.toRadians(180);
+    public static double MAX_ANG_VEL = Math.toRadians(400);
+    public static double MAX_ANG_ACCEL = Math.toRadians(400);
 
     /**
     Max Recommended Velocity: 65.57633333974172
