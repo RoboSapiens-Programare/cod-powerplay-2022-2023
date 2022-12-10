@@ -81,64 +81,77 @@ public class AutonomousModeRosuDreapta extends LinearOpMode {
 
         while (robot.isInitialize() && opModeIsActive()) {
 
+            telemetry.addData(">", "Initialized");
+            telemetry.update();
 
+            waitForStart();
+            if (isStopRequested()) return;
 
-        telemetry.addData(">", "Initialized");
-        telemetry.update();
-
-        waitForStart();
-        if (isStopRequested()) return;
-
-        while (opModeIsActive()) {
-            idle();
-            ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
-            if(currentDetections.size() != 0)
-            {
-                boolean tagFound = false;
-
-                for(AprilTagDetection tag : currentDetections)
+            while (opModeIsActive()) {
+                idle();
+                ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
+                if(currentDetections.size() != 0)
                 {
-                    if(tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT)
+                    boolean tagFound = false;
+
+                    for(AprilTagDetection tag : currentDetections)
                     {
-                        tagOfInterest = tag;
-                        tagFound = true;
-                        break;
+                        if(tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT)
+                        {
+                            tagOfInterest = tag;
+                            tagFound = true;
+                            break;
+                        }
                     }
+
+                    if(tagFound)
+                    {
+                        telemetry.addData("Tag of interest is in sight!\n\nLocation data:", tagOfInterest.id);
+
+                    }
+                    else {
+                        telemetry.addLine("Don't see tag of interest :(");
+                    }
+                    telemetry.update();
+                    sleep(20);
                 }
 
-                if(tagFound)
-                {
-                    telemetry.addData("Tag of interest is in sight!\n\nLocation data:", tagOfInterest.id);
+                Pose2d start = new Pose2d(32, -60, Math.toRadians(90));
+                robot.drive.setPoseEstimate(start);
 
-                }
-                else {
-                    telemetry.addLine("Don't see tag of interest :(");
-                }
-                telemetry.update();
-                sleep(20);
-            }
-            if(tagOfInterest == null || tagOfInterest.id == LEFT){
-                TrajectorySequence myTrajectory = robot.drive.trajectorySequenceBuilder(new Pose2d(35, -59, Math.toRadians(90)))
-                        .forward(2.5 * FOAM_TILE_INCH)
-                        .forward(-12)
-                        .turn(Math.toRadians(-90))
-                        .forward(26)
+                TrajectorySequence myTrajectory = robot.drive.trajectorySequenceBuilder(start)
+                        .lineToLinearHeading(new Pose2d(32, 0, Math.toRadians(0)))
+                        .lineToLinearHeading(new Pose2d(32, -12, Math.toRadians(-90)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.desfaCleste();
+                            robot.glisiera.manualLevel(520);
+                        })
+                        .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(0)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.strangeCleste();
+                            robot.glisiera.mediumLevel();
+                        })
+
                         .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(-90)))
                         .forward(1)
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.manualLevel(1200);
+                            robot.glisiera.desfaCleste();
+                        })
                         .build();
-            }
-            else if(tagOfInterest.id == MIDDLE){
-                //trajectory
-            }
-            else if(tagOfInterest.id == RIGHT){
-                //trajectory
-            }
+                robot.drive.followTrajectorySequence(myTrajectory);
 
+                if(tagOfInterest.id == LEFT){
+                    myTrajectory = robot.drive.trajectorySequenceBuilder(new Pose2d())
 
-
-
-
-
+                            .build();
+                }
+                else if(tagOfInterest.id == MIDDLE){
+                    //trajectory
+                }
+                else {
+                    //trajectory
+                }
         }
     }
 
