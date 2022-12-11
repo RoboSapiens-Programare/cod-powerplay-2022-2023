@@ -71,46 +71,90 @@ public class AutonomousBlueDown extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            Pose2d start = new Pose2d(32, -60, Math.toRadians(0));
+            Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
             robot.drive.setPoseEstimate(start);
 
             TrajectorySequence myTrajectory1 = robot.drive.trajectorySequenceBuilder(start)
-                            .lineToLinearHeading(new Pose2d(32, 0, Math.toRadians(0)))
+                    .addDisplacementMarker(() -> {
+                        robot.glisiera.strangeCleste();
+                    })
+                    .lineToLinearHeading(new Pose2d(35, -9, Math.toRadians(90)))
                     .build();
 
             TrajectorySequence myTrajectory2 = robot.drive.trajectorySequenceBuilder(myTrajectory1.end())
-                    .lineToLinearHeading(new Pose2d(32, -12, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(35, -12, Math.toRadians(90)))
+                    .build();
+
+            TrajectorySequence myTrajectory3 = robot.drive.trajectorySequenceBuilder(myTrajectory2.end())
+                    .lineToLinearHeading(new Pose2d(35, -11, Math.toRadians(180)))
+                    .build();
+
+            TrajectorySequence myTrajectory4 = robot.drive.trajectorySequenceBuilder(myTrajectory3.end())
+                    .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(180)))
+                    .build();
+            TrajectorySequence myTrajectory5 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
+                    .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(270)))
+                    .build();
+
+            TrajectorySequence myTrajectory6 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
+                    .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(270)))
+                    .build();
+
+            TrajectorySequence myTrajectory7 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
                     .addDisplacementMarker(() -> {
+                        robot.glisiera.manualLevel(1200);
+                        sleep(2000);
                         robot.glisiera.desfaCleste();
+                        sleep(2000);
                         robot.glisiera.manualLevel(520);
                     })
                     .build();
 
-            TrajectorySequence myTrajectory3 = robot.drive.trajectorySequenceBuilder(myTrajectory2.end())
-                    .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(-90)))
+            TrajectorySequence myTrajectory8 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
+                    .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(270)))
+                    .build();
+
+            TrajectorySequence myTrajectory9 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
+                    .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(0)))
+                    .build();
+
+            TrajectorySequence myTrajectory10 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
+                    .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(0)))
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.strangeCleste();
-                        robot.glisiera.mediumLevel();
+                                    robot.glisiera.strangeCleste();
+                                    robot.glisiera.mediumLevel();
                     })
                     .build();
 
-            TrajectorySequence myTrajectory4 = robot.drive.trajectorySequenceBuilder(myTrajectory3.end())
-                    .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(-180)))
-                    .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(-180)))
-                    .addDisplacementMarker(() -> {
-                        robot.glisiera.manualLevel(1200);
-                        robot.glisiera.desfaCleste();
-                    })
+            TrajectorySequence myTrajectory11 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
+                    .lineToLinearHeading(new Pose2d(48, -12, Math.toRadians(0)))
                     .build();
-            TrajectorySequence myTrajectory5 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
 
-                    .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(-90)))
-                    .waitSeconds(2)
-                    .forward(1)
-                    .waitSeconds(2)
+            TrajectorySequence myTrajectory12 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
+                    .lineToLinearHeading(new Pose2d(47, -12, Math.toRadians(180)))
+                    .build();
+
+            TrajectorySequence myTrajectory13 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
+                    .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(180)))
+                    .build();
+
+            TrajectorySequence myTrajectory14 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
+                    .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(270)))
+                    .build();
+
+            TrajectorySequence myTrajectory15 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
+                    .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(270)))
+                    .build();
+
+            TrajectorySequence myTrajectory16 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
+                    .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(270)))
+                    .build();
+
+            TrajectorySequence myTrajectory17 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.manualLevel(1200);
-                        robot.glisiera.desfaCleste();
+                                    robot.glisiera.manualLevel(1200);
+                                    sleep(2000);
+                                    robot.glisiera.desfaCleste();
                     })
                     .build();
 
@@ -119,6 +163,18 @@ public class AutonomousBlueDown extends LinearOpMode {
             robot.drive.followTrajectorySequence(myTrajectory3);
             robot.drive.followTrajectorySequence(myTrajectory4);
             robot.drive.followTrajectorySequence(myTrajectory5);
+            robot.drive.followTrajectorySequence(myTrajectory6);
+            robot.drive.followTrajectorySequence(myTrajectory7);
+            robot.drive.followTrajectorySequence(myTrajectory8);
+            robot.drive.followTrajectorySequence(myTrajectory9);
+            robot.drive.followTrajectorySequence(myTrajectory10);
+            robot.drive.followTrajectorySequence(myTrajectory11);
+            robot.drive.followTrajectorySequence(myTrajectory12);
+            robot.drive.followTrajectorySequence(myTrajectory13);
+            robot.drive.followTrajectorySequence(myTrajectory14);
+            robot.drive.followTrajectorySequence(myTrajectory15);
+            robot.drive.followTrajectorySequence(myTrajectory16);
+            robot.drive.followTrajectorySequence(myTrajectory17);
         }
 
 
