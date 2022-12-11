@@ -78,22 +78,7 @@ public class AutonomousTest extends LinearOpMode {
             robot.drive.setPoseEstimate(start);
 
             TrajectorySequence myTrajectory = robot.drive.trajectorySequenceBuilder(start)
-                    .lineToLinearHeading(new Pose2d(32, 0, Math.toRadians(0)))
-                    .waitSeconds(2)
-                    .lineToLinearHeading(new Pose2d(32, -12, Math.toRadians(-90)))
-                    .waitSeconds(2)
-                    .addDisplacementMarker(() -> {
-                        robot.glisiera.desfaCleste();
-                        robot.glisiera.manualLevel(520);
-                    })
-                    .waitSeconds(2)
-                    .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(0)))
-                    .waitSeconds(2)
-                    .addDisplacementMarker(() -> {
-                        robot.glisiera.strangeCleste();
-                        robot.glisiera.mediumLevel();
-                    })
-                    .waitSeconds(2)
+
                     .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(-90)))
                     .waitSeconds(2)
                     .forward(1)
@@ -103,10 +88,43 @@ public class AutonomousTest extends LinearOpMode {
                         robot.glisiera.desfaCleste();
                     })
                     .build();
+            TrajectorySequence myTrajectory2 = robot.drive.trajectorySequenceBuilder(myTrajectory.end())
+                            .lineToLinearHeading(new Pose2d(32, -12, Math.toRadians(-90)))
+                    .build();
+
+            TrajectorySequence myTrajectory3 = robot.drive.trajectorySequenceBuilder(myTrajectory2.end())
+                    .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(0)))
+                    .build();
+
+            TrajectorySequence myTrajectory4 = robot.drive.trajectorySequenceBuilder(myTrajectory3.end())
+                    .lineToLinearHeading(new Pose2d(32, 0, Math.toRadians(0)))
+                    .addDisplacementMarker(() -> {
+                        robot.glisiera.strangeCleste();
+                        robot.glisiera.mediumLevel();
+                    })
+                    .build();
+
+            TrajectorySequence myTrajectory5 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
+                    .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(-90)))
+                    .forward(1)
+                    .addDisplacementMarker(() -> {
+                        robot.glisiera.manualLevel(1200);
+                        robot.glisiera.desfaCleste();
+                    })
+                    .build();
             robot.drive.followTrajectorySequence(myTrajectory);
+            robot.drive.followTrajectorySequence(myTrajectory2);
+            robot.drive.followTrajectorySequence(myTrajectory3);
+            robot.drive.followTrajectorySequence(myTrajectory4);
+            robot.drive.followTrajectorySequence(myTrajectory5);
+        }
+
+
+
+
 
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
         }
     }
-}
+
