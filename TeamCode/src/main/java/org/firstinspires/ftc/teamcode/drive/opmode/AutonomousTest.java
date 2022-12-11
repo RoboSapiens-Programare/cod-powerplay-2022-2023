@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.onbotjava.handlers.file.NewFile;
 import org.firstinspires.ftc.teamcode.drive.Robot;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
@@ -74,45 +75,50 @@ public class AutonomousTest extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            Pose2d start = new Pose2d(32, -60, Math.toRadians(90));
+            Pose2d start = new Pose2d(32, -60, Math.toRadians(0));
             robot.drive.setPoseEstimate(start);
 
-            TrajectorySequence myTrajectory = robot.drive.trajectorySequenceBuilder(start)
-
-                    .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(-90)))
-                    .waitSeconds(2)
-                    .forward(1)
-                    .waitSeconds(2)
-                    .addDisplacementMarker(() -> {
-                        robot.glisiera.manualLevel(1200);
-                        robot.glisiera.desfaCleste();
-                    })
+            TrajectorySequence myTrajectory1 = robot.drive.trajectorySequenceBuilder(start)
+                            .lineToLinearHeading(new Pose2d(32, 0, Math.toRadians(0)))
                     .build();
-            TrajectorySequence myTrajectory2 = robot.drive.trajectorySequenceBuilder(myTrajectory.end())
-                            .lineToLinearHeading(new Pose2d(32, -12, Math.toRadians(-90)))
+
+            TrajectorySequence myTrajectory2 = robot.drive.trajectorySequenceBuilder(myTrajectory1.end())
+                    .lineToLinearHeading(new Pose2d(32, -12, Math.toRadians(0)))
+                    .addDisplacementMarker(() -> {
+                        robot.glisiera.desfaCleste();
+                        robot.glisiera.manualLevel(520);
+                    })
                     .build();
 
             TrajectorySequence myTrajectory3 = robot.drive.trajectorySequenceBuilder(myTrajectory2.end())
-                    .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(0)))
-                    .build();
-
-            TrajectorySequence myTrajectory4 = robot.drive.trajectorySequenceBuilder(myTrajectory3.end())
-                    .lineToLinearHeading(new Pose2d(32, 0, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(-90)))
                     .addDisplacementMarker(() -> {
                         robot.glisiera.strangeCleste();
                         robot.glisiera.mediumLevel();
                     })
                     .build();
 
-            TrajectorySequence myTrajectory5 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
-                    .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(-90)))
-                    .forward(1)
+            TrajectorySequence myTrajectory4 = robot.drive.trajectorySequenceBuilder(myTrajectory3.end())
+                    .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(-180)))
+                    .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(-180)))
                     .addDisplacementMarker(() -> {
                         robot.glisiera.manualLevel(1200);
                         robot.glisiera.desfaCleste();
                     })
                     .build();
-            robot.drive.followTrajectorySequence(myTrajectory);
+            TrajectorySequence myTrajectory5 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
+
+                    .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(-90)))
+                    .waitSeconds(2)
+                    .forward(1)
+                    .waitSeconds(2)
+                    .addDisplacementMarker(() -> {
+                        robot.glisiera.manualLevel(1200);
+                        robot.glisiera.desfaCleste();
+                    })
+                    .build();
+
+            robot.drive.followTrajectorySequence(myTrajectory1);
             robot.drive.followTrajectorySequence(myTrajectory2);
             robot.drive.followTrajectorySequence(myTrajectory3);
             robot.drive.followTrajectorySequence(myTrajectory4);
