@@ -29,13 +29,22 @@
 
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.Robot;
+import org.firstinspires.ftc.teamcode.drive.visualrecog.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.openftc.apriltag.AprilTagDetection;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+
+import java.util.ArrayList;
 
 
 /**
@@ -51,137 +60,253 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(group="Autonomous")
+@TeleOp(name = "Autonomie roadrunner blue", group="autonomous")
 
 public class AutonomousBlue extends LinearOpMode {
 
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
+//    private ElapsedTime runtime = new ElapsedTime();
     private Robot robot = null;
+    OpenCvCamera camera;
+    AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
+    static final double FEET_PER_METER = 3.28084;
+
+    // Lens intrinsics
+    // UNITS ARE PIXELS
+    // NOTE: this calibration is for the C920 webcam at 800x448.
+    // You will need to do your own calibration for other configurations!
+    double fx = 578.272;
+    double fy = 578.272;
+    double cx = 402.145;
+    double cy = 221.506;
+
+    // UNITS ARE METERS
+    double tagsize = 0.166;
+
+    // Tag ID 1,2,3 from the 36h11 family
+    int LEFT = 1;
+    int MIDDLE = 2;
+    int RIGHT = 3;
+
+    public AprilTagDetection tagOfInterest = null;
+    private ElapsedTime opencvTimer;
+    private final int MAX_MILISECONDS = 1000;
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         robot = new Robot(hardwareMap);
 
-        waitForStart();
-        runtime.reset();
+        opencvTimer = new ElapsedTime();
+        opencvTimer.startTime();
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Camera"), cameraMonitorViewId);
+        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+
+        camera.setPipeline(aprilTagDetectionPipeline);
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                camera.startStreaming(1280,720, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode)
+            {
+
+            }
+        });
+
+        telemetry.setMsTransmissionInterval(50);
+
+        /*
+         * The INIT-loop:
+         * This REPLACES waitForStart!
+         */
+        FtcDashboard.getInstance().startCameraStream(camera, 0);
+
+        while (!isStarted() && !isStopRequested())
+        {
+            ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
+            if (currentDetections.size() != 0) {
+                boolean tagFound = false;
+
+                for (AprilTagDetection tag : currentDetections) {
+                    if (tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT) {
+                        tagOfInterest = tag;
+                        tagFound = true;
+                        break;
+                    }
+                }
+            }
+            telemetry.update();
+            sleep(20);
+        }
+
+        if (isStopRequested()) return;
+
+        while (opModeIsActive()){
+            telemetry.addData("Tag:", tagOfInterest.id);
+
+//
+//
+            if(tagOfInterest == null || tagOfInterest.id == MIDDLE) {
+//
+                Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
+                robot.drive.setPoseEstimate(start);
+
+                TrajectorySequence myTrajectory1 = robot.drive.trajectorySequenceBuilder(start)
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.strangeCleste();
+                        })
+                        .lineToLinearHeading(new Pose2d(35, -9, Math.toRadians(0)))
+                        .lineToLinearHeading(new Pose2d(35, -12, Math.toRadians(0)))
+                        .lineToLinearHeading(new Pose2d(35, -11, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(180)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.manualLevel(1200);
+                            sleep(2000);
+                            robot.glisiera.desfaCleste();
+                            sleep(2000);
+                            robot.glisiera.manualLevel(520);
+                        })
+                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(-90)))
+                        .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(-90)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.strangeCleste();
+                            robot.glisiera.mediumLevel();
+                        })
+                        .lineToLinearHeading(new Pose2d(48, -12, Math.toRadians(-90)))
+                        .lineToLinearHeading(new Pose2d(47, -12, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(180)))
+                    .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(36, -34, Math.toRadians(180)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.manualLevel(1200);
+                            sleep(2000);
+                            robot.glisiera.desfaCleste();
+                        })
+                        .build();
+
+                robot.drive.followTrajectorySequence(myTrajectory1);
+            }
+            else if(tagOfInterest.id == LEFT){
+                Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
+                robot.drive.setPoseEstimate(start);
+
+                TrajectorySequence myTrajectory2 = robot.drive.trajectorySequenceBuilder(start)
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.strangeCleste();
+                        })
+                        .lineToLinearHeading(new Pose2d(35, -9, Math.toRadians(0)))
+                        .lineToLinearHeading(new Pose2d(35, -12, Math.toRadians(0)))
+                        .lineToLinearHeading(new Pose2d(35, -11, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(180)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.manualLevel(1200);
+                            sleep(2000);
+                            robot.glisiera.desfaCleste();
+                            sleep(2000);
+                            robot.glisiera.manualLevel(520);
+                        })
+                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(-90)))
+                        .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(-90)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.strangeCleste();
+                            robot.glisiera.mediumLevel();
+                        })
+                        .lineToLinearHeading(new Pose2d(48, -12, Math.toRadians(-90)))
+                        .lineToLinearHeading(new Pose2d(47, -12, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(36, -34, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(12, -34, Math.toRadians(180)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.manualLevel(1200);
+                            sleep(2000);
+                            robot.glisiera.desfaCleste();
+                        })
+                        .build();
+                robot.drive.followTrajectorySequence(myTrajectory2);
+            }
+            else {
+                Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
+                robot.drive.setPoseEstimate(start);
+
+                TrajectorySequence myTrajectory = robot.drive.trajectorySequenceBuilder(start)
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.strangeCleste();
+                        })
+                        .lineToLinearHeading(new Pose2d(35, -9, Math.toRadians(0)))
+                        .lineToLinearHeading(new Pose2d(35, -12, Math.toRadians(0)))
+                        .lineToLinearHeading(new Pose2d(35, -11, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(180)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.manualLevel(1200);
+                            sleep(2000);
+                            robot.glisiera.desfaCleste();
+                            sleep(2000);
+                            robot.glisiera.manualLevel(520);
+                        })
+                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(-90)))
+                        .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(-90)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.strangeCleste();
+                            robot.glisiera.mediumLevel();
+                        })
+                        .lineToLinearHeading(new Pose2d(48, -12, Math.toRadians(-90)))
+                        .lineToLinearHeading(new Pose2d(47, -12, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(180)))
+                    .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(36, -34, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(60, -34, Math.toRadians(180)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.manualLevel(1200);
+                            sleep(2000);
+                            robot.glisiera.desfaCleste();
+                        })
+                        .build();
+                robot.drive.followTrajectorySequence(myTrajectory);
+            }
+//            robot.glisiera.desfaCleste();
+        }
+//        runtime.reset();
 
 
         while (opModeIsActive()) {
 
-            Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
-            robot.drive.setPoseEstimate(start);
 
-            TrajectorySequence myTrajectory1 = robot.drive.trajectorySequenceBuilder(start)
-                    .addDisplacementMarker(() -> {
-                        robot.glisiera.strangeCleste();
-                    })
-                    .lineToLinearHeading(new Pose2d(35, -9, Math.toRadians(90)))
-                    .build();
 
-            TrajectorySequence myTrajectory2 = robot.drive.trajectorySequenceBuilder(myTrajectory1.end())
-                    .lineToLinearHeading(new Pose2d(35, -12, Math.toRadians(90)))
-                    .build();
 
-            TrajectorySequence myTrajectory3 = robot.drive.trajectorySequenceBuilder(myTrajectory2.end())
-                    .lineToLinearHeading(new Pose2d(35, -11, Math.toRadians(180)))
-                    .build();
-
-            TrajectorySequence myTrajectory4 = robot.drive.trajectorySequenceBuilder(myTrajectory3.end())
-                    .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(180)))
-                    .build();
-            TrajectorySequence myTrajectory5 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
-                    .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(270)))
-                    .build();
-
-            TrajectorySequence myTrajectory6 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
-                    .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(270)))
-                    .build();
-
-            TrajectorySequence myTrajectory7 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
-                    .addDisplacementMarker(() -> {
-                        robot.glisiera.manualLevel(1200);
-                        sleep(2000);
-                        robot.glisiera.desfaCleste();
-                        sleep(2000);
-                        robot.glisiera.manualLevel(520);
-                    })
-                    .build();
-
-            TrajectorySequence myTrajectory8 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
-                    .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(270)))
-                    .build();
-
-            TrajectorySequence myTrajectory9 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
-                    .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(0)))
-                    .build();
-
-            TrajectorySequence myTrajectory10 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
-                    .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(0)))
-                    .addDisplacementMarker(() -> {
-                                    robot.glisiera.strangeCleste();
-                                    robot.glisiera.mediumLevel();
-                    })
-                    .build();
-
-            TrajectorySequence myTrajectory11 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
-                    .lineToLinearHeading(new Pose2d(48, -12, Math.toRadians(0)))
-                    .build();
-
-            TrajectorySequence myTrajectory12 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
-                    .lineToLinearHeading(new Pose2d(47, -12, Math.toRadians(180)))
-                    .build();
-
-            TrajectorySequence myTrajectory13 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
-                    .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(180)))
-                    .build();
-
-            TrajectorySequence myTrajectory14 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
-                    .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(270)))
-                    .build();
-
-            TrajectorySequence myTrajectory15 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
-                    .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(270)))
-                    .build();
-
-            TrajectorySequence myTrajectory16 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
-                    .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(270)))
-                    .build();
-
-            TrajectorySequence myTrajectory17 = robot.drive.trajectorySequenceBuilder(myTrajectory4.end())
-                    .addDisplacementMarker(() -> {
-                                    robot.glisiera.manualLevel(1200);
-                                    sleep(2000);
-                                    robot.glisiera.desfaCleste();
-                    })
-                    .build();
-
-            robot.drive.followTrajectorySequence(myTrajectory1);
-            robot.drive.followTrajectorySequence(myTrajectory2);
-            robot.drive.followTrajectorySequence(myTrajectory3);
-            robot.drive.followTrajectorySequence(myTrajectory4);
-            robot.drive.followTrajectorySequence(myTrajectory5);
-            robot.drive.followTrajectorySequence(myTrajectory6);
-            robot.drive.followTrajectorySequence(myTrajectory7);
-            robot.drive.followTrajectorySequence(myTrajectory8);
-            robot.drive.followTrajectorySequence(myTrajectory9);
-            robot.drive.followTrajectorySequence(myTrajectory10);
-            robot.drive.followTrajectorySequence(myTrajectory11);
-            robot.drive.followTrajectorySequence(myTrajectory12);
-            robot.drive.followTrajectorySequence(myTrajectory13);
-            robot.drive.followTrajectorySequence(myTrajectory14);
-            robot.drive.followTrajectorySequence(myTrajectory15);
-            robot.drive.followTrajectorySequence(myTrajectory16);
-            robot.drive.followTrajectorySequence(myTrajectory17);
         }
 
 
 
 
 
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
+//            telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
         }
     }

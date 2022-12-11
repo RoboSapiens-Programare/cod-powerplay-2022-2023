@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.Robot;
@@ -43,12 +44,16 @@ public class SleepBlue extends LinearOpMode {
     int RIGHT = 3;
 
     public AprilTagDetection tagOfInterest = null;
+    private ElapsedTime opencvTimer;
+    private final int MAX_MILISECONDS = 1000;
 
     @Override
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap);
 
-        PhotonCore.enable();
+        opencvTimer = new ElapsedTime();
+        opencvTimer.startTime();
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Camera"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
@@ -77,28 +82,30 @@ public class SleepBlue extends LinearOpMode {
          */
         FtcDashboard.getInstance().startCameraStream(camera, 0);
 
-        ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
-
-        if(currentDetections.size() != 0)
+        while (!isStarted() && !isStopRequested())
         {
-            boolean tagFound = false;
+            ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
+            if (currentDetections.size() != 0) {
+                boolean tagFound = false;
 
-            for(AprilTagDetection tag : currentDetections)
-            {
-                if(tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT)
-                {
-                    tagOfInterest = tag;
-                    tagFound = true;
-                    break;
+                for (AprilTagDetection tag : currentDetections) {
+                    if (tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT) {
+                        tagOfInterest = tag;
+                        tagFound = true;
+                        break;
+                    }
                 }
             }
+            telemetry.update();
+            sleep(20);
         }
 
-        waitForStart();
         if (isStopRequested()) return;
 
         while (opModeIsActive()){
-            robot.glisiera.strangeCleste();
+            telemetry.addData("Tag:", tagOfInterest.id);
+
+//            robot.glisiera.strangeCleste();
 //            robot.drive.mergi(700, new Pose2d(0.5, 0, 0));
 //            robot.drive.mergi(300, new Pose2d(-0.3, 0, 0));
 //            robot.drive.turn(Math.toRadians(90));
@@ -109,6 +116,7 @@ public class SleepBlue extends LinearOpMode {
 //            robot.glisiera.manualLevel(1200);
 //            robot.glisiera.desfaCleste();
 //            robot.drive.mergi(100, new Pose2d(-0.5, 0, 0));
+
 //
             if(tagOfInterest == null || tagOfInterest.id == MIDDLE) {
 //                robot.drive.turn(Math.toRadians(90));
@@ -130,10 +138,9 @@ public class SleepBlue extends LinearOpMode {
                 robot.drive.turn(Math.toRadians(90));
                 robot.drive.mergi(500, new Pose2d(0.5, 0, 0));
             }
-            robot.glisiera.desfaCleste();
+//            robot.glisiera.desfaCleste();
         }
 
         telemetry.update();
-        sleep(20);
     }
 }

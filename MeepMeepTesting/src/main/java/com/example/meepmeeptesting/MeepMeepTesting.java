@@ -48,6 +48,9 @@ public class MeepMeepTesting {
 //                                    robot.glisiera.manualLevel(1200);
 //                                    robot.glisiera.desfaCleste();
                                 })
+                                .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(270)))
+                                .lineToLinearHeading(new Pose2d(36, -34, Math.toRadians(270)))
+                                .lineToLinearHeading(new Pose2d(12, -34, Math.toRadians(270)))
                                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
