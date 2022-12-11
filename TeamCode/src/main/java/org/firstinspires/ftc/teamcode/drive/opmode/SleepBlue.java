@@ -82,7 +82,7 @@ public class SleepBlue extends LinearOpMode {
          */
         FtcDashboard.getInstance().startCameraStream(camera, 0);
 
-        while (!isStarted() && !isStopRequested())
+        waitForStart();
         {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
             if (currentDetections.size() != 0) {

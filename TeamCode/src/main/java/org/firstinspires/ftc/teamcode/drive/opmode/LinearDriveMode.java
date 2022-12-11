@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
@@ -37,7 +38,7 @@ public class LinearDriveMode extends LinearOpMode {
         telemetry.update();
 
         robot = new Robot(hardwareMap);
-
+        robot.drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         gamepad1.setLedColor(200, 0, 200, Gamepad.LED_DURATION_CONTINUOUS);
         gamepad2.setLedColor(255, 125, 0, Gamepad.LED_DURATION_CONTINUOUS);
 
@@ -76,7 +77,7 @@ public class LinearDriveMode extends LinearOpMode {
 //            robot.drive.setDrivePower(new Pose2d((Math.pow((100.0*(((double)gamepad1.left_stick_y/ 100.0))), 3.3219)), (Math.pow((100.0*(((double)gamepad1.left_stick_x/ 100.0))), 3.3219)), (Math.pow((100.0*(((double)gamepad1.right_stick_x/ 100.0))), 3.3219))));
             //robot.drive.setDrivePower(new Pose2d(calculateThrottle(gamepad1.left_stick_y / 2), calculateThrottle(gamepad1.left_stick_x / 2), calculateThrottle(gamepad1.right_stick_x / 2)));
             // 100*(I/100)^3.3219
-            robot.drive.setDrivePower(new Pose2d(calculateThrottle(-gamepad1.left_stick_y / 2), calculateThrottle(gamepad1.left_stick_x / 2), calculateThrottle(-gamepad1.right_stick_x / 2)));
+            robot.drive.setDrivePower(new Pose2d(calculateThrottle((float) (-gamepad1.left_stick_y * 0.75)), calculateThrottle((float) (gamepad1.left_stick_x * 0.75)), calculateThrottle((float) (-gamepad1.right_stick_x * 0.75))));
 //            telemetry.addData("Encoder value", (float)odo.getCurrentPosition() / 8192.0f * Math.PI * 5 + "cm");
 
             telemetry.addData("Slider ticks", robot.glisiera.motorGlisiera1.getCurrentPosition());

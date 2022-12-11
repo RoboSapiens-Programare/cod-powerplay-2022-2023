@@ -11,5 +11,10 @@ public class BRICK extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap);
+        waitForStart();
+        while (opModeIsActive())
+        {
+
+        }
     }
 }

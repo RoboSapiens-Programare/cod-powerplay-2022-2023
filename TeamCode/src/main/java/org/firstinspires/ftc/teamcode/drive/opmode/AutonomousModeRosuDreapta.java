@@ -87,6 +87,8 @@ public class AutonomousModeRosuDreapta extends LinearOpMode {
             waitForStart();
             if (isStopRequested()) return;
 
+            while (opModeIsActive()) {
+
 //            ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 //            if(currentDetections.size() != 0)
 //            {
@@ -150,4 +152,4 @@ public class AutonomousModeRosuDreapta extends LinearOpMode {
     }
 
 }
-//}
+}
