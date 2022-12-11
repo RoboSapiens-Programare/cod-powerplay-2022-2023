@@ -53,7 +53,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @TeleOp(group="Autonomous")
 
-public class AutonomousBlueDown extends LinearOpMode {
+public class AutonomousBlue extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
