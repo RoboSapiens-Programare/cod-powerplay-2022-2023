@@ -11,6 +11,7 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsTouchSensor;
 import com.qualcomm.hardware.motors.TetrixMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.CompassSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -18,6 +19,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -35,7 +37,8 @@ public class TestEncoder extends LinearOpMode {
 //    private ModernRoboticsAnalogOpticalDistanceSensor ods;
 //    private ModernRoboticsI2cCompassSensor compassSensor;
 //    private ModernRoboticsI2cRangeSensor range;
-    private DcMotor motor;
+//    private DcMotor motor;
+    private CRServo servo;
 //    private Encoder encoder0;
 //    private Encoder encoder1;
 //    private Encoder encoder2;
@@ -56,10 +59,13 @@ public class TestEncoder extends LinearOpMode {
 //        ods = hardwareMap.get(ModernRoboticsAnalogOpticalDistanceSensor.class, "ods");
 //        compassSensor = hardwareMap.get(ModernRoboticsI2cCompassSensor.class, "compass");
 //        range = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "range");
-        motor = hardwareMap.get(DcMotor.class, "motorGlisiera1");
-        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setDirection(DcMotorSimple.Direction.FORWARD);
+//        motor = hardwareMap.get(DcMotor.class, "motorGlisiera1");
+//        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motor.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        servo = hardwareMap.get(CRServo.class, "servo");
+        servo.setDirection(CRServo.Direction.FORWARD);
 
 //        encoder0 = new Encoder(hardwareMap.get(DcMotorEx.class, "leftFront"));
 //        encoder1 = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront"));
@@ -115,31 +121,35 @@ public class TestEncoder extends LinearOpMode {
 //            telemetry.addData("ticksparal: ", encoderParalel.getCurrentPosition());
 //            telemetry.addData("ticksperp: ", encoderPerpendicular.getCurrentPosition());
 
-            if(gamepad2.a){
-                motor.setTargetPosition(420);
-                motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                if(motor.getCurrentPosition() > 420)
-                    motor.setPower(-POWER);
-                else motor.setPower(POWER);
-            }
+            if(gamepad1.a) servo.setPower(-1);
+            else if(gamepad1.y) servo.setPower(1);
+            else servo.setPower(0);
 
-            if(gamepad2.b){
-                motor.setTargetPosition(1500);
-                motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                if(motor.getCurrentPosition() > 1500)
-                    motor.setPower(-POWER);
-                else motor.setPower(POWER);
-            }
-
-            if(gamepad2.y){
-                motor.setTargetPosition(2200);
-                motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                if(motor.getCurrentPosition() > 2200)
-                    motor.setPower(-POWER);
-                else motor.setPower(POWER);
-            }
-
-            telemetry.addData("ticks: ", motor.getCurrentPosition());
+//            if(gamepad2.a){
+//                motor.setTargetPosition(420);
+//                motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                if(motor.getCurrentPosition() > 420)
+//                    motor.setPower(-POWER);
+//                else motor.setPower(POWER);
+//            }
+//
+//            if(gamepad2.b){
+//                motor.setTargetPosition(1500);
+//                motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                if(motor.getCurrentPosition() > 1500)
+//                    motor.setPower(-POWER);
+//                else motor.setPower(POWER);
+//            }
+//
+//            if(gamepad2.y){
+//                motor.setTargetPosition(2200);
+//                motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                if(motor.getCurrentPosition() > 2200)
+//                    motor.setPower(-POWER);
+//                else motor.setPower(POWER);
+//            }
+//
+//            telemetry.addData("ticks: ", motor.getCurrentPosition());
 
 //            telemetry.addData("imu: ", imu.isGyroCalibrated());
 //            telemetry.addData("imu: ", imu.getCalibrationStatus());
