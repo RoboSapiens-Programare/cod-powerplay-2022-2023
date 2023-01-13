@@ -66,7 +66,7 @@ import java.util.ArrayList;
 public class AutonomousBlue extends LinearOpMode {
 
     // Declare OpMode members.
-//    private ElapsedTime runtime = new ElapsedTime();
+    private ElapsedTime runtime = new ElapsedTime();
     private Robot robot = null;
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -153,10 +153,10 @@ public class AutonomousBlue extends LinearOpMode {
         while (opModeIsActive()){
             telemetry.addData("Tag:", tagOfInterest.id);
 
-//
-//
-//            if(tagOfInterest == null || tagOfInterest.id == MIDDLE) {
-//
+
+
+            if(tagOfInterest == null || tagOfInterest.id == MIDDLE) {
+
                 Pose2d start = new Pose2d(35, -60, Math.toRadians(90));
                 robot.drive.setPoseEstimate(start);
 
@@ -169,144 +169,144 @@ public class AutonomousBlue extends LinearOpMode {
                         .strafeRight(11)
                         .forward(3)
 
-//                        .lineToLinearHeading(new Pose2d(35, -9, Math.toRadians(90)))
-//                        .lineToLinearHeading(new Pose2d(35, -12, Math.toRadians(90)))
-//                        .lineToLinearHeading(new Pose2d(35, -11, Math.toRadians(180)))
-//                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(180)))
-//                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(270)))
-//                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(270)))
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.manualLevel(1200);
-//                            sleep(2000);
-//                            robot.glisiera.desfaCleste();
-//                            sleep(2000);
-//                            robot.glisiera.manualLevel(520);
-//                        })
-//                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(270)))
-//                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(0)))
-//                        .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(0)))
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.strangeCleste();
-//                            robot.glisiera.mediumLevel();
-//                        })
-//                        .lineToLinearHeading(new Pose2d(48, -12, Math.toRadians(0)))
-//                        .lineToLinearHeading(new Pose2d(47, -12, Math.toRadians(180)))
-//                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(180)))
-//                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(270)))
-//                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(270)))
-//                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(270)))
-//                    .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(270)))
-//                        .lineToLinearHeading(new Pose2d(36, -34, Math.toRadians(270)))
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.manualLevel(1200);
-//                            sleep(2000);
-//                            robot.glisiera.desfaCleste();
-//                        })
+                        .lineToLinearHeading(new Pose2d(35, -9, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(35, -12, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(35, -11, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(270)))
+                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(270)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.manualLevel(1200);
+                            sleep(2000);
+                            robot.glisiera.desfaCleste();
+                            sleep(2000);
+                            robot.glisiera.manualLevel(520);
+                        })
+                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(270)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(0)))
+                        .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(0)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.strangeCleste();
+                            robot.glisiera.mediumLevel();
+                        })
+                        .lineToLinearHeading(new Pose2d(48, -12, Math.toRadians(0)))
+                        .lineToLinearHeading(new Pose2d(47, -12, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(270)))
+                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(270)))
+                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(270)))
+                    .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(270)))
+                        .lineToLinearHeading(new Pose2d(36, -34, Math.toRadians(270)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.manualLevel(1200);
+                            sleep(2000);
+                            robot.glisiera.desfaCleste();
+                        })
                         .build();
 
                 robot.drive.followTrajectorySequence(myTrajectory1);
             }
-//            else if(tagOfInterest.id == LEFT){
-////                Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
-//                robot.drive.setPoseEstimate(start);
-//
-//                TrajectorySequence myTrajectory2 = robot.drive.trajectorySequenceBuilder(start)
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.strangeCleste();
-//                        })
-//                        .lineToLinearHeading(new Pose2d(35, -9, Math.toRadians(90)))
-//                        .lineToLinearHeading(new Pose2d(35, -12, Math.toRadians(90)))
-//                        .lineToLinearHeading(new Pose2d(35, -11, Math.toRadians(180)))
-//                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(180)))
-//                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(270)))
-//                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(270)))
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.manualLevel(1200);
-//                            sleep(2000);
-//                            robot.glisiera.desfaCleste();
-//                            sleep(2000);
-//                            robot.glisiera.manualLevel(520);
-//                        })
-//                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(270)))
-//                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(0)))
-//                        .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(0)))
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.strangeCleste();
-//                            robot.glisiera.mediumLevel();
-//                        })
-//                        .lineToLinearHeading(new Pose2d(48, -12, Math.toRadians(0)))
-//                        .lineToLinearHeading(new Pose2d(47, -12, Math.toRadians(180)))
-//                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(180)))
-//                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(270)))
-//                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(270)))
-//                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(270)))
-//                        .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(270)))
-//                        .lineToLinearHeading(new Pose2d(36, -34, Math.toRadians(270)))
-//                        .lineToLinearHeading(new Pose2d(12, -34, Math.toRadians(270)))
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.manualLevel(1200);
-//                            sleep(2000);
-//                            robot.glisiera.desfaCleste();
-//                        })
-//                        .build();
-//                robot.drive.followTrajectorySequence(myTrajectory2);
+            else if(tagOfInterest.id == LEFT){
+                Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
+                robot.drive.setPoseEstimate(start);
+
+                TrajectorySequence myTrajectory2 = robot.drive.trajectorySequenceBuilder(start)
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.strangeCleste();
+                        })
+                        .lineToLinearHeading(new Pose2d(35, -9, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(35, -12, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(35, -11, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(270)))
+                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(270)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.manualLevel(1200);
+                            sleep(2000);
+                            robot.glisiera.desfaCleste();
+                            sleep(2000);
+                            robot.glisiera.manualLevel(520);
+                        })
+                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(270)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(0)))
+                        .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(0)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.strangeCleste();
+                            robot.glisiera.mediumLevel();
+                        })
+                        .lineToLinearHeading(new Pose2d(48, -12, Math.toRadians(0)))
+                        .lineToLinearHeading(new Pose2d(47, -12, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(270)))
+                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(270)))
+                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(270)))
+                        .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(270)))
+                        .lineToLinearHeading(new Pose2d(36, -34, Math.toRadians(270)))
+                        .lineToLinearHeading(new Pose2d(12, -34, Math.toRadians(270)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.manualLevel(1200);
+                            sleep(2000);
+                            robot.glisiera.desfaCleste();
+                        })
+                        .build();
+                robot.drive.followTrajectorySequence(myTrajectory2);
             }
-//            else {
-////                Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
-//                robot.drive.setPoseEstimate(start);
-//
-//                TrajectorySequence myTrajectory = robot.drive.trajectorySequenceBuilder(start)
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.strangeCleste();
-//                        })
-//                        .lineToLinearHeading(new Pose2d(35, -9, Math.toRadians(0)))
-//                        .lineToLinearHeading(new Pose2d(35, -12, Math.toRadians(0)))
-//                        .lineToLinearHeading(new Pose2d(35, -11, Math.toRadians(90)))
-//                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(90)))
-//                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(180)))
-//                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(180)))
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.manualLevel(1200);
-//                            sleep(2000);
-//                            robot.glisiera.desfaCleste();
-//                            sleep(2000);
-//                            robot.glisiera.manualLevel(520);
-//                        })
-//                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(180)))
-//                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(-90)))
-//                        .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(-90)))
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.strangeCleste();
-//                            robot.glisiera.mediumLevel();
-//                        })
-//                        .lineToLinearHeading(new Pose2d(48, -12, Math.toRadians(-90)))
-//                        .lineToLinearHeading(new Pose2d(47, -12, Math.toRadians(90)))
-//                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(90)))
-//                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(180)))
-//                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(180)))
-//                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(180)))
-//                    .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(180)))
-//                        .lineToLinearHeading(new Pose2d(36, -34, Math.toRadians(180)))
-//                        .lineToLinearHeading(new Pose2d(60, -34, Math.toRadians(180)))
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.manualLevel(1200);
-//                            sleep(2000);
-//                            robot.glisiera.desfaCleste();
-//                        })
-//                        .build();
-//                robot.drive.followTrajectorySequence(myTrajectory);
+            else {
+                Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
+                robot.drive.setPoseEstimate(start);
+
+                TrajectorySequence myTrajectory = robot.drive.trajectorySequenceBuilder(start)
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.strangeCleste();
+                        })
+                        .lineToLinearHeading(new Pose2d(35, -9, Math.toRadians(0)))
+                        .lineToLinearHeading(new Pose2d(35, -12, Math.toRadians(0)))
+                        .lineToLinearHeading(new Pose2d(35, -11, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(180)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.manualLevel(1200);
+                            sleep(2000);
+                            robot.glisiera.desfaCleste();
+                            sleep(2000);
+                            robot.glisiera.manualLevel(520);
+                        })
+                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(-90)))
+                        .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(-90)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.strangeCleste();
+                            robot.glisiera.mediumLevel();
+                        })
+                        .lineToLinearHeading(new Pose2d(48, -12, Math.toRadians(-90)))
+                        .lineToLinearHeading(new Pose2d(47, -12, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(180)))
+                    .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(36, -34, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(60, -34, Math.toRadians(180)))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.manualLevel(1200);
+                            sleep(2000);
+                            robot.glisiera.desfaCleste();
+                        })
+                        .build();
+                robot.drive.followTrajectorySequence(myTrajectory);
             }
-//            robot.glisiera.desfaCleste();
-//        }
-//        runtime.reset();
+            robot.glisiera.desfaCleste();
+        }
+        runtime.reset();
 
 
 
 
 
 
-//            telemetry.addData("Status", "Run Time: " + runtime.toString());
-//            telemetry.update();
-//        }
-//    }
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.update();
+        }
+    }
 

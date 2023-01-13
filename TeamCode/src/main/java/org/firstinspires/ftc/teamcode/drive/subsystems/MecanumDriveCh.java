@@ -61,7 +61,7 @@ public class MecanumDriveCh extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(6.5, 0, 1);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(0.5, 0, 1);
 
-    public static double LATERAL_MULTIPLIER = 4;
+    public static double LATERAL_MULTIPLIER = -4;
 //>>>>>>> main
 
     public static double VX_WEIGHT = 1;
