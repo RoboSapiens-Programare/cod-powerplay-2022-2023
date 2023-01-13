@@ -5,6 +5,8 @@ import static java.lang.Math.abs;
 import android.graphics.Color;
 import android.os.Build;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -13,13 +15,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.drive.Robot;
 //import org.firstinspires.ftc.teamcode.drive.subsystems.Odometrie;
 
 @TeleOp(group = "driver")
 public class LinearDriveMode extends LinearOpMode {
     private Robot robot = null;
-
+    private FtcDashboard dashboard = FtcDashboard.getInstance();
     public double calculateThrottle(float x) {
         int sign = -1;
         if (x > 0) sign = 1;
@@ -77,13 +81,18 @@ public class LinearDriveMode extends LinearOpMode {
 //            robot.drive.setDrivePower(new Pose2d((Math.pow((100.0*(((double)gamepad1.left_stick_y/ 100.0))), 3.3219)), (Math.pow((100.0*(((double)gamepad1.left_stick_x/ 100.0))), 3.3219)), (Math.pow((100.0*(((double)gamepad1.right_stick_x/ 100.0))), 3.3219))));
             //robot.drive.setDrivePower(new Pose2d(calculateThrottle(gamepad1.left_stick_y / 2), calculateThrottle(gamepad1.left_stick_x / 2), calculateThrottle(gamepad1.right_stick_x / 2)));
             // 100*(I/100)^3.3219
-<<<<<<< HEAD
+//<<<<<<< HEAD
             robot.drive.setDrivePower(new Pose2d(calculateThrottle((float) (-gamepad1.left_stick_y)), calculateThrottle((float) (gamepad1.left_stick_x)), calculateThrottle((float) (-gamepad1.right_stick_x))));
-=======
+//=======
             robot.drive.setDrivePower(new Pose2d(calculateThrottle(-gamepad1.left_stick_y), calculateThrottle(gamepad1.left_stick_x), calculateThrottle(-gamepad1.right_stick_x)));
->>>>>>> main
+//>>>>>>> main
 //            telemetry.addData("Encoder value", (float)odo.getCurrentPosition() / 8192.0f * Math.PI * 5 + "cm");
+            Telemetry telemetry = new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
 
+            telemetry.addData("Left front motor current", robot.drive.leftFront.getCurrent(CurrentUnit.MILLIAMPS));
+            telemetry.addData("Left rear motor current", robot.drive.leftRear.getCurrent(CurrentUnit.MILLIAMPS));
+            telemetry.addData("Right front motor current", robot.drive.rightFront.getCurrent(CurrentUnit.MILLIAMPS));
+            telemetry.addData("Right rear motor current", robot.drive.rightRear.getCurrent(CurrentUnit.MILLIAMPS));
             telemetry.addData("Slider ticks", robot.glisiera.motorGlisiera1.getCurrentPosition());
 //            telemetry.addData("left stick y", calculateThrottle(gamepad1.left_stick_y));
 //            telemetry.addData("left stick y real", gamepad1.left_stick_y);

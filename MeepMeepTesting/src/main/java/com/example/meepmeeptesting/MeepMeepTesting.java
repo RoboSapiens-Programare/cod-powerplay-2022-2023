@@ -14,43 +14,13 @@ public class MeepMeepTesting {
         final double FOAM_TILE_INCH = 24.0;
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(65, 68, Math.toRadians(180), Math.toRadians(180), 15.6)
+                .setConstraints(35, 20, Math.toRadians(180), Math.toRadians(180), 16)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(35, -60, Math.toRadians(90)))
-                                .addDisplacementMarker(() ->{
-                                    //strange cleste
-                                })
-                                .lineToLinearHeading(new Pose2d(35, -9, Math.toRadians(90)))
                                 .lineToLinearHeading(new Pose2d(35, -12, Math.toRadians(90)))
-                                .lineToLinearHeading(new Pose2d(35, -11, Math.toRadians(180)))
-                                .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(180)))
-                                .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(270)))
-                                .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(270)))
-                                .addDisplacementMarker(() -> {
-//                                    robot.glisiera.manualLevel(1200);
-//                                    robot.glisiera.desfaCleste();
-//                                    robot.glisiera.manualLevel(520);
-                                })
-                                .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(270)))
-                                .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(0)))
-                                .lineToLinearHeading(new Pose2d(60, -12, Math.toRadians(0)))
-                                .addDisplacementMarker(() -> {
-//                                    robot.glisiera.strangeCleste();
-//                                    robot.glisiera.mediumLevel();
-                                })
-                                .lineToLinearHeading(new Pose2d(48, -12, Math.toRadians(0)))
-                                .lineToLinearHeading(new Pose2d(47, -12, Math.toRadians(180)))
-                                .lineToLinearHeading(new Pose2d(24, -11, Math.toRadians(180)))
-                                .lineToLinearHeading(new Pose2d(24, -10, Math.toRadians(270)))
-                                .lineToLinearHeading(new Pose2d(24, -14, Math.toRadians(270)))
-                                .lineToLinearHeading(new Pose2d(24, -12, Math.toRadians(270)))
-                                .addDisplacementMarker(() -> {
-//                                    robot.glisiera.manualLevel(1200);
-//                                    robot.glisiera.desfaCleste();
-                                })
-                                .lineToLinearHeading(new Pose2d(36, -12, Math.toRadians(270)))
-                                .lineToLinearHeading(new Pose2d(36, -34, Math.toRadians(270)))
-                                .lineToLinearHeading(new Pose2d(12, -34, Math.toRadians(270)))
+                                .turn(Math.toRadians(180))
+                                .strafeRight(11)
+                                .forward(3)
                                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)

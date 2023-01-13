@@ -25,11 +25,11 @@ public class Glisiera {
     }
 
     public void strangeCleste(){
-        cleste.setPosition(0.5);
+        cleste.setPosition(-0.5);
     }
 
     public void desfaCleste(){
-        cleste.setPosition(-0.5);
+        cleste.setPosition(0.5);
     }
 
     public void setPower(double power){
