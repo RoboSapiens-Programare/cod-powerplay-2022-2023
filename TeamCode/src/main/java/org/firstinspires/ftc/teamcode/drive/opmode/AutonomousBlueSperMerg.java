@@ -185,11 +185,9 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                                 robot.glisiera.strangeCleste();
                             })
                             .turn(Math.toRadians(-45))
+                            .forward(10)
                             .addDisplacementMarker(() -> {
-                            robot.glisiera.lowLevel();
-                            })
-                            .forward(7)
-                            .addDisplacementMarker(() -> {
+                                robot.glisiera.lowLevel();
                                 robot.glisiera.desfaCleste();
                             })
                             .back(7)
