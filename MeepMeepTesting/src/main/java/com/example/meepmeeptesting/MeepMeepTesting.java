@@ -18,8 +18,8 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(35, -60, Math.toRadians(90)))
                                 .forward(25)
-                                .turn(Math.toRadians(90))
-                                .back(24)
+                                .turn(Math.toRadians(-45))
+                                .forward(7)
                                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)

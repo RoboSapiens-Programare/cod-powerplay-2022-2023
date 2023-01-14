@@ -181,8 +181,20 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
 
                     TrajectorySequence myTrajectory = robot.drive.trajectorySequenceBuilder(start)
                             .forward(25)
-                            .turn(Math.toRadians(90))
-                            .back(24)
+                            .addDisplacementMarker(() -> {
+                                robot.glisiera.strangeCleste();
+                            })
+                            .turn(Math.toRadians(-45))
+                            .addDisplacementMarker(() -> {
+                            robot.glisiera.lowLevel();
+                            })
+                            .forward(7)
+                            .addDisplacementMarker(() -> {
+                                robot.glisiera.desfaCleste();
+                            })
+                            .back(7)
+                            .turn(Math.toRadians(-45))
+                            .forward(24)
                             .waitSeconds(45)
                             .build();
                     robot.drive.followTrajectorySequence(myTrajectory);
