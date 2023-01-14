@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.drive.opmode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -60,7 +61,7 @@ import java.util.ArrayList;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name = "Autonomie roadrunner parcare", group="autonomous")
+@Autonomous(name = "Autonomie roadrunner parcare", group="autonomous")
 
 public class AutonomousBlueSperMerg extends LinearOpMode {
 
@@ -134,7 +135,7 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
             if (currentDetections.size() != 0) {
                 boolean tagFound = false;
-
+//                tagOfInterest.id = MIDDLE;
                 for (AprilTagDetection tag : currentDetections) {
                     if (tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT) {
                         tagOfInterest = tag;
@@ -149,54 +150,48 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        while (opModeIsActive()){
+        while (opModeIsActive()) {
             telemetry.addData("Tag:", tagOfInterest.id);
 
-//
-//
-            if(tagOfInterest == null || tagOfInterest.id == MIDDLE) {
-//
-                Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
-                robot.drive.setPoseEstimate(start);
+            if (tagOfInterest.id == MIDDLE) {
+                    Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
+                    robot.drive.setPoseEstimate(start);
 
-                TrajectorySequence myTrajectory1 = robot.drive.trajectorySequenceBuilder(start)
+                    TrajectorySequence myTrajectory1 = robot.drive.trajectorySequenceBuilder(start)
+                            .forward(25)
+                            .waitSeconds(45)
+                            .build();
 
+                    robot.drive.followTrajectorySequence(myTrajectory1);
+                }
+                else if (tagOfInterest.id == LEFT) {
+                    Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
+                    robot.drive.setPoseEstimate(start);
 
-                        .build();
+                    TrajectorySequence myTrajectory2 = robot.drive.trajectorySequenceBuilder(start)
+                            .forward(24)
+                            .strafeLeft(24)
+                            .waitSeconds(45)
+                            .build();
+                    robot.drive.followTrajectorySequence(myTrajectory2);
+                }
+                else if (tagOfInterest.id == RIGHT) {
+                    Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
+                    robot.drive.setPoseEstimate(start);
 
-                robot.drive.followTrajectorySequence(myTrajectory1);
-            }
-            else if(tagOfInterest.id == LEFT){
-                Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
-                robot.drive.setPoseEstimate(start);
-
-                TrajectorySequence myTrajectory2 = robot.drive.trajectorySequenceBuilder(start)
-
-
-                        .build();
-                robot.drive.followTrajectorySequence(myTrajectory2);
-            }
-            else {
-                Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
-                robot.drive.setPoseEstimate(start);
-
-                TrajectorySequence myTrajectory = robot.drive.trajectorySequenceBuilder(start)
-
-
-                        .build();
-                robot.drive.followTrajectorySequence(myTrajectory);
-            }
+                    TrajectorySequence myTrajectory = robot.drive.trajectorySequenceBuilder(start)
+                            .forward(25)
+                            .turn(Math.toRadians(90))
+                            .back(24)
+                            .waitSeconds(45)
+                            .build();
+                    robot.drive.followTrajectorySequence(myTrajectory);
+                }
 //            robot.glisiera.desfaCleste();
-        }
-//        runtime.reset();
-
-
-        while (opModeIsActive()) {
+            }
 
 
 
-
-        }
 
 
 
@@ -206,4 +201,5 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
             telemetry.update();
         }
     }
+
 

@@ -17,10 +17,9 @@ public class MeepMeepTesting {
                 .setConstraints(35, 20, Math.toRadians(180), Math.toRadians(180), 16)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(35, -60, Math.toRadians(90)))
-                                .lineToLinearHeading(new Pose2d(35, -12, Math.toRadians(90)))
-                                .turn(Math.toRadians(180))
-                                .strafeRight(11)
-                                .forward(3)
+                                .forward(25)
+                                .turn(Math.toRadians(90))
+                                .back(24)
                                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
