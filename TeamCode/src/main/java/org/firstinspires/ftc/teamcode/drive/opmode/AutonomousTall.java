@@ -63,7 +63,7 @@ import java.util.ArrayList;
 
 @Autonomous(name = "Autonomie roadrunner parcare", group="autonomous")
 
-public class AutonomousBlueSperMerg extends LinearOpMode {
+public class AutonomousTall extends LinearOpMode {
 
     // Declare OpMode members.
 //    private ElapsedTime runtime = new ElapsedTime();
