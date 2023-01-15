@@ -17,9 +17,18 @@ public class MeepMeepTesting {
                 .setConstraints(35, 20, Math.toRadians(180), Math.toRadians(180), 16)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(35, -60, Math.toRadians(90)))
-                                .forward(25)
-                                .turn(Math.toRadians(-45))
-                                .forward(7)
+                                .forward(48)
+                                .turn(Math.toRadians(35))
+                                .addDisplacementMarker(()->{
+                                    //Ridica glisiera la tall
+                                })
+                                .forward(10)
+                                .addDisplacementMarker(()->{
+                                    //Coboara putin clestele, putin wait si da-i drumul
+                                })
+                                .back(10)
+                                .turn(Math.toRadians(-125))
+                                .forward(20)
                                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)

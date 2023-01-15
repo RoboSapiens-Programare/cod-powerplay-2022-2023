@@ -77,6 +77,8 @@ public class Glisiera {
     public void manualLevel(double manualTarget){
         motorGlisiera1.setTargetPosition((int) manualTarget);
         motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorGlisiera1.setPower(POWER);
+        if(motorGlisiera1.getCurrentPosition() > manualTarget)
+            motorGlisiera1.setPower(-POWER);
+        else motorGlisiera1.setPower(POWER);
     }
 }
