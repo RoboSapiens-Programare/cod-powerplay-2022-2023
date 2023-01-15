@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.drive.opmode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -172,16 +173,19 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                 robot.drive.followTrajectorySequence(myTrajectory2);
             }
             else if (tagOfInterest.id == RIGHT) {
-                Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
+                Pose2d start = new Pose2d(35, -60, Math.toRadians(90));
                 robot.drive.setPoseEstimate(start);
 
                 TrajectorySequence myTrajectory = robot.drive.trajectorySequenceBuilder(start)
-                    .forward(25)
-                    .turn(Math.toRadians(35))
+                    .forward(58)
+                    .back(10)
+                    .turn(Math.toRadians(128))
                     .addDisplacementMarker(() -> {
                         robot.glisiera.mediumLevel();
+                        ElapsedTime time = new ElapsedTime();
+                        while(time.milliseconds() < MAX_MILISECONDS);
                     })
-                    .forward(11)
+                    .forward(10)
                     .waitSeconds(0.2)
                     .addDisplacementMarker(() -> {
                       robot.glisiera.manualLevel(1750);
@@ -198,8 +202,8 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                         robot.glisiera.zeroLevel();
                     })
                     .back(5)
-                    .turn(Math.toRadians(55))
-                    .back(24)
+                    .turn(Math.toRadians(140))
+                    .forward(22)
                     .waitSeconds(45)
                     .build();
                 robot.drive.followTrajectorySequence(myTrajectory);

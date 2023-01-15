@@ -37,8 +37,8 @@ public class TestEncoder extends LinearOpMode {
 //    private ModernRoboticsAnalogOpticalDistanceSensor ods;
 //    private ModernRoboticsI2cCompassSensor compassSensor;
 //    private ModernRoboticsI2cRangeSensor range;
-//    private DcMotor motor;
-    private CRServo servo;
+    private DcMotor motor;
+//    private CRServo servo;
 //    private Encoder encoder0;
 //    private Encoder encoder1;
 //    private Encoder encoder2;
@@ -59,13 +59,13 @@ public class TestEncoder extends LinearOpMode {
 //        ods = hardwareMap.get(ModernRoboticsAnalogOpticalDistanceSensor.class, "ods");
 //        compassSensor = hardwareMap.get(ModernRoboticsI2cCompassSensor.class, "compass");
 //        range = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "range");
-//        motor = hardwareMap.get(DcMotor.class, "motorGlisiera1");
-//        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motor.setDirection(DcMotorSimple.Direction.FORWARD);
+        motor = hardwareMap.get(DcMotor.class, "motorGlisiera1");
+        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        servo = hardwareMap.get(CRServo.class, "servo");
-        servo.setDirection(CRServo.Direction.FORWARD);
+//        servo = hardwareMap.get(CRServo.class, "servo");
+//        servo.setDirection(CRServo.Direction.FORWARD);
 
 //        encoder0 = new Encoder(hardwareMap.get(DcMotorEx.class, "leftFront"));
 //        encoder1 = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront"));
@@ -121,9 +121,9 @@ public class TestEncoder extends LinearOpMode {
 //            telemetry.addData("ticksparal: ", encoderParalel.getCurrentPosition());
 //            telemetry.addData("ticksperp: ", encoderPerpendicular.getCurrentPosition());
 
-            if(gamepad1.a) servo.setPower(-1);
-            else if(gamepad1.y) servo.setPower(1);
-            else servo.setPower(0);
+//            if(gamepad1.a) servo.setPower(-1);
+//            else if(gamepad1.y) servo.setPower(1);
+//            else servo.setPower(0);
 
 //            if(gamepad2.a){
 //                motor.setTargetPosition(420);
@@ -149,7 +149,7 @@ public class TestEncoder extends LinearOpMode {
 //                else motor.setPower(POWER);
 //            }
 //
-//            telemetry.addData("ticks: ", motor.getCurrentPosition());
+            telemetry.addData("ticks: ", motor.getCurrentPosition());
 
 //            telemetry.addData("imu: ", imu.isGyroCalibrated());
 //            telemetry.addData("imu: ", imu.getCalibrationStatus());
