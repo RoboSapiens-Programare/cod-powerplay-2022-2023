@@ -153,7 +153,7 @@ public class AutonomousTall extends LinearOpMode {
             Pose2d start = new Pose2d(35, -60, Math.toRadians(90));
             robot.drive.setPoseEstimate(start);
 
-            TrajectorySequence Preload = robot.drive.trajectorySequ`enceBuilder(start)
+            TrajectorySequence Preload = robot.drive.trajectorySequenceBuilder(start)
                 .forward(48)
                 .turn(Math.toRadians(35))
                 .addDisplacementMarker(()->{
