@@ -11,19 +11,34 @@ public class MeepMeepTesting {
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 16)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(35, -60, Math.toRadians(90)))
-                                .forward(25)
-                                .turn(Math.toRadians(35))
-                                .forward(11)
+                        drive.trajectorySequenceBuilder(new Pose2d(36, -60, Math.toRadians(90)))
+                                .lineToLinearHeading(new Pose2d(36, -12,Math.toRadians(215)))
+//                                .addDisplacementMarker(() -> {
+//                                    robot.glisiera.mediumLevel();
+//                                    ElapsedTime time = new ElapsedTime();
+//                                    while(time.milliseconds() < MAX_MILISECONDS);
+//                                })
+                                .forward(10)
                                 .waitSeconds(0.2)
-                                .waitSeconds(1)
+//                                .addDisplacementMarker(() -> {
+//                                    robot.glisiera.manualLevel(1750);
+//                                    ElapsedTime time = new ElapsedTime();
+//                                    while(time.milliseconds() < MAX_MILISECONDS);
+//                                })
+//                                .waitSeconds(1)
+//                                .addDisplacementMarker(() -> {
+//                                    robot.glisiera.desfaCleste();
+//                                })
                                 .waitSeconds(0.7)
-                                .back(5)
-                                .back(5)
-                                .turn(Math.toRadians(55))
-                                .back(24)
+                                .back(10)
+//                                .addDisplacementMarker(() -> {
+//                                    robot.glisiera.zeroLevel();
+//                                })
+                                .lineToLinearHeading(new Pose2d(56,-12,Math.toRadians(358)))
+//                                .waitSeconds(45)
+//                                .waitSeconds(45)
                                 .build()
                 );
 

@@ -151,12 +151,35 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
             telemetry.addData("Tag:", tagOfInterest.id);
             robot.glisiera.strangeCleste();
             if (tagOfInterest.id == MIDDLE) {
-                Pose2d start = new Pose2d(35, -60, Math.toRadians(0));
+                Pose2d start = new Pose2d(35, -60, Math.toRadians(90));
                 robot.drive.setPoseEstimate(start);
 
                 TrajectorySequence myTrajectory1 = robot.drive.trajectorySequenceBuilder(start)
-                        .forward(25)
-                        .waitSeconds(45)
+                        .lineToLinearHeading(new Pose2d(36, -12,Math.toRadians(215)))
+//                                .addDisplacementMarker(() -> {
+//                                    robot.glisiera.mediumLevel();
+//                                    ElapsedTime time = new ElapsedTime();
+//                                    while(time.milliseconds() < MAX_MILISECONDS);
+//                                })
+                        .forward(10)
+                        .waitSeconds(0.2)
+//                                .addDisplacementMarker(() -> {
+//                                    robot.glisiera.manualLevel(1750);
+//                                    ElapsedTime time = new ElapsedTime();
+//                                    while(time.milliseconds() < MAX_MILISECONDS);
+//                                })
+//                                .waitSeconds(1)
+//                                .addDisplacementMarker(() -> {
+//                                    robot.glisiera.desfaCleste();
+//                                })
+                        .waitSeconds(0.7)
+                        .back(10)
+//                                .addDisplacementMarker(() -> {
+//                                    robot.glisiera.zeroLevel();
+//                                })
+                        .lineToLinearHeading(new Pose2d(56,-12,Math.toRadians(358)))
+//                                .waitSeconds(45)
+                        .waitSeconds(20)
                         .build();
 
                 robot.drive.followTrajectorySequence(myTrajectory1);
@@ -173,13 +196,12 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                 robot.drive.followTrajectorySequence(myTrajectory2);
             }
             else if (tagOfInterest.id == RIGHT) {
-                Pose2d start = new Pose2d(35, -60, Math.toRadians(90));
+                Pose2d start = new Pose2d(36, -60, Math.toRadians(90));
                 robot.drive.setPoseEstimate(start);
 
                 TrajectorySequence myTrajectory = robot.drive.trajectorySequenceBuilder(start)
-                    .forward(58)
+                    .lineToLinearHeading(new Pose2d(36, -12,Math.toRadians(128+90)))
                     .back(10)
-                    .turn(Math.toRadians(128))
                     .addDisplacementMarker(() -> {
                         robot.glisiera.mediumLevel();
                         ElapsedTime time = new ElapsedTime();
@@ -197,13 +219,11 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                         robot.glisiera.desfaCleste();
                     })
                     .waitSeconds(0.7)
-                    .back(5)
+                    .back(10)
                     .addDisplacementMarker(() -> {
                         robot.glisiera.zeroLevel();
                     })
-                    .back(5)
-                    .turn(Math.toRadians(140))
-                    .forward(22)
+                    .lineToLinearHeading(new Pose2d(56,-12,Math.toRadians(358)))
                     .waitSeconds(45)
                     .build();
                 robot.drive.followTrajectorySequence(myTrajectory);

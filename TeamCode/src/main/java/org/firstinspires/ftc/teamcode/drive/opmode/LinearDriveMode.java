@@ -75,7 +75,7 @@ public class LinearDriveMode extends LinearOpMode {
                 robot.glisiera.manualTarget--;
                 robot.glisiera.manualLevel(robot.glisiera.manualTarget);
             }
-            telemetry.addData("right trigger", gamepad2.right_trigger);
+//            telemetry.addData("right trigger", gamepad2.right_trigger);
 //            Drive:
 
 //            robot.drive.setDrivePower(new Pose2d((Math.pow((100.0*(((double)gamepad1.left_stick_y/ 100.0))), 3.3219)), (Math.pow((100.0*(((double)gamepad1.left_stick_x/ 100.0))), 3.3219)), (Math.pow((100.0*(((double)gamepad1.right_stick_x/ 100.0))), 3.3219))));
@@ -87,13 +87,14 @@ public class LinearDriveMode extends LinearOpMode {
 //            robot.drive.setDrivePower(new Pose2d(calculateThrottle(-gamepad1.left_stick_y), calculateThrottle(-gamepad1.left_stick_x), calculateThrottle(gamepad1.right_stick_x)));
 //>>>>>>> main
 //            telemetry.addData("Encoder value", (float)odo.getCurrentPosition() / 8192.0f * Math.PI * 5 + "cm");
-            Telemetry telemetry = new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
+//            Telemetry telemetry = new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
 
-            telemetry.addData("Left front motor current", robot.drive.leftFront.getCurrent(CurrentUnit.MILLIAMPS));
-            telemetry.addData("Left rear motor current", robot.drive.leftRear.getCurrent(CurrentUnit.MILLIAMPS));
-            telemetry.addData("Right front motor current", robot.drive.rightFront.getCurrent(CurrentUnit.MILLIAMPS));
-            telemetry.addData("Right rear motor current", robot.drive.rightRear.getCurrent(CurrentUnit.MILLIAMPS));
-            telemetry.addData("Slider ticks", robot.glisiera.motorGlisiera1.getCurrentPosition());
+            telemetry.addData("Motor1glisiera", robot.glisiera.motorGlisiera1.getCurrentPosition());
+//            telemetry.addData("Left front motor current", robot.drive.leftFront.getCurrent(CurrentUnit.MILLIAMPS));
+//            telemetry.addData("Left rear motor current", robot.drive.leftRear.getCurrent(CurrentUnit.MILLIAMPS));
+//            telemetry.addData("Right front motor current", robot.drive.rightFront.getCurrent(CurrentUnit.MILLIAMPS));
+//            telemetry.addData("Right rear motor current", robot.drive.rightRear.getCurrent(CurrentUnit.MILLIAMPS));
+//            telemetry.addData("Slider ticks", robot.glisiera.motorGlisiera1.getCurrentPosition());
 //            telemetry.addData("left stick y", calculateThrottle(gamepad1.left_stick_y));
 //            telemetry.addData("left stick y real", gamepad1.left_stick_y);
 //            telemetry.addData("left stick x", calculateThrottle(gamepad1.left_stick_x));

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.drive.subsystems;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static org.firstinspires.ftc.teamcode.drive.opmode.TestEncoder.POWER;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,10 +8,13 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.apache.commons.math3.analysis.function.Pow;
+
 public class Glisiera {
     public DcMotor motorGlisiera1;
     private Servo cleste;
     public double manualTarget = 0;
+
 
     public Glisiera(HardwareMap hardwareMap){
         motorGlisiera1 = hardwareMap.dcMotor.get("motorGlisiera1");
@@ -43,7 +47,8 @@ public class Glisiera {
         if(motorGlisiera1.getCurrentPosition() > 420)
             motorGlisiera1.setPower(-POWER);
         else motorGlisiera1.setPower(POWER);
-    }
+        }
+
     public void lowLevel(){
         motorGlisiera1.setTargetPosition(1500);
         motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -58,7 +63,7 @@ public class Glisiera {
             motorGlisiera1.setPower(-POWER);
         else motorGlisiera1.setPower(POWER);
     }
-    public void tallLevel(){
+    public void tallLevel() {
         motorGlisiera1.setTargetPosition(3300);
         motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         if(motorGlisiera1.getCurrentPosition() > 3300)
@@ -74,11 +79,14 @@ public class Glisiera {
         else motorGlisiera1.setPower(POWER);
     }
 
-    public void manualLevel(double manualTarget){
+    public void manualLevel(double manualTarget) {
         motorGlisiera1.setTargetPosition((int) manualTarget);
         motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         if(motorGlisiera1.getCurrentPosition() > manualTarget)
             motorGlisiera1.setPower(-POWER);
         else motorGlisiera1.setPower(POWER);
     }
+
 }
+
+

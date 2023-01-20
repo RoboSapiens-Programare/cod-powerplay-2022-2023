@@ -58,8 +58,8 @@ import java.util.List;
  */
 @Config
 public class MecanumDriveCh extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(7, 0, 1);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(1, 0, 1);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(14, 0, 1);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(5, 0, 1);
 
     public static double LATERAL_MULTIPLIER = -4;
 //>>>>>>> main
@@ -85,7 +85,7 @@ public class MecanumDriveCh extends MecanumDrive {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
-                new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
+                new Pose2d(0.5, 0.5, Math.toRadians(3.0)), 0.5);
 
         LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
 
@@ -286,7 +286,6 @@ public class MecanumDriveCh extends MecanumDrive {
         rightRear.setPower(v2);
         rightFront.setPower(v3);
     }
-
     @Override
     public double getRawExternalHeading() {
         return imu.getAngularOrientation().firstAngle;

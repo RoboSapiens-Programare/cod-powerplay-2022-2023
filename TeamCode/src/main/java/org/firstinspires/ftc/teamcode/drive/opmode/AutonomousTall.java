@@ -150,7 +150,7 @@ public class AutonomousTall extends LinearOpMode {
 
             robot.glisiera.strangeCleste();
 
-            Pose2d start = new Pose2d(35, -60, Math.toRadians(90));
+            Pose2d start = new Pose2d(36, -60, Math.toRadians(90));
             robot.drive.setPoseEstimate(start);
 
             TrajectorySequence Preload = robot.drive.trajectorySequenceBuilder(start)
