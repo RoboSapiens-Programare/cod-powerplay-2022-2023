@@ -57,9 +57,9 @@ public class Glisiera {
         else motorGlisiera1.setPower(POWER);
     }
     public void mediumLevel(){
-        motorGlisiera1.setTargetPosition(2300);
+        motorGlisiera1.setTargetPosition(2400);
         motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if(motorGlisiera1.getCurrentPosition() > 2300)
+        if(motorGlisiera1.getCurrentPosition() > 2400)
             motorGlisiera1.setPower(-POWER);
         else motorGlisiera1.setPower(POWER);
     }
