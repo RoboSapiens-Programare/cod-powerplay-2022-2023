@@ -66,7 +66,6 @@ import java.util.ArrayList;
 public class AutonomousTall extends LinearOpMode {
 
     // Declare OpMode members.
-//    private ElapsedTime runtime = new ElapsedTime();
     private Robot robot = null;
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -152,6 +151,8 @@ public class AutonomousTall extends LinearOpMode {
 
             Pose2d start = new Pose2d(36, -60, Math.toRadians(90));
             robot.drive.setPoseEstimate(start);
+//=======
+//>>>>>>> Stashed changes
 
             TrajectorySequence Preload = robot.drive.trajectorySequenceBuilder(start)
                 .forward(48)
@@ -177,6 +178,7 @@ public class AutonomousTall extends LinearOpMode {
             robot.drive.followTrajectorySequence(Preload);
 
             Pose2d lastPose = Preload.end();
+
 
             for(int i = 1; i <= 5; i++){
 //              robot.glisiera.manualLevel(ceva + i * altceva);

@@ -155,7 +155,9 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                 robot.drive.setPoseEstimate(start);
 
                 TrajectorySequence myTrajectory1 = robot.drive.trajectorySequenceBuilder(start)
-                        .lineToLinearHeading(new Pose2d(36, -12,Math.toRadians(215)))
+                        .forward(55)
+                        .back(7)
+                        .turn(Math.toRadians(125))
 //                                .addDisplacementMarker(() -> {
 //                                    robot.glisiera.mediumLevel();
 //                                    ElapsedTime time = new ElapsedTime();
@@ -177,9 +179,56 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
 //                                .addDisplacementMarker(() -> {
 //                                    robot.glisiera.zeroLevel();
 //                                })
-                        .lineToLinearHeading(new Pose2d(56,-12,Math.toRadians(358)))
+                        .turn(Math.toRadians(143))
+                        .forward(26)
+                        .back(26)
+                        .turn(Math.toRadians(-143))
+
+                        .forward(10)
+                        .waitSeconds(0.2)
+//                                .addDisplacementMarker(() -> {
+//                                    robot.glisiera.manualLevel(1750);
+//                                    ElapsedTime time = new ElapsedTime();
+//                                    while(time.milliseconds() < MAX_MILISECONDS);
+//                                })
+//                                .waitSeconds(1)
+//                                .addDisplacementMarker(() -> {
+//                                    robot.glisiera.desfaCleste();
+//                                })
+                        .waitSeconds(0.7)
+                        .back(10)
+//                                .addDisplacementMarker(() -> {
+//                                    robot.glisiera.zeroLevel();
+//                                })
+                        .turn(Math.toRadians(143))
+                        .forward(24)
+                        .waitSeconds(2)
+                        .back(24)
+                        .turn(Math.toRadians(-143))
+
+                        .forward(10)
+                        .waitSeconds(0.2)
+//                                .addDisplacementMarker(() -> {
+//                                    robot.glisiera.manualLevel(1750);
+//                                    ElapsedTime time = new ElapsedTime();
+//                                    while(time.milliseconds() < MAX_MILISECONDS);
+//                                })
+//                                .waitSeconds(1)
+//                                .addDisplacementMarker(() -> {
+//                                    robot.glisiera.desfaCleste();
+//                                })
+                        .waitSeconds(0.7)
+                        .back(10)
+//                                .addDisplacementMarker(() -> {
+//                                    robot.glisiera.zeroLevel();
+//                                })
+                        .turn(Math.toRadians(143))
+                        .forward(26)
+                        .back(26)
+                        .turn(Math.toRadians(-143))
+//                                .lineToLinearHeading(new Pose2d(56,-12,Math.toRadians(358)))
 //                                .waitSeconds(45)
-                        .waitSeconds(20)
+//                                .waitSeconds(45)
                         .build();
 
                 robot.drive.followTrajectorySequence(myTrajectory1);
