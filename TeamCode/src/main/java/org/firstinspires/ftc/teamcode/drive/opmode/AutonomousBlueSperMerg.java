@@ -146,16 +146,15 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
 
         while (opModeIsActive()) {
             telemetry.addData("Tag:", tagOfInterest.id);
-
+                robot.glisiera.strangeCleste();
 
             if (tagOfInterest.id == MIDDLE) {
                 Pose2d start = new Pose2d(35, -60, Math.toRadians(90));
                 robot.drive.setPoseEstimate(start);
-                robot.glisiera.strangeCleste();
                 TrajectorySequence myTrajectory1 = robot.drive.trajectorySequenceBuilder(start)
                         .forward(55)
                         .back(7)
-                        .turn(Math.toRadians(127))
+                        .turn(Math.toRadians(126))
                         .waitSeconds(1)
                         .addDisplacementMarker(() -> {
                             robot.glisiera.mediumLevel();
@@ -190,11 +189,10 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
          else if (tagOfInterest.id == LEFT) {
             Pose2d start = new Pose2d(35, -60, Math.toRadians(90));
             robot.drive.setPoseEstimate(start);
-            robot.glisiera.strangeCleste();
             TrajectorySequence myTrajectory1 = robot.drive.trajectorySequenceBuilder(start)
                     .forward(55)
                     .back(7)
-                    .turn(Math.toRadians(127))
+                    .turn(Math.toRadians(126))
                     .waitSeconds(0.5)
                     .addDisplacementMarker(() -> {
                         robot.glisiera.mediumLevel();
@@ -230,11 +228,10 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
             else if (tagOfInterest.id == RIGHT) {
             Pose2d start = new Pose2d(35, -60, Math.toRadians(90));
             robot.drive.setPoseEstimate(start);
-            robot.glisiera.strangeCleste();
             TrajectorySequence myTrajectory1 = robot.drive.trajectorySequenceBuilder(start)
                     .forward(55)
                     .back(7)
-                    .turn(Math.toRadians(127))
+                    .turn(Math.toRadians(126))
                     .waitSeconds(0.5)
                     .addDisplacementMarker(() -> {
                         robot.glisiera.mediumLevel();
