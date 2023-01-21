@@ -85,7 +85,7 @@ public class LinearDriveMode extends LinearOpMode {
             //robot.drive.setDrivePower(new Pose2d(calculateThrottle(gamepad1.left_stick_y / 2), calculateThrottle(gamepad1.left_stick_x / 2), calculateThrottle(gamepad1.right_stick_x / 2)));
             // 100*(I/100)^3.3219
 //<<<<<<< HEAD
-            robot.drive.setDrivePower(new Pose2d(calculateThrottle((float) (-gamepad1.left_stick_y)), calculateThrottle((float) (-gamepad1.left_stick_x)), calculateThrottle((float) (-gamepad1.right_stick_x))));
+//            robot.drive.setDrivePower(new Pose2d(calculateThrottle((float) (-gamepad1.left_stick_y)), calculateThrottle((float) (-gamepad1.left_stick_x)), calculateThrottle((float) (-gamepad1.right_stick_x))));
 //=======
 //            robot.drive.setDrivePower(new Pose2d(calculateThrottle(-gamepad1.left_stick_y), calculateThrottle(-gamepad1.left_stick_x), calculateThrottle(gamepad1.right_stick_x)));
 //>>>>>>> main

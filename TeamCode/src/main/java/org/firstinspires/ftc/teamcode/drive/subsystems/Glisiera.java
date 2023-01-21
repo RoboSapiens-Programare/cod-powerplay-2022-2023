@@ -44,9 +44,12 @@ public class Glisiera {
     public void groundLevel(){
         motorGlisiera1.setTargetPosition(420);
         motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if(motorGlisiera1.getCurrentPosition() > 420)
+        if(motorGlisiera1.getCurrentPosition() > 420) {
             motorGlisiera1.setPower(-POWER);
-        else motorGlisiera1.setPower(POWER);
+        }
+        else {
+            motorGlisiera1.setPower(POWER);
+        }
         }
 
     public void lowLevel(){
@@ -83,8 +86,12 @@ public class Glisiera {
         motorGlisiera1.setTargetPosition((int) manualTarget);
         motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         if(motorGlisiera1.getCurrentPosition() > manualTarget)
+        {
             motorGlisiera1.setPower(-POWER);
-        else motorGlisiera1.setPower(POWER);
+        }
+        else {
+            motorGlisiera1.setPower(POWER);
+        }
     }
 
 }
