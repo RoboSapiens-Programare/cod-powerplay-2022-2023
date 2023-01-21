@@ -240,7 +240,7 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                     })
                     .waitSeconds(0.5)
                     .back(1)
-                    .forward(11)
+                    .forward(9)
                     .waitSeconds(0.5)
                     .addDisplacementMarker(() -> {
                         robot.glisiera.manualLevel(1750);
@@ -254,9 +254,17 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                     .addDisplacementMarker(() -> {
                         robot.glisiera.desfaCleste();
                         sleep(500);
-                        robot.glisiera.zeroLevel();
+                    })
+                    .addDisplacementMarker(() -> {
+                        robot.glisiera.mediumLevel();
+                        ElapsedTime time = new ElapsedTime();
+                        while (time.milliseconds() < MAX_MILISECONDS) ;
                     })
                     .back(10)
+                    .addDisplacementMarker(() -> {
+                        robot.glisiera.zeroLevel();
+                        sleep(500);
+                    })
                     .turn(Math.toRadians(150))
                     .forward(23)
                     .waitSeconds(45)
