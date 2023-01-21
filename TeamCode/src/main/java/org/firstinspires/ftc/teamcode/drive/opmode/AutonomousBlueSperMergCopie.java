@@ -31,10 +31,8 @@ package org.firstinspires.ftc.teamcode.drive.opmode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -62,9 +60,9 @@ import java.util.ArrayList;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "Autonomie roadrunner parcare", group="autonomous")
+@Autonomous(name = "Autonomie roadrunner parcare 2", group="autonomous")
 
-public class AutonomousBlueSperMerg extends LinearOpMode {
+public class AutonomousBlueSperMergCopie extends LinearOpMode {
 
     // Declare OpMode members.
 //    private ElapsedTime runtime = new ElapsedTime();
@@ -157,7 +155,7 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                         .turn(Math.toRadians(126))
                         .waitSeconds(1)
                         .addDisplacementMarker(() -> {
-                            robot.glisiera.mediumLevel();
+                            robot.glisiera.lowLevel();
                             ElapsedTime time = new ElapsedTime();
                             while (time.milliseconds() < MAX_MILISECONDS) ;
                         })
@@ -172,14 +170,13 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                         })
                         .waitSeconds(0.5)
 //                        .waitSeconds(0.7).addDisplacementMarker(() -> {
-//                            robot.glisiera.mediumLevel();
+//                            robot.glisiera.lowLevel();
 //                        })
                         .addDisplacementMarker(() -> {
                             robot.glisiera.desfaCleste();
 //                            sleep(500);
-//                            robot.glisiera.zeroLevel();
+                            robot.glisiera.zeroLevel();
                         })
-                        .waitSeconds(0.5)
                         .back(10)
                         .turn(Math.toRadians(150))
                         .waitSeconds(45)
@@ -196,7 +193,7 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                     .turn(Math.toRadians(126))
                     .waitSeconds(0.5)
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.mediumLevel();
+                        robot.glisiera.lowLevel();
                         ElapsedTime time = new ElapsedTime();
                         while (time.milliseconds() < MAX_MILISECONDS) ;
                     })
@@ -211,11 +208,11 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                     })
                     .waitSeconds(0.5)
 //                        .waitSeconds(0.7).addDisplacementMarker(() -> {
-//                            robot.glisiera.mediumLevel();
+//                            robot.glisiera.lowLevel();
 //                        })
                     .addDisplacementMarker(() -> {
                         robot.glisiera.desfaCleste();
-                        sleep(500);
+//                        sleep(500);
                         robot.glisiera.zeroLevel();
                     })
                     .back(10)
@@ -250,14 +247,14 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                     })
                     .waitSeconds(0.5)
 //                        .waitSeconds(0.7).addDisplacementMarker(() -> {
-//                            robot.glisiera.mediumLevel();
+//                            robot.glisiera.lowLevel();
 //                        })
                     .addDisplacementMarker(() -> {
                         robot.glisiera.desfaCleste();
-                        sleep(500);
+//                        sleep(500);
                     })
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.mediumLevel();
+                        robot.glisiera.lowLevel();
 //                        sleep(500);
                     })
                     .back(9)

@@ -58,7 +58,10 @@ public class LinearDriveMode extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            if(gamepad2.left_bumper) robot.glisiera.strangeCleste();
+            if(gamepad2.left_bumper){
+                robot.glisiera.strangeCleste();
+                gamepad1.rumble(500);
+            }
             if(gamepad2.right_bumper) robot.glisiera.desfaCleste();
 
             if (gamepad2.cross) robot.glisiera.groundLevel();
