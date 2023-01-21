@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.drive.opmode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -147,39 +148,40 @@ public class AutonomousBlueSperMergCopie extends LinearOpMode {
                 robot.glisiera.strangeCleste();
 
             if (tagOfInterest.id == MIDDLE) {
-                Pose2d start = new Pose2d(35, -60, Math.toRadians(90));
+                Pose2d start = new Pose2d(34.4, -63.4, Math.toRadians(90));
                 robot.drive.setPoseEstimate(start);
                 TrajectorySequence myTrajectory1 = robot.drive.trajectorySequenceBuilder(start)
-                        .forward(55)
-                        .back(7)
-                        .turn(Math.toRadians(126))
-                        .waitSeconds(1)
+                        .lineToConstantHeading(new Vector2d(34.4,-11.4))
+                        .turn(Math.toRadians(135))
                         .addDisplacementMarker(() -> {
-                            robot.glisiera.lowLevel();
-                            ElapsedTime time = new ElapsedTime();
-                            while (time.milliseconds() < MAX_MILISECONDS) ;
-                        })
-                        .waitSeconds(0.5)
-                        .back(1)
-                        .forward(9)
-                        .waitSeconds(0.5)
+                            robot.glisiera.mediumLevel();
+                })
+                        .forward(10)
                         .addDisplacementMarker(() -> {
-                            robot.glisiera.manualLevel(1750);
-                            ElapsedTime time = new ElapsedTime();
-                            while (time.milliseconds() < MAX_MILISECONDS) ;
-                        })
-                        .waitSeconds(0.5)
-//                        .waitSeconds(0.7).addDisplacementMarker(() -> {
-//                            robot.glisiera.lowLevel();
-//                        })
-                        .addDisplacementMarker(() -> {
-                            robot.glisiera.desfaCleste();
-//                            sleep(500);
-                            robot.glisiera.zeroLevel();
+                          robot.glisiera.manualLevel(1750);
+                          robot.glisiera.desfaCleste();
                         })
                         .back(10)
-                        .turn(Math.toRadians(150))
-                        .waitSeconds(45)
+                        .addDisplacementMarker(() -> {
+                          robot.glisiera.zeroLevel();
+                        })
+                        .turn(Math.toRadians(135))
+                        .lineToConstantHeading(new Vector2d(60.4,-11.4))
+                        .lineToConstantHeading(new Vector2d(34.4,-11.4))
+                        .turn(Math.toRadians(-135))
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.mediumLevel();
+                        })
+                        .forward(10)
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.manualLevel(1750);
+                            robot.glisiera.desfaCleste();
+                        })
+                        .back(10)
+                        .addDisplacementMarker(() -> {
+                            robot.glisiera.zeroLevel();
+                        })
+                        .waitSeconds(2)
                         .build();
                 robot.drive.followTrajectorySequence(myTrajectory1);
                 sleep(30000);
