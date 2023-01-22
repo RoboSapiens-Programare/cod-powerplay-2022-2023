@@ -24,6 +24,7 @@ import org.firstinspires.ftc.teamcode.drive.Robot;
 public class LinearDriveMode extends LinearOpMode {
     private Robot robot = null;
     private FtcDashboard dashboard = FtcDashboard.getInstance();
+    private double reference = 1500;
     public double calculateThrottle(float x) {
         int sign = -1;
         if (x > 0) sign = 1;
@@ -64,11 +65,17 @@ public class LinearDriveMode extends LinearOpMode {
             }
             if(gamepad2.right_bumper) robot.glisiera.desfaCleste();
 
+
             if (gamepad2.cross) robot.glisiera.groundLevel();
             if (gamepad2.circle) robot.glisiera.lowLevel();
             if (gamepad2.triangle) robot.glisiera.mediumLevel();
             if (gamepad2.square) robot.glisiera.tallLevel();
             if (gamepad2.touchpad) robot.glisiera.zeroLevel();
+            while (gamepad1.circle){
+                robot.glisiera.motorGlisiera1.setPower(robot.glisiera.PIDControl(reference, robot.glisiera.motorGlisiera1.getCurrentPosition()));
+                if(robot.glisiera.motorGlisiera1.getCurrentPosition() == reference - 30 || robot.glisiera.motorGlisiera1.getCurrentPosition() == reference + 30)
+                    robot.glisiera.motorGlisiera1.setPower(0);
+            }
             if (gamepad2.right_trigger > 0.1) {
                 robot.glisiera.manualTarget = robot.glisiera.motorGlisiera1.getCurrentPosition() + calculateThrottle(gamepad2.right_trigger * 15);
                 robot.glisiera.manualLevel(robot.glisiera.manualTarget);
@@ -91,8 +98,9 @@ public class LinearDriveMode extends LinearOpMode {
 //>>>>>>> main
 //            telemetry.addData("Encoder value", (float)odo.getCurrentPosition() / 8192.0f * Math.PI * 5 + "cm");
 //            Telemetry telemetry = new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
-
+            telemetry.addData("erorr", reference - robot.glisiera.motorGlisiera1.getCurrentPosition());
             telemetry.addData("Motor1glisiera", robot.glisiera.motorGlisiera1.getCurrentPosition());
+            telemetry.addData("Motor2glisiera", robot.glisiera.motorGlisiera2.getCurrentPosition());
 //            telemetry.addData("Left front motor current", robot.drive.leftFront.getCurrent(CurrentUnit.MILLIAMPS));
 //            telemetry.addData("Left rear motor current", robot.drive.leftRear.getCurrent(CurrentUnit.MILLIAMPS));
 //            telemetry.addData("Right front motor current", robot.drive.rightFront.getCurrent(CurrentUnit.MILLIAMPS));

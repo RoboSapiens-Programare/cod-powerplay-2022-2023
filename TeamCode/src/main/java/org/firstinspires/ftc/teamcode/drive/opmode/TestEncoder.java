@@ -27,6 +27,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.subsystems.Glisiera;
 import org.firstinspires.ftc.teamcode.drive.subsystems.MecanumDriveCh;
 import org.firstinspires.ftc.teamcode.util.Encoder;
 
@@ -40,8 +41,8 @@ public class TestEncoder extends LinearOpMode {
 //    private ModernRoboticsAnalogOpticalDistanceSensor ods;
 //    private ModernRoboticsI2cCompassSensor compassSensor;
 //    private ModernRoboticsI2cRangeSensor range;
-    private DcMotor motor1;
-    private DcMotor motor2;
+//    private DcMotor motor1;
+//    private DcMotor motor2;
     public double manualTargett = 0;
 //    private CRServo servo;
 //    private Encoder encoder0;
@@ -50,7 +51,7 @@ public class TestEncoder extends LinearOpMode {
 //    private Encoder encoder3;
 //    private SampleMecanumDrive sampleMecanumDrive = new SampleMecanumDrive(hardwareMap);
 //    private BNO055IMU imu;
-
+    private Robot robot = null;
     public final static double POWER = 1;
     public double calculateThrottle(float x) {
         int sign = -1;
@@ -68,16 +69,16 @@ public class TestEncoder extends LinearOpMode {
 //        ods = hardwareMap.get(ModernRoboticsAnalogOpticalDistanceSensor.class, "ods");
 //        compassSensor = hardwareMap.get(ModernRoboticsI2cCompassSensor.class, "compass");
 //        range = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "range");
-        motor1 = hardwareMap.get(DcMotor.class, "motorGlisiera1");
-        motor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor1.setDirection(DcMotorSimple.Direction.FORWARD);
-        motor2 = hardwareMap.get(DcMotor.class, "motorGlisiera1");
-        motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor2.setDirection(DcMotorSimple.Direction.FORWARD);
-        motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        motor1 = hardwareMap.get(DcMotor.class, "motorGlisiera1");
+//        motor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motor1.setDirection(DcMotorSimple.Direction.FORWARD);
+//        motor2 = hardwareMap.get(DcMotor.class, "motorGlisiera1");
+//        motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motor2.setDirection(DcMotorSimple.Direction.FORWARD);
+//        motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        servo = hardwareMap.get(CRServo.class, "servo");
 //        servo.setDirection(CRServo.Direction.FORWARD);
 
@@ -154,14 +155,10 @@ public class TestEncoder extends LinearOpMode {
 //                    motor.setPower(-POWER);
 //                else motor.setPower(POWER);
 //            }
-            if (gamepad1.cross) {
-                motor1.setPower(1);
-                motor2.setPower(1);
-            }
-            if (gamepad1.circle){
-                motor1.setPower(0);
-                motor2.setPower(0);
-            }
+//            if(gamepad2.circle){
+//                robot.glisiera.motorGlisiera1.setPower(robot.glisiera.PIDControl(2000, robot.glisiera.motorGlisiera1.getCurrentPosition()));
+//                telemetry.addData("ticks: ", robot.glisiera.motorGlisiera1.getCurrentPosition());
+//            }
 
 //            if (gamepad2.right_trigger > 0.1) {
 //                robot.glisiera.manualTarget = robot.glisiera.motorGlisiera1.getCurrentPosition() + calculateThrottle(gamepad2.right_trigger * 15);
@@ -182,8 +179,9 @@ public class TestEncoder extends LinearOpMode {
 //                else motor.setPower(POWER);
 //            }
 //
-            telemetry.addData("ticks: ", motor1.getCurrentPosition());
-            telemetry.addData("ticks2: ", motor2.getCurrentPosition());
+
+
+//            telemetry.addData("ticks2: ", motor2.getCurrentPosition());
 
 //            telemetry.addData("imu: ", imu.isGyroCalibrated());
 //            telemetry.addData("imu: ", imu.getCalibrationStatus());
