@@ -2,21 +2,13 @@ package org.firstinspires.ftc.teamcode.drive.opmode;
 
 import static java.lang.Math.abs;
 
-import android.graphics.Color;
-import android.os.Build;
-
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.drive.Robot;
 //import org.firstinspires.ftc.teamcode.drive.subsystems.Odometrie;
 
@@ -25,6 +17,7 @@ public class LinearDriveMode extends LinearOpMode {
     private Robot robot = null;
     private FtcDashboard dashboard = FtcDashboard.getInstance();
     private double reference = 1500;
+    public final static int GROUND = 100, LOW = 900, MEDIUM = 1550, TALL = 2100;
     public double calculateThrottle(float x) {
         int sign = -1;
         if (x > 0) sign = 1;
@@ -65,17 +58,15 @@ public class LinearDriveMode extends LinearOpMode {
             }
             if(gamepad2.right_bumper) robot.glisiera.desfaCleste();
 
+            if(gamepad2.left_stick_button) robot.glisiera.setPower(0.5);
+            if(gamepad2.right_stick_button) robot.glisiera.setPower(-0.5);
+            if(gamepad2.dpad_down) robot.glisiera.setPower(0);
 
-            if (gamepad2.cross) robot.glisiera.groundLevel();
-            if (gamepad2.circle) robot.glisiera.lowLevel();
-            if (gamepad2.triangle) robot.glisiera.mediumLevel();
-            if (gamepad2.square) robot.glisiera.tallLevel();
-            if (gamepad2.touchpad) robot.glisiera.zeroLevel();
-            while (gamepad1.circle){
-                robot.glisiera.motorGlisiera1.setPower(robot.glisiera.PIDControl(reference, robot.glisiera.motorGlisiera1.getCurrentPosition()));
-                if(robot.glisiera.motorGlisiera1.getCurrentPosition() == reference - 30 || robot.glisiera.motorGlisiera1.getCurrentPosition() == reference + 30)
-                    robot.glisiera.motorGlisiera1.setPower(0);
-            }
+            if (gamepad2.cross) robot.glisiera.americaneasca(GROUND);
+            if (gamepad2.circle) robot.glisiera.americaneasca(LOW);
+            if (gamepad2.triangle) robot.glisiera.americaneasca(MEDIUM);
+            if (gamepad2.square) robot.glisiera.americaneasca(TALL);
+            if (gamepad2.touchpad) robot.glisiera.americaneasca(0);
             if (gamepad2.right_trigger > 0.1) {
                 robot.glisiera.manualTarget = robot.glisiera.motorGlisiera1.getCurrentPosition() + calculateThrottle(gamepad2.right_trigger * 15);
                 robot.glisiera.manualLevel(robot.glisiera.manualTarget);
@@ -92,15 +83,14 @@ public class LinearDriveMode extends LinearOpMode {
             //robot.drive.setDrivePower(new Pose2d(calculateThrottle(gamepad1.left_stick_y / 2), calculateThrottle(gamepad1.left_stick_x / 2), calculateThrottle(gamepad1.right_stick_x / 2)));
             // 100*(I/100)^3.3219
 //<<<<<<< HEAD
-//            robot.drive.setDrivePower(new Pose2d(calculateThrottle((float) (-gamepad1.left_stick_y)), calculateThrottle((float) (-gamepad1.left_stick_x)), calculateThrottle((float) (-gamepad1.right_stick_x))));
+            robot.drive.setDrivePower(new Pose2d(calculateThrottle((float) (-gamepad1.left_stick_y)), calculateThrottle((float) (-gamepad1.left_stick_x)), calculateThrottle((float) (-gamepad1.right_stick_x))));
 //=======
 //            robot.drive.setDrivePower(new Pose2d(calculateThrottle(-gamepad1.left_stick_y), calculateThrottle(-gamepad1.left_stick_x), calculateThrottle(gamepad1.right_stick_x)));
 //>>>>>>> main
 //            telemetry.addData("Encoder value", (float)odo.getCurrentPosition() / 8192.0f * Math.PI * 5 + "cm");
 //            Telemetry telemetry = new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
-            telemetry.addData("erorr", reference - robot.glisiera.motorGlisiera1.getCurrentPosition());
+            telemetry.addData("servo", robot.glisiera.cleste.getPosition());
             telemetry.addData("Motor1glisiera", robot.glisiera.motorGlisiera1.getCurrentPosition());
-            telemetry.addData("Motor2glisiera", robot.glisiera.motorGlisiera2.getCurrentPosition());
 //            telemetry.addData("Left front motor current", robot.drive.leftFront.getCurrent(CurrentUnit.MILLIAMPS));
 //            telemetry.addData("Left rear motor current", robot.drive.leftRear.getCurrent(CurrentUnit.MILLIAMPS));
 //            telemetry.addData("Right front motor current", robot.drive.rightFront.getCurrent(CurrentUnit.MILLIAMPS));
