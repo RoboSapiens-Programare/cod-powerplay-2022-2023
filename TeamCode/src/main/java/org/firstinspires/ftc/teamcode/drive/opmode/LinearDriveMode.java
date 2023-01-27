@@ -71,6 +71,7 @@ public class LinearDriveMode extends LinearOpMode {
                 robot.glisiera.manualTarget = robot.glisiera.motorGlisiera1.getCurrentPosition() + calculateThrottle(gamepad2.right_trigger * 15);
                 robot.glisiera.manualLevel(robot.glisiera.manualTarget);
             }
+
             if (gamepad2.left_trigger > 0.1) {
                 robot.glisiera.manualTarget = robot.glisiera.motorGlisiera1.getCurrentPosition() - calculateThrottle(gamepad2.left_trigger * 15);
                 robot.glisiera.manualTarget--;
