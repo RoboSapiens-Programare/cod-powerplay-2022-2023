@@ -26,7 +26,7 @@ public class Glisiera {
     }
 
     public void strangeCleste(){
-        cleste.setPosition(0.1);
+        cleste.setPosition(0);
     }
 
     public void desfaCleste(){
@@ -36,47 +36,6 @@ public class Glisiera {
     public void setPower(double power){
         motorGlisiera1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorGlisiera1.setPower(power);
-    }
-
-    public void groundLevel(){
-        motorGlisiera1.setTargetPosition(420);
-        motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if(motorGlisiera1.getCurrentPosition() > 420) {
-            motorGlisiera1.setPower(POWER);
-        }
-        else {
-            motorGlisiera1.setPower(-POWER);
-        }
-    }
-
-    public void lowLevel(){
-        motorGlisiera1.setTargetPosition(1500);
-        motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if(motorGlisiera1.getCurrentPosition() < 1500)
-            motorGlisiera1.setPower(POWER);
-        else motorGlisiera1.setPower(-POWER);
-    }
-    public void mediumLevel(){
-        motorGlisiera1.setTargetPosition(-2400);
-        motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if(motorGlisiera1.getCurrentPosition() > 2400)
-            motorGlisiera1.setPower(-POWER);
-        else motorGlisiera1.setPower(POWER);
-    }
-    public void tallLevel() {
-        motorGlisiera1.setTargetPosition(-3300);
-        motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if(motorGlisiera1.getCurrentPosition() > -3300)
-            motorGlisiera1.setPower(POWER);
-        else motorGlisiera1.setPower(-POWER);
-    }
-
-    public void zeroLevel(){
-        motorGlisiera1.setTargetPosition(50);
-        motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if(motorGlisiera1.getCurrentPosition() > 50)
-            motorGlisiera1.setPower(POWER);
-        else motorGlisiera1.setPower(-POWER);
     }
 
     public void manualLevel(double manualTarget) {
@@ -91,13 +50,21 @@ public class Glisiera {
         }
     }
 
-    public void americaneasca(int target){
+    public void setLevel(int target, double multiplier){
+        motorGlisiera1.setTargetPosition(-target);
+        motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if(motorGlisiera1.getCurrentPosition() > -target)
+            motorGlisiera1.setPower(-POWER);
+        else motorGlisiera1.setPower(POWER * multiplier);
+    }
+    public void setLevel(int target){
         motorGlisiera1.setTargetPosition(-target);
         motorGlisiera1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         if(motorGlisiera1.getCurrentPosition() > -target)
             motorGlisiera1.setPower(-POWER);
         else motorGlisiera1.setPower(POWER);
     }
+
 }
 
 

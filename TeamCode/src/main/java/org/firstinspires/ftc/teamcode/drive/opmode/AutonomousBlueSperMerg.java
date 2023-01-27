@@ -29,6 +29,10 @@
 
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
+import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.LOW;
+import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.MEDIUM;
+import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.ZERO;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -157,7 +161,7 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                         .turn(Math.toRadians(126))
                         .waitSeconds(1)
                         .addDisplacementMarker(() -> {
-                            robot.glisiera.mediumLevel();
+                            robot.glisiera.setLevel(MEDIUM);
                             ElapsedTime time = new ElapsedTime();
                             while (time.milliseconds() < MAX_MILISECONDS) ;
                         })
@@ -196,7 +200,7 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                     .turn(Math.toRadians(126))
                     .waitSeconds(0.5)
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.mediumLevel();
+                        robot.glisiera.setLevel(MEDIUM);
                         ElapsedTime time = new ElapsedTime();
                         while (time.milliseconds() < MAX_MILISECONDS) ;
                     })
@@ -216,7 +220,7 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                     .addDisplacementMarker(() -> {
                         robot.glisiera.desfaCleste();
                         sleep(500);
-                        robot.glisiera.zeroLevel();
+                        robot.glisiera.setLevel(ZERO);
                     })
                     .back(10)
                     .turn(Math.toRadians(150))
@@ -235,7 +239,7 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                     .turn(Math.toRadians(126))
                     .waitSeconds(0.5)
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.lowLevel();
+                        robot.glisiera.setLevel(LOW);
                         ElapsedTime time = new ElapsedTime();
                         while (time.milliseconds() < MAX_MILISECONDS) ;
                     })
@@ -257,12 +261,12 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                         sleep(500);
                     })
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.mediumLevel();
+                        robot.glisiera.setLevel(MEDIUM);
 //                        sleep(500);
                     })
                     .back(9)
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.zeroLevel();
+                        robot.glisiera.setLevel(ZERO);
 //                        sleep(500);
                     })
                     .turn(Math.toRadians(150))

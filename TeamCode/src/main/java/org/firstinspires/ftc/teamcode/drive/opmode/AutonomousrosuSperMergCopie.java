@@ -29,11 +29,12 @@
 
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
-import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.TALL;
+import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.MEDIUM;
+import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.ZERO;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -63,11 +64,12 @@ import java.util.ArrayList;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "Autonomie Tall Junction", group="autonomous")
+@Autonomous(name = "Autonomie roadrunner parcare rosu", group="autonomous")
 
-public class AutonomousTall extends LinearOpMode {
+public class AutonomousrosuSperMergCopie extends LinearOpMode {
 
     // Declare OpMode members.
+//    private ElapsedTime runtime = new ElapsedTime();
     private Robot robot = null;
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -94,6 +96,7 @@ public class AutonomousTall extends LinearOpMode {
     public AprilTagDetection tagOfInterest = null;
     private ElapsedTime timer;
     private final int MAX_MILISECONDS = 1000;
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -105,16 +108,14 @@ public class AutonomousTall extends LinearOpMode {
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
         camera.setPipeline(aprilTagDetectionPipeline);
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener(){
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
-                camera.startStreaming(1280,720, OpenCvCameraRotation.UPRIGHT);
+            public void onOpened() {
+                camera.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
-            public void onError(int errorCode)
-            {
+            public void onError(int errorCode) {
 
             }
         });
@@ -146,107 +147,103 @@ public class AutonomousTall extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        while (opModeIsActive()){
+        while (opModeIsActive()) {
             telemetry.addData("Tag:", tagOfInterest.id);
-
             robot.glisiera.strangeCleste();
-
-            Pose2d start = new Pose2d(36, -60, Math.toRadians(90));
+            Pose2d start = new Pose2d(34.4, -63.4, Math.toRadians(90));
             robot.drive.setPoseEstimate(start);
-//=======
-//>>>>>>> Stashed changes
-
             TrajectorySequence Preload = robot.drive.trajectorySequenceBuilder(start)
-                .forward(48)
-                .turn(Math.toRadians(35))
-                .addDisplacementMarker(()->{
-                    robot.glisiera.setLevel(TALL);
-                    timer = new ElapsedTime();
-                    timer.startTime();
-                    while(timer.milliseconds() < MAX_MILISECONDS);
-                })
-                .forward(10)
-                .addDisplacementMarker(()->{
-                    robot.glisiera.manualLevel(3000);
-                    timer = new ElapsedTime();
-                    timer.startTime();
-                    while(timer.milliseconds() < MAX_MILISECONDS);
-                    robot.glisiera.desfaCleste();
-                })
-                .back(10)
-                .turn(Math.toRadians(-125))
-                .forward(9)
-                .build();
+                    .lineToConstantHeading(new Vector2d(34.4,-9.4))
+                    .back(2)
+                    .turn(Math.toRadians(-139))
+                    .addDisplacementMarker(() -> {
+                        robot.glisiera.setLevel(MEDIUM);
+                    })
+                    .waitSeconds(0.2)
+                    .forward(10)
+                    .addDisplacementMarker(() -> {
+                        robot.glisiera.manualLevel(1750);
+                        robot.glisiera.desfaCleste();
+                    })
+                    .waitSeconds(0.2)
+                    .back(10)
+                    .addDisplacementMarker(() -> {
+                        robot.glisiera.setLevel(ZERO);
+                    })
+                    .turn(Math.toRadians(139))
+
+                    .build();
             robot.drive.followTrajectorySequence(Preload);
 
             Pose2d lastPose = Preload.end();
 
+//            for(int i = 1; i <= 5; i++){
+////              robot.glisiera.manualLevel(ceva + i * altceva);
+//                robot.glisiera.strangeCleste();
+//                timer = new ElapsedTime();
+//                timer.startTime();
+//                while(timer.milliseconds() < MAX_MILISECONDS);
+//                TrajectorySequence Score = robot.drive.trajectorySequenceBuilder(lastPose)
+//                        .lineToConstantHeading(new Vector2d(60.4,-11.4))
+//                        .addDisplacementMarker(() -> {
+//                            robot.glisiera.manualLevel(400);
+//                        })
+//                        .forward(1)
+//                        .addDisplacementMarker(() -> {
+//                          robot.glisiera.strangeCleste();
+//                        })
+//                        .lineToConstantHeading(new Vector2d(34.4,-11.4))
+//                        .turn(Math.toRadians(-135))
+//                        .addDisplacementMarker(() -> {
+//                            robot.glisiera.setLevel(MEDIUM);
+//                        })
+//                        .forward(10)
+//                        .addDisplacementMarker(() -> {
+//                            robot.glisiera.manualLevel(1750);
+//                            robot.glisiera.desfaCleste();
+//                        })
+//                        .back(10)
+//                        .addDisplacementMarker(() -> {
+//                            robot.glisiera.setLevel(ZERO);
+//                        })
+//                        .turn(Math.toRadians(135))
+//                        .waitSeconds(2)
+//                        .build();
+//                robot.drive.followTrajectorySequence(Score);
+//
+//                lastPose = Score.end();
+//            }
 
-            for(int i = 1; i <= 5; i++){
-//              robot.glisiera.manualLevel(ceva + i * altceva);
-                robot.glisiera.strangeCleste();
-                timer = new ElapsedTime();
-                timer.startTime();
-                while(timer.milliseconds() < MAX_MILISECONDS);
-                TrajectorySequence Score = robot.drive.trajectorySequenceBuilder(lastPose)
-                    .back(9)
-                    .turn(Math.toRadians(125))
-                    .addDisplacementMarker(()->{
-                        robot.glisiera.setLevel(TALL);
-                        timer = new ElapsedTime();
-                        timer.startTime();
-                        while(timer.milliseconds() < MAX_MILISECONDS);
-                    })
-                    .forward(10)
-                    .addDisplacementMarker(()->{
-                        robot.glisiera.manualLevel(3000);
-                        timer = new ElapsedTime();
-                        timer.startTime();
-                        while(timer.milliseconds() < MAX_MILISECONDS);
-                        robot.glisiera.desfaCleste();
-                    })
-                    .back(10)
-                    .turn(Math.toRadians(-125))
-                    .forward(9)
-                    .build();
-                robot.drive.followTrajectorySequence(Score);
-
-                lastPose = Score.end();
+            if (tagOfInterest.id == MIDDLE) {
+                TrajectorySequence Middle = robot.drive.trajectorySequenceBuilder(lastPose)
+                        .waitSeconds(45)
+                        .build();
+                robot.drive.followTrajectorySequence(Middle);
             }
+         else if (tagOfInterest.id == LEFT) {
 
-            TrajectorySequence park = robot.drive.trajectorySequenceBuilder(lastPose)
-                    .back(24 * (3-tagOfInterest.id) + 1)
+             TrajectorySequence Left = robot.drive.trajectorySequenceBuilder(lastPose)
+                     .forward(24)
+                     .waitSeconds(45)
+                     .build();
+             robot.drive.followTrajectorySequence(Left);
+
+            }
+            else if (tagOfInterest.id == RIGHT) {
+            TrajectorySequence Right = robot.drive.trajectorySequenceBuilder(lastPose)
+                    .back(24)
+                    .waitSeconds(45)
                     .build();
-            robot.drive.followTrajectorySequence(park);
-
-//            if (tagOfInterest.id == MIDDLE) {
-//                robot.drive.setPoseEstimate(start);
-//
-//                TrajectorySequence parkMid = robot.drive.trajectorySequenceBuilder(start)
-//                    .back(24)
-//                    .build();
-//
-//                robot.drive.followTrajectorySequence(parkMid);
-//            }
-//            else if (tagOfInterest.id == LEFT) {
-//                robot.drive.setPoseEstimate(start);
-//
-//                TrajectorySequence parkLeft = robot.drive.trajectorySequenceBuilder(start)
-//                    .back(48)
-//                    .build();
-//                robot.drive.followTrajectorySequence(parkLeft);
-//            }
-//            else if (tagOfInterest.id == RIGHT) {
-//                robot.drive.setPoseEstimate(start);
-//
-//                TrajectorySequence parkRight = robot.drive.trajectorySequenceBuilder(start)
-//                        .back(2)
-//                    .build();
-//                robot.drive.followTrajectorySequence(parkRight);
-//            }
+            robot.drive.followTrajectorySequence(Right);
         }
+
+        stop();
+        //            telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.update();
     }
 }
+}
+
+
 
 

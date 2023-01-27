@@ -85,7 +85,7 @@ public class MecanumDriveCh extends MecanumDrive {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
-                new Pose2d(0.5, 0.5, Math.toRadians(3.0)), 0.5);
+                new Pose2d(0.5, 0.5, Math.toRadians(3.0)), 0.71);
 
         LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
 
@@ -311,7 +311,7 @@ public class MecanumDriveCh extends MecanumDrive {
         // Rotate about the z axis is the default assuming your REV Hub/Control Hub is laying
         // flat on a surface
 
-        return (double) imu.getAngularVelocity().zRotationRate;
+        return (double) imu.getAngularVelocity().xRotationRate;
     }
 
     public static TrajectoryVelocityConstraint getVelocityConstraint(double maxVel, double maxAngularVel, double trackWidth) {

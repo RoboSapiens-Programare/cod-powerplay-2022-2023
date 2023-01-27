@@ -105,7 +105,7 @@ public class AutonomousParcare extends LinearOpMode {
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                camera.startStreaming(1280, 720, OpenCvCameraRotation.UPSIDE_DOWN);
+                camera.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
