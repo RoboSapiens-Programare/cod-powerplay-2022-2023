@@ -42,7 +42,7 @@ public class TestEncoder extends LinearOpMode {
 //    private ModernRoboticsI2cCompassSensor compassSensor;
 //    private ModernRoboticsI2cRangeSensor range;
     private DcMotor motor1;
-//    private DcMotor motor2;
+    private DcMotor motor2;
     public double manualTargett = 0;
 //    private CRServo servo;
 //    private Encoder encoder0;
@@ -72,12 +72,11 @@ public class TestEncoder extends LinearOpMode {
         motor1 = hardwareMap.get(DcMotor.class, "motorGlisiera1");
         motor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        motor1.setDirection(DcMotorSimple.Direction.FORWARD);
-//        motor2 = hardwareMap.get(DcMotor.class, "motorGlisiera1");
-//        motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motor2.setDirection(DcMotorSimple.Direction.FORWARD);
+        motor1.setDirection(DcMotorSimple.Direction.REVERSE);
+        motor2 = hardwareMap.get(DcMotor.class, "motorGlisiera2");
+        motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor2.setDirection(DcMotorSimple.Direction.FORWARD);
 //        motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        servo = hardwareMap.get(CRServo.class, "servo");
@@ -185,10 +184,30 @@ public class TestEncoder extends LinearOpMode {
             if(gamepad2.right_trigger > 0.1){
                 motor1.setPower(-1);
             }
+            if(gamepad2.a) {
+                motor1.setTargetPosition(1500);
+                motor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motor2.setTargetPosition(1500);
+                motor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                if (motor1.getCurrentPosition() > 1500) {
+                    motor1.setPower(1);
+                    motor2.setPower(1);
+                } else {
+                    motor1.setPower(-1);
+                    motor2.setPower(-1);
+                }
+            }
+
+//                if(motor1.isBusy()){
+//                    motor2.setPower(motor1.getPower());
+//                }
+//                else motor2.setPower(0);
+
 //
 
 
             telemetry.addData("ticks1: ", motor1.getCurrentPosition());
+            telemetry.addData("ticks2: ", motor2.getCurrentPosition());
 
 //            telemetry.addData("imu: ", imu.isGyroCalibrated());
 //            telemetry.addData("imu: ", imu.getCalibrationStatus());
