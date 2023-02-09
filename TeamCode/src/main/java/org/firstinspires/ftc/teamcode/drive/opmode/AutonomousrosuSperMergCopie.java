@@ -149,7 +149,7 @@ public class AutonomousrosuSperMergCopie extends LinearOpMode {
 
         while (opModeIsActive()) {
             telemetry.addData("Tag:", tagOfInterest.id);
-            robot.glisiera.strangeCleste();
+//            robot.outtake.strangeCleste();
             Pose2d start = new Pose2d(34.4, -63.4, Math.toRadians(90));
             robot.drive.setPoseEstimate(start);
             TrajectorySequence Preload = robot.drive.trajectorySequenceBuilder(start)
@@ -157,18 +157,18 @@ public class AutonomousrosuSperMergCopie extends LinearOpMode {
                     .back(2)
                     .turn(Math.toRadians(-139))
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.setLevel(MEDIUM);
+                        robot.outtake.setLevel(MEDIUM);
                     })
                     .waitSeconds(0.2)
                     .forward(10)
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.manualLevel(1750);
-                        robot.glisiera.desfaCleste();
+                        robot.outtake.manualLevel(1750);
+//                        robot.outtake.desfaCleste();
                     })
                     .waitSeconds(0.2)
                     .back(10)
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.setLevel(ZERO);
+                        robot.outtake.setLevel(ZERO);
                     })
                     .turn(Math.toRadians(139))
 

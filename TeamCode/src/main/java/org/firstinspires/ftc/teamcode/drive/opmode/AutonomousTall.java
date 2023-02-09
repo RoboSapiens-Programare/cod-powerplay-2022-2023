@@ -33,7 +33,6 @@ import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.TALL;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -149,7 +148,7 @@ public class AutonomousTall extends LinearOpMode {
         while (opModeIsActive()){
             telemetry.addData("Tag:", tagOfInterest.id);
 
-            robot.glisiera.strangeCleste();
+//            robot.outtake.strangeCleste();
 
             Pose2d start = new Pose2d(36, -60, Math.toRadians(90));
             robot.drive.setPoseEstimate(start);
@@ -160,18 +159,18 @@ public class AutonomousTall extends LinearOpMode {
                 .forward(48)
                 .turn(Math.toRadians(35))
                 .addDisplacementMarker(()->{
-                    robot.glisiera.setLevel(TALL);
+                    robot.outtake.setLevel(TALL);
                     timer = new ElapsedTime();
                     timer.startTime();
                     while(timer.milliseconds() < MAX_MILISECONDS);
                 })
                 .forward(10)
                 .addDisplacementMarker(()->{
-                    robot.glisiera.manualLevel(3000);
+                    robot.outtake.manualLevel(3000);
                     timer = new ElapsedTime();
                     timer.startTime();
                     while(timer.milliseconds() < MAX_MILISECONDS);
-                    robot.glisiera.desfaCleste();
+//                    robot.outtake.desfaCleste();
                 })
                 .back(10)
                 .turn(Math.toRadians(-125))
@@ -184,7 +183,7 @@ public class AutonomousTall extends LinearOpMode {
 
             for(int i = 1; i <= 5; i++){
 //              robot.glisiera.manualLevel(ceva + i * altceva);
-                robot.glisiera.strangeCleste();
+//                robot.outtake.strangeCleste();
                 timer = new ElapsedTime();
                 timer.startTime();
                 while(timer.milliseconds() < MAX_MILISECONDS);
@@ -192,18 +191,18 @@ public class AutonomousTall extends LinearOpMode {
                     .back(9)
                     .turn(Math.toRadians(125))
                     .addDisplacementMarker(()->{
-                        robot.glisiera.setLevel(TALL);
+                        robot.outtake.setLevel(TALL);
                         timer = new ElapsedTime();
                         timer.startTime();
                         while(timer.milliseconds() < MAX_MILISECONDS);
                     })
                     .forward(10)
                     .addDisplacementMarker(()->{
-                        robot.glisiera.manualLevel(3000);
+                        robot.outtake.manualLevel(3000);
                         timer = new ElapsedTime();
                         timer.startTime();
                         while(timer.milliseconds() < MAX_MILISECONDS);
-                        robot.glisiera.desfaCleste();
+//                        robot.outtake.desfaCleste();
                     })
                     .back(10)
                     .turn(Math.toRadians(-125))

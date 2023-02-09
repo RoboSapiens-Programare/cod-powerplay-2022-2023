@@ -143,7 +143,7 @@ public class AutonomousParcare extends LinearOpMode {
 
         while (opModeIsActive()) {
             telemetry.addData("Tag:", tagOfInterest.id);
-                robot.glisiera.strangeCleste();
+//                robot.outtake.strangeCleste();
 
             if (tagOfInterest.id == MIDDLE) {
                 Pose2d start = new Pose2d(35, -60, Math.toRadians(90));

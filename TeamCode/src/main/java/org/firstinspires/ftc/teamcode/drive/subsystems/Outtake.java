@@ -7,16 +7,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-public class Glisiera {
+public class Outtake {
     public DcMotor motorGlisiera1;
     public Servo cleste;
     public double manualTarget = 0;
 
-    public Glisiera(HardwareMap hardwareMap){
+    public Outtake(HardwareMap hardwareMap){
         PhotonCore.enable();
-        PhotonCore.CONTROL_HUB.disengage();
         motorGlisiera1 = hardwareMap.dcMotor.get("motorGlisiera1");
-        cleste = hardwareMap.servo.get("servoCleste");
+        cleste = hardwareMap.servo.get("servoCleste1");
 
         //Motor initialization
         motorGlisiera1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

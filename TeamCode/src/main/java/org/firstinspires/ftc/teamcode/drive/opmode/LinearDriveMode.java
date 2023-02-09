@@ -18,7 +18,7 @@ public class LinearDriveMode extends LinearOpMode {
     private FtcDashboard dashboard = FtcDashboard.getInstance();
     private double reference = 1500;
     public final static int ZERO = 0, GROUND = 100, LOW = 900, MEDIUM = 1550, TALL = 2100;
-    public final static double DOWN_MULTIPLIER = 0.5;
+    public final static double DOWN_MULTIPLIER = 0.2;
     private int direction = 0;
 
     public double calculateThrottle(float x) {
@@ -56,37 +56,75 @@ public class LinearDriveMode extends LinearOpMode {
         while (opModeIsActive()) {
 
             if (gamepad2.right_bumper) {
-                robot.glisiera.strangeCleste();
+                robot.outtake.strangeCleste();
                 gamepad1.rumble(500);
             }
-            if (gamepad2.left_bumper) robot.glisiera.desfaCleste();
+            if (gamepad2.left_bumper) robot.outtake.desfaCleste();
 
-            if (gamepad2.dpad_left) robot.glisiera.setPower(0);
-
+            if (gamepad2.dpad_left) robot.outtake.setPower(0);
+            if (gamepad2.dpad_up) {
+                robot.intake.setLevelIntake(TALL);
+                sleep(2500);
+                robot.intake.strangeServoX();
+                sleep(500);
+                robot.intake.strangeClesteIntake();
+                sleep(500);
+                robot.intake.strangeServoY();
+                robot.intake.setLevelIntake(ZERO);
+                sleep(500);
+                robot.intake.desfaClesteIntake();
+                robot.outtake.strangeCleste();
+            }
+            if(gamepad1.dpad_left){
+                robot.intake.strangeClesteIntake();
+            }
+            if(gamepad1.dpad_right){
+                robot.intake.strangeServoY();
+            }if(gamepad1.dpad_up){
+                robot.intake.strangeServoX();
+            }if(gamepad1.dpad_down){
+                robot.intake.desfaServoX();
+            }
+            if(gamepad1.a){
+                robot.intake.desfaClesteIntake();
+            }if(gamepad1.b){
+                robot.intake.desfaServoY();
+            }
             //Aimbot
-            if (gamepad2.touchpad) robot.glisiera.setLevel(ZERO, DOWN_MULTIPLIER);
-            if (gamepad2.cross) robot.glisiera.setLevel(GROUND, DOWN_MULTIPLIER);
-            if (gamepad2.circle) robot.glisiera.setLevel(LOW, DOWN_MULTIPLIER);
-            if (gamepad2.triangle) robot.glisiera.setLevel(MEDIUM, DOWN_MULTIPLIER);
-            if (gamepad2.square) robot.glisiera.setLevel(TALL, DOWN_MULTIPLIER);
+            if (gamepad2.touchpad) robot.outtake.setLevel(ZERO, DOWN_MULTIPLIER);
+            if (gamepad2.cross) robot.outtake.setLevel(GROUND, DOWN_MULTIPLIER);
+            if (gamepad2.circle) robot.outtake.setLevel(LOW, DOWN_MULTIPLIER);
+            if (gamepad2.triangle) robot.outtake.setLevel(MEDIUM, DOWN_MULTIPLIER);
+            if (gamepad2.square) robot.outtake.setLevel(TALL, DOWN_MULTIPLIER);
 
             //Manual
             if (gamepad2.left_trigger > 0.1) {
-                robot.glisiera.manualTarget = robot.glisiera.motorGlisiera1.getCurrentPosition() + calculateThrottle(gamepad2.left_trigger * 12);
-                robot.glisiera.manualLevel(robot.glisiera.manualTarget);
+                robot.outtake.manualTarget = robot.outtake.motorGlisiera1.getCurrentPosition() + calculateThrottle(gamepad2.left_trigger * 12);
+                robot.outtake.manualLevel(robot.outtake.manualTarget);
             }
             if (gamepad2.right_trigger > 0.1) {
-                robot.glisiera.manualTarget = robot.glisiera.motorGlisiera1.getCurrentPosition() - calculateThrottle(gamepad2.right_trigger * 12);
-                robot.glisiera.manualTarget--;
-                robot.glisiera.manualLevel(robot.glisiera.manualTarget);
+                robot.outtake.manualTarget = robot.outtake.motorGlisiera1.getCurrentPosition() - calculateThrottle(gamepad2.right_trigger * 12);
+                robot.outtake.manualTarget--;
+                robot.outtake.manualLevel(robot.outtake.manualTarget);
+            }
+
+            if (gamepad1.left_trigger > 0.1) {
+                robot.intake.target = robot.intake.motorGlisiera2.getCurrentPosition() + calculateThrottle(gamepad1.left_trigger * 12);
+                robot.intake.manualLevelIntake(robot.intake.target);
+            }
+            if (gamepad1.right_trigger > 0.1) {
+                robot.intake.target = robot.intake.motorGlisiera2.getCurrentPosition() - calculateThrottle(gamepad1.right_trigger * 12);
+                robot.intake.target--;
+                robot.intake.manualLevelIntake(robot.intake.target);
             }
                 //Drive
                 robot.drive.setDrivePower(new Pose2d(calculateThrottle((-gamepad1.left_stick_y)), calculateThrottle((float) (-gamepad1.left_stick_x)), calculateThrottle((float) (-gamepad1.right_stick_x))));
 
 //            telemetry.addData("Encoder value", (float)odo.getCurrentPosition() / 8192.0f * Math.PI * 5 + "cm");
 //            Telemetry telemetry = new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
-                telemetry.addData("servo", robot.glisiera.cleste.getPosition());
-                telemetry.addData("Motor1glisiera", robot.glisiera.motorGlisiera1.getCurrentPosition());
+                telemetry.addData("servo(outtake): ", robot.outtake.cleste.getPosition());
+                telemetry.addData("Motor1glisiera: ", robot.outtake.motorGlisiera1.getCurrentPosition());
+                telemetry.addData("Motor2glisiera: ", robot.intake.motorGlisiera2.getCurrentPosition());
 //            telemetry.addData("Left front motor current", robot.drive.leftFront.getCurrent(CurrentUnit.MILLIAMPS));
 //            telemetry.addData("Left rear motor current", robot.drive.leftRear.getCurrent(CurrentUnit.MILLIAMPS));
 //            telemetry.addData("Right front motor current", robot.drive.rightFront.getCurrent(CurrentUnit.MILLIAMPS));

@@ -2,34 +2,11 @@ package org.firstinspires.ftc.teamcode.drive.opmode;
 
 import static java.lang.Math.abs;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsAnalogOpticalDistanceSensor;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cCompassSensor;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cIrSeekerSensorV3;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsTouchSensor;
-import com.qualcomm.hardware.motors.TetrixMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.drive.Robot;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.CompassSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.drive.subsystems.Glisiera;
-import org.firstinspires.ftc.teamcode.drive.subsystems.MecanumDriveCh;
-import org.firstinspires.ftc.teamcode.util.Encoder;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "tewt encodewr")
 public class TestEncoder extends LinearOpMode {
@@ -41,9 +18,10 @@ public class TestEncoder extends LinearOpMode {
 //    private ModernRoboticsAnalogOpticalDistanceSensor ods;
 //    private ModernRoboticsI2cCompassSensor compassSensor;
 //    private ModernRoboticsI2cRangeSensor range;
-    private DcMotor motor1;
-    private DcMotor motor2;
-    public double manualTargett = 0;
+//    private DcMotor motor1;
+//    private DcMotor motor2;
+    private Servo servoCleste;
+//    public double manualTargett = 0;
 //    private CRServo servo;
 //    private Encoder encoder0;
 //    private Encoder encoder1;
@@ -69,17 +47,17 @@ public class TestEncoder extends LinearOpMode {
 //        ods = hardwareMap.get(ModernRoboticsAnalogOpticalDistanceSensor.class, "ods");
 //        compassSensor = hardwareMap.get(ModernRoboticsI2cCompassSensor.class, "compass");
 //        range = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "range");
-        motor1 = hardwareMap.get(DcMotor.class, "motorGlisiera1");
-        motor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor1.setDirection(DcMotorSimple.Direction.REVERSE);
-        motor2 = hardwareMap.get(DcMotor.class, "motorGlisiera2");
-        motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor2.setDirection(DcMotorSimple.Direction.FORWARD);
+//        motor1 = hardwareMap.get(DcMotor.class, "motorGlisiera1");
+//        motor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motor1.setDirection(DcMotorSimple.Direction.REVERSE);
+//        motor2 = hardwareMap.get(DcMotor.class, "motorGlisiera2");
+//        motor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motor2.setDirection(DcMotorSimple.Direction.FORWARD);
 //        motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        servo = hardwareMap.get(CRServo.class, "servo");
+//        servoCleste = hardwareMap.get(Servo.class, "servoCleste");
 //        servo.setDirection(CRServo.Direction.FORWARD);
 
 //        encoder0 = new Encoder(hardwareMap.get(DcMotorEx.class, "leftFront"));
@@ -178,26 +156,33 @@ public class TestEncoder extends LinearOpMode {
 //                    motor.setPower(-POWER);
 //                else motor.setPower(POWER);
 //            }
-            if(gamepad2.left_trigger > 0.1){
-                motor1.setPower(1);
-            }
-            if(gamepad2.right_trigger > 0.1){
-                motor1.setPower(-1);
-            }
-            if(gamepad2.a) {
-                motor1.setTargetPosition(1500);
-                motor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                motor2.setTargetPosition(1500);
-                motor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                if (motor1.getCurrentPosition() > 1500) {
-                    motor1.setPower(1);
-                    motor2.setPower(1);
-                } else {
-                    motor1.setPower(-1);
-                    motor2.setPower(-1);
-                }
-            }
+//            if(gamepad2.left_trigger > 0.1){
+//                motor1.setPower(1);
+//            }
+//            if(gamepad2.right_trigger > 0.1){
+//                motor1.setPower(-1);
+//            }
+//            if(gamepad2.a) {
+//                motor1.setTargetPosition(1500);
+//                motor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                motor2.setTargetPosition(1500);
+//                motor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                if (motor1.getCurrentPosition() > 1500) {
+//                    motor1.setPower(1);
+//                    motor2.setPower(1);
+//                } else {
+//                    motor1.setPower(-1);
+//                    motor2.setPower(-1);
+//                }
+//            }
+            if(gamepad2.circle){
+//                servoCleste.setPosition(1);
 
+            }
+            if(gamepad2.cross){
+//                servoCleste.setPosition(0);
+
+            }
 //                if(motor1.isBusy()){
 //                    motor2.setPower(motor1.getPower());
 //                }
@@ -206,9 +191,9 @@ public class TestEncoder extends LinearOpMode {
 //
 
 
-            telemetry.addData("ticks1: ", motor1.getCurrentPosition());
-            telemetry.addData("ticks2: ", motor2.getCurrentPosition());
-
+//            telemetry.addData("ticks1: ", motor1.getCurrentPosition());
+//            telemetry.addData("ticks2: ", motor2.getCurrentPosition());
+//              telemetry.addData("ticks: ", servoCleste.getPosition());
 //            telemetry.addData("imu: ", imu.isGyroCalibrated());
 //            telemetry.addData("imu: ", imu.getCalibrationStatus());
 //            telemetry.addData("imu: ", imu.getPosition());

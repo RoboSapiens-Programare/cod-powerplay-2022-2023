@@ -35,10 +35,8 @@ import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.ZERO;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -150,7 +148,7 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
 
         while (opModeIsActive()) {
             telemetry.addData("Tag:", tagOfInterest.id);
-                robot.glisiera.strangeCleste();
+//                robot.outtake.strangeCleste();
 
             if (tagOfInterest.id == MIDDLE) {
                 Pose2d start = new Pose2d(35, -60, Math.toRadians(90));
@@ -161,7 +159,7 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                         .turn(Math.toRadians(126))
                         .waitSeconds(1)
                         .addDisplacementMarker(() -> {
-                            robot.glisiera.setLevel(MEDIUM);
+                            robot.outtake.setLevel(MEDIUM);
                             ElapsedTime time = new ElapsedTime();
                             while (time.milliseconds() < MAX_MILISECONDS) ;
                         })
@@ -170,7 +168,7 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                         .forward(9)
                         .waitSeconds(0.5)
                         .addDisplacementMarker(() -> {
-                            robot.glisiera.manualLevel(1750);
+                            robot.outtake.manualLevel(1750);
                             ElapsedTime time = new ElapsedTime();
                             while (time.milliseconds() < MAX_MILISECONDS) ;
                         })
@@ -179,7 +177,7 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
 //                            robot.glisiera.mediumLevel();
 //                        })
                         .addDisplacementMarker(() -> {
-                            robot.glisiera.desfaCleste();
+//                            robot.outtake.desfaCleste();
 //                            sleep(500);
 //                            robot.glisiera.zeroLevel();
                         })
@@ -200,7 +198,7 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                     .turn(Math.toRadians(126))
                     .waitSeconds(0.5)
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.setLevel(MEDIUM);
+                        robot.outtake.setLevel(MEDIUM);
                         ElapsedTime time = new ElapsedTime();
                         while (time.milliseconds() < MAX_MILISECONDS) ;
                     })
@@ -209,7 +207,7 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                     .forward(9)
                     .waitSeconds(0.5)
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.manualLevel(1750);
+                        robot.outtake.manualLevel(1750);
                         ElapsedTime time = new ElapsedTime();
                         while (time.milliseconds() < MAX_MILISECONDS) ;
                     })
@@ -218,9 +216,9 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
 //                            robot.glisiera.mediumLevel();
 //                        })
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.desfaCleste();
+//                        robot.outtake.desfaCleste();
                         sleep(500);
-                        robot.glisiera.setLevel(ZERO);
+                        robot.outtake.setLevel(ZERO);
                     })
                     .back(10)
                     .turn(Math.toRadians(150))
@@ -239,7 +237,7 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                     .turn(Math.toRadians(126))
                     .waitSeconds(0.5)
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.setLevel(LOW);
+                        robot.outtake.setLevel(LOW);
                         ElapsedTime time = new ElapsedTime();
                         while (time.milliseconds() < MAX_MILISECONDS) ;
                     })
@@ -248,7 +246,7 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
                     .forward(9)
                     .waitSeconds(0.5)
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.manualLevel(1750);
+                        robot.outtake.manualLevel(1750);
                         ElapsedTime time = new ElapsedTime();
                         while (time.milliseconds() < MAX_MILISECONDS) ;
                     })
@@ -257,16 +255,16 @@ public class AutonomousBlueSperMerg extends LinearOpMode {
 //                            robot.glisiera.mediumLevel();
 //                        })
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.desfaCleste();
+//                        robot.outtake.desfaCleste();
                         sleep(500);
                     })
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.setLevel(MEDIUM);
+                        robot.outtake.setLevel(MEDIUM);
 //                        sleep(500);
                     })
                     .back(9)
                     .addDisplacementMarker(() -> {
-                        robot.glisiera.setLevel(ZERO);
+                        robot.outtake.setLevel(ZERO);
 //                        sleep(500);
                     })
                     .turn(Math.toRadians(150))
