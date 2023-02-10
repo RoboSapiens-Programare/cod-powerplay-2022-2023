@@ -31,6 +31,13 @@ public class TestEncoder extends LinearOpMode {
 //    private BNO055IMU imu;
     private Robot robot = null;
     public final static double POWER = 1;
+    public final static void somn(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
     public double calculateThrottle(float x) {
         int sign = -1;
         if (x > 0) sign = 1;
