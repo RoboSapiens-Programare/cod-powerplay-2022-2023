@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Intake{
     public DcMotor motorGlisiera2;
-    private Servo servoCleste, servoX, servoY;
+    public Servo servoCleste2, servoX, servoY;
     public double target = 0;
 
     public Intake(HardwareMap hardwareMap){
@@ -21,7 +21,7 @@ public class Intake{
         motorGlisiera2 = hardwareMap.dcMotor.get("motorGlisiera2");
         servoX = hardwareMap.servo.get("servoX");
         servoY = hardwareMap.servo.get("servoY");
-        servoCleste = hardwareMap.servo.get("servoCleste2");
+        servoCleste2 = hardwareMap.servo.get("servoCleste2");
 
         //Motor initialization
         motorGlisiera2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -30,15 +30,15 @@ public class Intake{
 
         servoX.setDirection(Servo.Direction.FORWARD);
         servoY.setDirection(Servo.Direction.FORWARD);
-        servoCleste.setDirection(Servo.Direction.FORWARD);
+        servoCleste2.setDirection(Servo.Direction.FORWARD);
     }
 
     public void strangeClesteIntake(){
-        servoCleste.setPosition(0);
+        servoCleste2.setPosition(0);
     }
 
     public void desfaClesteIntake(){
-        servoCleste.setPosition(0.5);
+        servoCleste2.setPosition(0.5);
     }
 
     public void invarteClesteStanga(){
@@ -99,7 +99,7 @@ public class Intake{
         else motorGlisiera2.setPower(POWER);
     }
 
-    private void setSlidePosition(int target, double multiplier){
+    public void setSlidePosition(int target, double multiplier){
         motorGlisiera2.setTargetPosition(-target);
         motorGlisiera2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         if(motorGlisiera2.getCurrentPosition() > -target)
