@@ -28,8 +28,8 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
 
     private BNO055IMU imu;
 
-    private static double X_MULTIPLIER = 1;
-    private static double Y_MULTIPLIER = 1;
+    private static double X_MULTIPLIER = 0.98;
+    private static double Y_MULTIPLIER = 0.96;
 
     public TwoWheelTrackingLocalizer(HardwareMap hardwareMap, MecanumDriveCh mecanumDriveCh) {
 
