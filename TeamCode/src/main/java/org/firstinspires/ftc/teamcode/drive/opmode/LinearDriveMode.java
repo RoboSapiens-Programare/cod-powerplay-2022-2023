@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
+import static org.firstinspires.ftc.teamcode.drive.opmode.TestEncoder.somn;
 import static java.lang.Math.abs;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -21,6 +22,7 @@ public class LinearDriveMode extends LinearOpMode {
     public final static int ZERO = 0, GROUND = 100, LOW = 900, MEDIUM = 1550, TALL = 2100;
     public final static double DOWN_MULTIPLIER = 0.2;
     private int direction = 0;
+    private int i = 0;
 
     private boolean outtake = true;
 
@@ -48,6 +50,7 @@ public class LinearDriveMode extends LinearOpMode {
 
 
         while (robot.isInitialize() && opModeIsActive()) {
+
             idle();
         }
 
@@ -57,6 +60,12 @@ public class LinearDriveMode extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
+            if(i == 0) {
+                robot.intake.servoCleste2.setPosition(0);
+                robot.intake.servoY.setPosition(0.5);
+                somn(600);
+                i++;-
+            }
             if (gamepad2.options) outtake = true;
             if (gamepad2.share) outtake = false;
 

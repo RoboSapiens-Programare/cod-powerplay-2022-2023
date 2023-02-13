@@ -116,16 +116,6 @@ public class Intake{
     }
 
     public void firstIntakeSequence(){
-        if(it==0) {
-            servoCleste2.setPosition(0);
-            servoY.setPosition(0.5);
-            somn(600);
-            it++;
-        }
-        else{
-            servoCleste2.setPosition(0);
-            servoY.setPosition(0.4);
-        }
         autoExtend();
         servoX.setPosition(0);
         servoCleste2.setPosition(0.5);
