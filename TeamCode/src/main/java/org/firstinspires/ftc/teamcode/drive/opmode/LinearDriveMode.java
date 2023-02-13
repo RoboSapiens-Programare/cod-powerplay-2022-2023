@@ -64,7 +64,8 @@ public class LinearDriveMode extends LinearOpMode {
                 robot.intake.servoCleste2.setPosition(0);
                 robot.intake.servoY.setPosition(0.5);
                 somn(600);
-                i++;-
+                robot.intake.setSlidePosition(750);
+                i++;
             }
             if (gamepad2.options) outtake = true;
             if (gamepad2.share) outtake = false;

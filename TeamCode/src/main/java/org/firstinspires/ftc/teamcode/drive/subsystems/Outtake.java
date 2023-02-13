@@ -65,6 +65,14 @@ public class Outtake {
         else motorGlisiera1.setPower(POWER);
     }
 
+    public boolean isGoing(int target){
+        if (motorGlisiera1.getCurrentPosition() < target + 10 && motorGlisiera1.getCurrentPosition() > target - 10){
+            return  false;
+        }
+        return true;
+
+    }
+
 }
 
 

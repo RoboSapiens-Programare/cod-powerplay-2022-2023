@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.drive.opmode;
 
 import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.MEDIUM;
 import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.ZERO;
+import static org.firstinspires.ftc.teamcode.drive.opmode.TestEncoder.somn;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -40,6 +41,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.drive.Robot;
 import org.firstinspires.ftc.teamcode.drive.visualrecog.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -73,6 +75,13 @@ public class AutonomousBlueSperMergCopie extends LinearOpMode {
     private Robot robot = null;
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
+    public final static void somn(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -95,7 +104,8 @@ public class AutonomousBlueSperMergCopie extends LinearOpMode {
 
     public AprilTagDetection tagOfInterest = null;
     private ElapsedTime timer;
-    private final int MAX_MILISECONDS = 1000;
+    private final int MAX_MILISECONDS = 2000;
+    private final static int ZERO = 0, GROUND = 100, LOW = 900, MEDIUM = 1550, TALL = 2100;
 
     @Override
     public void runOpMode() {
@@ -111,7 +121,7 @@ public class AutonomousBlueSperMergCopie extends LinearOpMode {
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                camera.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
+                camera.startStreaming(1280, 720, OpenCvCameraRotation.UPSIDE_DOWN);
             }
 
             @Override
@@ -149,33 +159,83 @@ public class AutonomousBlueSperMergCopie extends LinearOpMode {
 
         while (opModeIsActive()) {
             telemetry.addData("Tag:", tagOfInterest.id);
-//            robot.outtake.strangeCleste();
+            robot.intake.servoCleste2.setPosition(0);
+            robot.intake.servoY.setPosition(0.5);
+            somn(600);
+            robot.intake.setSlidePosition(750);
+            robot.outtake.desfaCleste();
+            somn(1000);
+            telemetry.addData("distance: ", robot.intake.senzorIntake.getDistance(DistanceUnit.CM));
+
             Pose2d start = new Pose2d(34.4, -63.4, Math.toRadians(90));
             robot.drive.setPoseEstimate(start);
             TrajectorySequence Preload = robot.drive.trajectorySequenceBuilder(start)
-                    .lineToConstantHeading(new Vector2d(34.4,-9.4))
+                    .lineToConstantHeading(new Vector2d(34.4,-11.4))
+                    .turn(Math.toRadians(47))
                     .back(2)
-                    .turn(Math.toRadians(135))
                     .addDisplacementMarker(() -> {
-                        robot.outtake.setLevel(MEDIUM);
+                        robot.outtake.setLevel(TALL);
                     })
-                    .waitSeconds(0.2)
-                    .forward(10)
+                    .waitSeconds(2)
+                    .forward(12)
+                    .waitSeconds(1)
                     .addDisplacementMarker(() -> {
-                        robot.outtake.manualLevel(1750);
-//                        robot.outtake.desfaCleste();
+                        robot.outtake.setLevel(TALL-400);
                     })
-                    .waitSeconds(0.2)
-                    .back(10)
+                    .waitSeconds(1)
                     .addDisplacementMarker(() -> {
-                        robot.outtake.setLevel(ZERO);
+                        robot.outtake.strangeCleste();
+                    })
+                    .waitSeconds(2)
+                    .back(12)
+                    .waitSeconds(1)
+                    .addDisplacementMarker(() -> {
+                        robot.outtake.setLevel(0);
+                    })
+                    .waitSeconds(5)
+                    .build();
+
+            Pose2d poseAfter = Preload.end();
+            TrajectorySequence Stack = robot.drive.trajectorySequenceBuilder(poseAfter)
+                    .turn(Math.toRadians(43))
+                    .waitSeconds(1)
+                    .addDisplacementMarker(() -> {
+                        robot.intake.firstIntakeSequence();
+                    })
+                    .waitSeconds(2)
+                    .addDisplacementMarker(() -> {
+                        robot.intake.secondIntakeSequence();
                     })
                     .turn(Math.toRadians(-45))
-
+                    .back(2)
+                    .waitSeconds(1)
+                    .addDisplacementMarker(() -> {
+                        robot.outtake.desfaCleste();
+                    })
+                    .waitSeconds(1)
+                    .addDisplacementMarker(() -> {
+                        robot.outtake.setLevel(TALL);
+                    })
+                    .waitSeconds(2)
+                    .forward(12)
+                    .waitSeconds(1)
+                    .addDisplacementMarker(() -> {
+                        robot.outtake.desfaCleste();
+                    })
+                    .waitSeconds(2)
+                    .back(12)
+//                    .turn(Math.toRadians(45))
+////                                .addDisplacementMarker()
+//                    .turn(Math.toRadians(-45))
+//                    .forward(10)
+//                    .back(10)
+//                    .waitSeconds(2)
                     .build();
+//
             robot.drive.followTrajectorySequence(Preload);
+            robot.drive.followTrajectorySequence(Stack);
 
-            Pose2d lastPose = Preload.end();
+            Pose2d lastPose = Stack.end();
 
 //            for(int i = 1; i <= 5; i++){
 ////              robot.glisiera.manualLevel(ceva + i * altceva);
@@ -215,26 +275,26 @@ public class AutonomousBlueSperMergCopie extends LinearOpMode {
 //            }
 
             if (tagOfInterest.id == MIDDLE) {
-                TrajectorySequence Middle = robot.drive.trajectorySequenceBuilder(lastPose)
-                        .waitSeconds(45)
-                        .build();
-                robot.drive.followTrajectorySequence(Middle);
+//                TrajectorySequence Middle = robot.drive.trajectorySequenceBuilder(lastPose)
+//                        .waitSeconds(45)
+//                        .build();
+//                robot.drive.followTrajectorySequence(Middle);
             }
          else if (tagOfInterest.id == LEFT) {
 
-             TrajectorySequence Left = robot.drive.trajectorySequenceBuilder(lastPose)
-                     .forward(24)
-                     .waitSeconds(45)
-                     .build();
-             robot.drive.followTrajectorySequence(Left);
+//             TrajectorySequence Left = robot.drive.trajectorySequenceBuilder(lastPose)
+//                     .forward(24)
+//                     .waitSeconds(45)
+//                     .build();
+//             robot.drive.followTrajectorySequence(Left);
 
             }
             else if (tagOfInterest.id == RIGHT) {
-            TrajectorySequence Right = robot.drive.trajectorySequenceBuilder(lastPose)
-                    .back(24)
-                    .waitSeconds(45)
-                    .build();
-            robot.drive.followTrajectorySequence(Right);
+//            TrajectorySequence Right = robot.drive.trajectorySequenceBuilder(lastPose)
+//                    .back(24)
+//                    .waitSeconds(45)
+//                    .build();
+//            robot.drive.followTrajectorySequence(Right);
         }
 
         stop();

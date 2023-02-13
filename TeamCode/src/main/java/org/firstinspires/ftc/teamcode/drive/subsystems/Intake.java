@@ -84,12 +84,14 @@ public class Intake{
 
     public void autoExtend(){
          targetSenzor = ((((int)senzorIntake.getDistance(DistanceUnit.CM))) + 7) * TICKS_PER_CENTIMETER;
+        if(senzorIntake.getDistance(DistanceUnit.CM) < 120){
     motorGlisiera2.setTargetPosition(targetSenzor);
     motorGlisiera2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         if(motorGlisiera2.getCurrentPosition() < targetSenzor)
             motorGlisiera2.setPower(-POWER);
         else motorGlisiera2.setPower(POWER);
 
+    }
     }
 
     public void setSlidePosition(int target){
@@ -119,7 +121,7 @@ public class Intake{
         autoExtend();
         servoX.setPosition(0);
         servoCleste2.setPosition(0.5);
-        servoY.setPosition(0.19);
+        servoY.setPosition(0.25);
         somn(250);
         while(isGoing(targetSenzor)){}
         somn(100);
@@ -140,7 +142,7 @@ public class Intake{
         somn(200);
         servoCleste2.setPosition(0.3);
         somn(400);
-        servoY.setPosition(0.7);
+        servoY.setPosition(0.8);
         somn(200);
         servoCleste2.setPosition(0);
         somn(100);
