@@ -29,9 +29,10 @@
 
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
+import static org.firstinspires.ftc.teamcode.drive.opmode.AutonomousBlueSperMergCopie.somn;
+import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.LOW;
 import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.MEDIUM;
 import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.ZERO;
-import static org.firstinspires.ftc.teamcode.drive.opmode.TestEncoder.somn;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -41,7 +42,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.drive.Robot;
 import org.firstinspires.ftc.teamcode.drive.visualrecog.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -50,7 +50,6 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-import java.lang.annotation.Target;
 import java.util.ArrayList;
 
 
@@ -67,22 +66,15 @@ import java.util.ArrayList;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "Autonomie roadrunner parcare 2", group="autonomous")
+@Autonomous(name = "Autonomous final", group="autonomous")
 
-public class AutonomousBlueSperMergCopie extends LinearOpMode {
+public class AutonomousFinal extends LinearOpMode {
 
     // Declare OpMode members.
 //    private ElapsedTime runtime = new ElapsedTime();
     private Robot robot = null;
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
-    public final static void somn(long milliseconds) {
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    }
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -104,9 +96,7 @@ public class AutonomousBlueSperMergCopie extends LinearOpMode {
     int RIGHT = 3;
 
     public AprilTagDetection tagOfInterest = null;
-    private ElapsedTime timer;
-    private int TargetSenzor;
-    private final int MAX_MILISECONDS = 2000;
+    private final int MAX_MILISECONDS = 1500;
     private final static int ZERO = 0, GROUND = 100, LOW = 900, MEDIUM = 1550, TALL = 2100;
 
     @Override
@@ -160,148 +150,138 @@ public class AutonomousBlueSperMergCopie extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            telemetry.addData("Tag:", tagOfInterest.id);
             robot.intake.servoCleste2.setPosition(0);
             robot.intake.servoY.setPosition(0.5);
-            somn(600);
             robot.intake.setSlidePosition(300);
             robot.outtake.desfaCleste();
-            somn(1000);
-            telemetry.addData("distance: ", robot.intake.senzorIntake.getDistance(DistanceUnit.CM));
-
+            telemetry.addData("Tag:", tagOfInterest.id);
+                robot.outtake.desfaCleste();
             Pose2d start = new Pose2d(34.4, -63.4, Math.toRadians(90));
             robot.drive.setPoseEstimate(start);
             TrajectorySequence Preload = robot.drive.trajectorySequenceBuilder(start)
+                    //mers in fata
                     .lineToConstantHeading(new Vector2d(34.4,-11.4))
                     .turn(Math.toRadians(47))
+                    //pus pe pole
                     .back(2)
-                    .addDisplacementMarker(() -> {
-                        robot.outtake.setLevel(TALL+200);
+                    .addTemporalMarker(() -> {
+                        robot.outtake.setLevel(TALL);
                     })
-                    .waitSeconds(2)
+                    .waitSeconds(0.3)
                     .forward(12)
-                    .waitSeconds(1)
-                    .addDisplacementMarker(() -> {
+                    .waitSeconds(0.3)
+                    .addTemporalMarker(() -> {
                         robot.outtake.setLevel(TALL-400);
                     })
-                    .waitSeconds(1)
-                    .addDisplacementMarker(() -> {
+                    .waitSeconds(0.1)
+                    .addTemporalMarker(() -> {
                         robot.outtake.strangeCleste();
                     })
-                    .waitSeconds(2)
+                    .waitSeconds(0.1)
                     .back(12)
-                    .waitSeconds(1)
-                    .addDisplacementMarker(() -> {
+                    .waitSeconds(0.2)
+                    .addTemporalMarker(() -> {
                         robot.outtake.setLevel(0);
                     })
-                    .waitSeconds(4)
-                    .turn(Math.toRadians(45))
-                    .addDisplacementMarker(() -> {
-                        robot.intake.manualLevelIntake(750);
-                        telemetry.addData("tick ", robot.intake.motorGlisiera2.getCurrentPosition());
+                    //luat con din stack
+                    .turn(Math.toRadians(48))
+                    .waitSeconds(0.2)
+                    .addTemporalMarker(() -> {
+                        robot.intake.firstIntakeSequence();
                         telemetry.update();
                     })
-                    .waitSeconds(2)
-                    .addDisplacementMarker(() -> {
-                        robot.intake.manualLevelIntake(1150);
-                        robot.intake.servoX.setPosition(0);
-                        robot.intake.servoCleste2.setPosition(0.5);
-                        robot.intake.servoY.setPosition(0.25);
+                    .waitSeconds(0.2)
+                    .addTemporalMarker(() -> {
+                       robot.intake.secondIntakeSequence();
                     })
-                    .waitSeconds(1)
+                    .waitSeconds(0.4)
+                    .addTemporalMarker(() -> {
+                        robot.outtake.desfaCleste();
+                    })
                     .addTemporalMarker(() -> {
                         robot.intake.servoCleste2.setPosition(0);
+                        robot.intake.servoY.setPosition(0.5);
+                        somn(600);
+                        robot.intake.setSlidePosition(300);
                     })
-//                    .waitSeconds(2)
-//                    .addDisplacementMarker(() -> {
-//                        robot.intake.secondIntakeSequence();
-//                    })
-                    .waitSeconds(2)
-                    .addTemporalMarker(() -> {
-                        robot.outtake.desfaCleste();
-                    })
-                    .waitSeconds(1)
-
-                    .turn(Math.toRadians(-45))
+                    .turn(Math.toRadians(-49))
                     .back(2)
-                    .waitSeconds(1)
+                    //pus pe pole
+                    .waitSeconds(0.2)
                     .addTemporalMarker(() -> {
-                        robot.outtake.setLevel(TALL+200);
+                        robot.outtake.setLevel(TALL);
                     })
-                    .waitSeconds(2)
+                    .waitSeconds(0.3)
                     .forward(12)
-                    .waitSeconds(1)
+                    .waitSeconds(0.2)
+                    .addTemporalMarker(() -> {
+                        robot.outtake.setLevel(TALL-400);
+                    })
+                    .waitSeconds(0.1)
+                    .addTemporalMarker(() -> {
+                        robot.outtake.strangeCleste();
+                    })
+                    .waitSeconds(0.1)
+                    .back(10)
+                    .addTemporalMarker(() -> {
+                        robot.outtake.setLevel(0);
+                    })
+                    //luat din stack
+                    .turn(Math.toRadians(48))
+                    .waitSeconds(0.2)
+                    .addTemporalMarker(() -> {
+                        robot.intake.firstIntakeSequence();
+                        telemetry.update();
+                    })
+                    .waitSeconds(0.2)
+                    .addTemporalMarker(() -> {
+                        robot.intake.secondIntakeSequence();
+                    })
+                    .waitSeconds(0.4)
                     .addTemporalMarker(() -> {
                         robot.outtake.desfaCleste();
                     })
-                    .waitSeconds(2)
-                    .back(12)
+                    .addTemporalMarker(() -> {
+                        robot.intake.servoCleste2.setPosition(0);
+                        robot.intake.servoY.setPosition(0.5);
+                        somn(600);
+                        robot.intake.setSlidePosition(300);
+                    })
+                    .turn(Math.toRadians(-49))
+                    .back(2)
+                    //pus pe pole
+                    .waitSeconds(0.2)
+                    .addTemporalMarker(() -> {
+                        robot.outtake.setLevel(TALL);
+                    })
+                    .waitSeconds(0.3)
+                    .forward(12)
+                    .waitSeconds(0.2)
+                    .addTemporalMarker(() -> {
+                        robot.outtake.setLevel(TALL-400);
+                    })
+                    .waitSeconds(0.1)
+                    .addTemporalMarker(() -> {
+                        robot.outtake.strangeCleste();
+                    })
+                    .waitSeconds(0.1)
+                    .back(10)
+                    .addTemporalMarker(() -> {
+                        robot.outtake.setLevel(0);
+                    })
+                    .waitSeconds(10000)
                     .build();
-//
             robot.drive.followTrajectorySequence(Preload);
 
 
-
-
-
-//            for(int i = 1; i <= 5; i++){
-////              robot.glisiera.manualLevel(ceva + i * altceva);
-//                robot.glisiera.strangeCleste();
-//                timer = new ElapsedTime();
-//                timer.startTime();
-//                while(timer.milliseconds() < MAX_MILISECONDS);
-//                TrajectorySequence Score = robot.drive.trajectorySequenceBuilder(lastPose)
-//                        .lineToConstantHeading(new Vector2d(60.4,-11.4))
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.manualLevel(400);
-//                        })
-//                        .forward(1)
-//                        .addDisplacementMarker(() -> {
-//                          robot.glisiera.strangeCleste();
-//                        })
-//                        .lineToConstantHeading(new Vector2d(34.4,-11.4))
-//                        .turn(Math.toRadians(-135))
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.setLevel(MEDIUM);
-//                        })
-//                        .forward(10)
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.manualLevel(1750);
-//                            robot.glisiera.desfaCleste();
-//                        })
-//                        .back(10)
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.setLevel(ZERO);
-//                        })
-//                        .turn(Math.toRadians(135))
-//                        .waitSeconds(2)
-//                        .build();
-//                robot.drive.followTrajectorySequence(Score);
-//
-//                lastPose = Score.end();
-//            }
-
             if (tagOfInterest.id == MIDDLE) {
-//                TrajectorySequence Middle = robot.drive.trajectorySequenceBuilder(lastPose)
-//                        .waitSeconds(45)
-//                        .build();
-//                robot.drive.followTrajectorySequence(Middle);
+
             }
          else if (tagOfInterest.id == LEFT) {
 
-//             TrajectorySequence Left = robot.drive.trajectorySequenceBuilder(lastPose)
-//                     .forward(24)
-//                     .waitSeconds(45)
-//                     .build();
-//             robot.drive.followTrajectorySequence(Left);
-
-            }
+        }
             else if (tagOfInterest.id == RIGHT) {
-//            TrajectorySequence Right = robot.drive.trajectorySequenceBuilder(lastPose)
-//                    .back(24)
-//                    .waitSeconds(45)
-//                    .build();
-//            robot.drive.followTrajectorySequence(Right);
+
         }
 
         stop();

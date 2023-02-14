@@ -90,7 +90,6 @@ public class Intake{
         if(motorGlisiera2.getCurrentPosition() < targetSenzor)
             motorGlisiera2.setPower(-POWER);
         else motorGlisiera2.setPower(POWER);
-
     }
     }
 
@@ -121,11 +120,12 @@ public class Intake{
         autoExtend();
         servoX.setPosition(0);
         servoCleste2.setPosition(0.5);
-        servoY.setPosition(0.25);
+        servoY.setPosition(0.23);
         somn(250);
         while(isGoing(targetSenzor)){}
-        somn(100);
+        somn(500);
         servoCleste2.setPosition(0);
+        somn(300);
     }
 
     public void secondIntakeSequence() {
@@ -135,17 +135,17 @@ public class Intake{
         somn(100);
         servoY.setPosition(0.7);
         somn(500);
-        setSlidePosition(750);
-        while(isGoing(750));
+        setSlidePosition(770);
+        while(isGoing(770));
         somn(100);
         servoY.setPosition(0.92);
-        somn(200);
+        somn(500);
         servoCleste2.setPosition(0.3);
+        somn(500);
+        servoY.setPosition(0.72);
         somn(400);
-        servoY.setPosition(0.8);
-        somn(200);
         servoCleste2.setPosition(0);
-        somn(100);
+        somn(300);
         servoY.setPosition(0.4);
         somn(400);
         servoX.setPosition(0);
