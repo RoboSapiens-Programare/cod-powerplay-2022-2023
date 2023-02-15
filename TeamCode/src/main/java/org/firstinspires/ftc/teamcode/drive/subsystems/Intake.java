@@ -135,8 +135,8 @@ public class Intake{
         somn(100);
         servoY.setPosition(0.7);
         somn(500);
-        setSlidePosition(770);
-        while(isGoing(770));
+        setSlidePosition(760);
+        while(isGoing(760));
         somn(100);
         servoY.setPosition(0.92);
         somn(500);

@@ -30,16 +30,13 @@
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
 import static org.firstinspires.ftc.teamcode.drive.opmode.AutonomousBlueSperMergCopie.somn;
-import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.LOW;
-import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.MEDIUM;
-import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.ZERO;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAccelerationConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.Robot;
@@ -66,9 +63,9 @@ import java.util.ArrayList;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "Autonomous final", group="autonomous")
+@Autonomous(name = "Autonomous final regionala", group="autonomous")
 
-public class AutonomousFinal extends LinearOpMode {
+public class AutonomousFinalRegionala extends LinearOpMode {
 
     // Declare OpMode members.
 //    private ElapsedTime runtime = new ElapsedTime();
@@ -97,7 +94,7 @@ public class AutonomousFinal extends LinearOpMode {
 
     public AprilTagDetection tagOfInterest = null;
     private final int MAX_MILISECONDS = 1500;
-    private final static int ZERO = 0, GROUND = 100, LOW = 900, MEDIUM = 1550, TALL = 2300;
+    private final static int ZERO = 0, GROUND = 100, LOW = 900, MEDIUM = 1550, TALL = 2400;
 
     @Override
     public void runOpMode() {
@@ -158,6 +155,12 @@ public class AutonomousFinal extends LinearOpMode {
                 robot.outtake.desfaCleste();
             Pose2d start = new Pose2d(34.4, -63.4, Math.toRadians(90));
             robot.drive.setPoseEstimate(start);
+//            81.60616446739606
+//            0.0
+//            59.627343216332676
+//            0.0
+//            0.16628908471283996
+//            0.0
             TrajectorySequence Preload = robot.drive.trajectorySequenceBuilder(start)
                     .lineToConstantHeading(new Vector2d(34.4,-11.4))
                     .turn(Math.toRadians(47))
@@ -165,19 +168,18 @@ public class AutonomousFinal extends LinearOpMode {
                     .addTemporalMarker(() -> {
                         robot.outtake.setLevel(TALL+200);
                     })
-                    .waitSeconds(0.3)
+                    .waitSeconds(0.2)
                     .forward(12)
-                    .waitSeconds(0.3)
+                    .waitSeconds(0.1)
                     .addTemporalMarker(() -> {
                         robot.outtake.setLevel(TALL-400);
                     })
-                    .waitSeconds(0.1)
+                    .waitSeconds(0.2)
                     .addTemporalMarker(() -> {
                         robot.outtake.strangeCleste();
                     })
                     .waitSeconds(0.1)
-                    .back(12)
-                    .waitSeconds(0.2)
+                    .back(10)
                     .addTemporalMarker(() -> {
                         robot.outtake.setLevel(0);
                     })
@@ -191,11 +193,11 @@ public class AutonomousFinal extends LinearOpMode {
                         robot.intake.firstIntakeSequence();
                         telemetry.update();
                     })
-                    .waitSeconds(0.2)
+                    .waitSeconds(0.1)
                     .addTemporalMarker(() -> {
                        robot.intake.secondIntakeSequence();
                     })
-                    .waitSeconds(0.4)
+                    .waitSeconds(0.2)
                     .addTemporalMarker(() -> {
                         robot.outtake.desfaCleste();
                     })
@@ -212,13 +214,13 @@ public class AutonomousFinal extends LinearOpMode {
                     .addTemporalMarker(() -> {
                         robot.outtake.setLevel(TALL+200);
                     })
-                    .waitSeconds(0.3)
-                    .forward(12)
                     .waitSeconds(0.2)
+                    .forward(12)
+                    .waitSeconds(0.1)
                     .addTemporalMarker(() -> {
                         robot.outtake.setLevel(TALL-400);
                     })
-                    .waitSeconds(0.1)
+                    .waitSeconds(0.2)
                     .addTemporalMarker(() -> {
                         robot.outtake.strangeCleste();
                     })
