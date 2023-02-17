@@ -5,8 +5,12 @@ import static org.firstinspires.ftc.teamcode.drive.opmode.TestEncoder.POWER;
 import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 public class Outtake {
     public DcMotor motorGlisiera1;
     public Servo cleste;
@@ -25,11 +29,11 @@ public class Outtake {
         cleste.setDirection(Servo.Direction.FORWARD);
     }
 
-    public void strangeCleste(){
+    public void desfaCleste(){
         cleste.setPosition(0);
     }
 
-    public void desfaCleste(){
+    public void strangeCleste(){
         cleste.setPosition(0.5);
     }
 
@@ -66,12 +70,13 @@ public class Outtake {
     }
 
     public boolean isGoing(int target){
-        if (motorGlisiera1.getCurrentPosition() < target + 10 && motorGlisiera1.getCurrentPosition() > target - 10){
+        if (motorGlisiera1.getCurrentPosition() < target + 20 && motorGlisiera1.getCurrentPosition() > target - 20){
             return  false;
         }
         return true;
 
     }
+
 
 }
 

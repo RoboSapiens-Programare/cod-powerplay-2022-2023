@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.drive.subsystems;
 
 import static android.os.SystemClock.sleep;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static org.firstinspires.ftc.teamcode.drive.opmode.TestEncoder.POWER;
 import static org.firstinspires.ftc.teamcode.drive.opmode.TestEncoder.somn;
 
@@ -21,7 +22,11 @@ public class Intake{
     private final int TICKS_PER_CENTIMETER = 22;
     public DistanceSensor senzorIntake;
     public int targetSenzor;
-    private int it=0;
+    private int it = 0;
+    public double manualTarget = 0;
+    //mai trebuie 40 de tickuri
+    private final int STACK_TICKS = 1540;
+    private final int STACK_TICKS2 = 1735;
 
     public Intake(HardwareMap hardwareMap){
         PhotonCore.enable();
@@ -82,8 +87,17 @@ public class Intake{
         }
     }
 
+    public void AutonomousExtend(){
+            motorGlisiera2.setTargetPosition(STACK_TICKS);
+            motorGlisiera2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            if(motorGlisiera2.getCurrentPosition() < STACK_TICKS)
+                motorGlisiera2.setPower(-POWER);
+            else motorGlisiera2.setPower(POWER);
+        }
+
+
     public void autoExtend(){
-         targetSenzor = ((((int)senzorIntake.getDistance(DistanceUnit.CM))) + 7) * TICKS_PER_CENTIMETER;
+         targetSenzor = ((((int)senzorIntake.getDistance(DistanceUnit.CM)))) * TICKS_PER_CENTIMETER;
         if(senzorIntake.getDistance(DistanceUnit.CM) < 120){
     motorGlisiera2.setTargetPosition(targetSenzor);
     motorGlisiera2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -109,10 +123,41 @@ public class Intake{
         else motorGlisiera2.setPower(POWER * multiplier);
     }
     public boolean isGoing(int target){
-        if (motorGlisiera2.getCurrentPosition() < target + 10 && motorGlisiera2.getCurrentPosition() > target - 10){
+        if (motorGlisiera2.getCurrentPosition() < target + 30 && motorGlisiera2.getCurrentPosition() > target - 30){
             return  false;
         }
         return true;
+
+    }
+
+    public boolean isGoingAutonomous(int target){
+        if (motorGlisiera2.getCurrentPosition() < target + 40 && motorGlisiera2.getCurrentPosition() > target - 40){
+            return  false;
+        }
+        return true;
+
+    }
+
+    public void firstAutonomousIntakeSequence(){
+        AutonomousExtend();
+        servoX.setPosition(0);
+        servoCleste2.setPosition(0.5);
+        servoY.setPosition(0.33);
+        somn(450);
+        while(isGoingAutonomous(STACK_TICKS)){}
+
+
+    }
+    public void firstAutonomous2ndIntakeSequence(){
+        AutonomousExtend();
+        servoX.setPosition(0);
+        servoCleste2.setPosition(0.5);
+        servoY.setPosition(0.3);
+        somn(550);
+        while(isGoingAutonomous(STACK_TICKS2)){}
+        servoCleste2.setPosition(0);
+        somn(400);
+
 
     }
 
@@ -123,20 +168,22 @@ public class Intake{
         servoY.setPosition(0.23);
         somn(250);
         while(isGoing(targetSenzor)){}
-        somn(500);
-        servoCleste2.setPosition(0);
         somn(300);
+
+
     }
 
     public void secondIntakeSequence() {
-        servoY.setPosition(0.4);
-        somn(100);
-        servoX.setPosition(1);
+        servoY.setPosition(0.6);
+        somn(200);
+        servoX.setPosition(0.93);
         somn(100);
         servoY.setPosition(0.7);
         somn(500);
         setSlidePosition(760);
         while(isGoing(760));
+        somn(100);
+        servoX.setPosition(1);
         somn(100);
         servoY.setPosition(0.92);
         somn(500);
@@ -150,6 +197,18 @@ public class Intake{
         somn(400);
         servoX.setPosition(0);
 
+    }
+
+    public void manualLevel(double manualTarget) {
+        motorGlisiera2.setTargetPosition((int) manualTarget);
+        motorGlisiera2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if(motorGlisiera2.getCurrentPosition() > manualTarget)
+        {
+            motorGlisiera2.setPower(POWER);
+        }
+        else {
+            motorGlisiera2.setPower(-POWER);
+        }
     }
 
 }
