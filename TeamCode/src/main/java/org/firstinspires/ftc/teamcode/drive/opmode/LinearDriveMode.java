@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 import static org.firstinspires.ftc.teamcode.drive.opmode.TestEncoder.somn;
 import static java.lang.Math.abs;
 
@@ -67,15 +68,15 @@ public class LinearDriveMode extends LinearOpMode {
                 i++;
             }
 
-                //STOP
-            if (gamepad1.share) {
-                    robot.outtake.motorGlisiera1.setPower(0);
-                    robot.intake.motorGlisiera2.setPower(0);
-                }
+
                 //GLISIERA ORIZONTALA
+                    if(gamepad1.share){
+                        robot.intake.motorGlisiera2.setPower(0);
+                    }
                     if (gamepad2.dpad_up) {
-                        robot.drive.setDrivePower(new Pose2d(0,0,0));
-                        robot.intake.firstIntakeSequence();
+                        robot.intake.servoX.setPosition(0);
+                        robot.intake.servoCleste2.setPosition(0.5);
+                        robot.intake.servoY.setPosition(0.26);
                     }
                     if (gamepad2.dpad_down){
                         robot.intake.secondIntakeSequence();
@@ -87,7 +88,9 @@ public class LinearDriveMode extends LinearOpMode {
                         robot.intake.desfaClesteIntake();
                     }
                     if (gamepad2.touchpad){
-                        robot.intake.setSlidePosition(0);
+                        robot.intake.servoCleste2.setPosition(0);
+                        robot.intake.servoY.setPosition(0.5);
+                        robot.intake.setSlidePosition(300);
                     }
 
                     //Manual1
@@ -136,8 +139,8 @@ public class LinearDriveMode extends LinearOpMode {
 
 //            telemetry.addData("Encoder value", (float)odo.getCurrentPosition() / 8192.0f * Math.PI * 5 + "cm");
 //            Telemetry telemetry = new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
-                telemetry.addData("senzorIntake: ", robot.intake.senzorIntake.getDistance(DistanceUnit.CM));
-                telemetry.addData("senzorIntake(cast): ", (int)robot.intake.senzorIntake.getDistance(DistanceUnit.CM));
+//                telemetry.addData("senzorIntake: ", robot.intake.senzorIntake.getDistance(DistanceUnit.CM));
+//                telemetry.addData("senzorIntake(cast): ", (int)robot.intake.senzorIntake.getDistance(DistanceUnit.CM));
                 telemetry.addData("Motor1glisiera: ", robot.outtake.motorGlisiera1.getCurrentPosition());
                 telemetry.addData("Motor2glisiera: ", robot.intake.motorGlisiera2.getCurrentPosition());
 //            telemetry.addData("Left front motor current", robot.drive.leftFront.getCurrent(CurrentUnit.MILLIAMPS));

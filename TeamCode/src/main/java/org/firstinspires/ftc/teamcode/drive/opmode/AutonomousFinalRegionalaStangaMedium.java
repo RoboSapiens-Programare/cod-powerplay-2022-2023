@@ -63,9 +63,9 @@ import java.util.ArrayList;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "Autonomous final regionala medium sper ca e final ca imi vine sa imi bag limba in priza", group="autonomous")
+@Autonomous(name = "Autonomous final regionala medium stanga sper ca e final ca imi vine sa imi bag limba in priza", group="autonomous")
 
-public class AutonomousFinalRegionalaRosuCredMedium extends LinearOpMode {
+public class AutonomousFinalRegionalaStangaMedium extends LinearOpMode {
 
     // Declare OpMode members.
 //    private ElapsedTime runtime = new ElapsedTime();
@@ -159,7 +159,7 @@ public class AutonomousFinalRegionalaRosuCredMedium extends LinearOpMode {
             robot.outtake.strangeCleste();
             telemetry.addData("Tag:", tagOfInterest.id);
 
-            Pose2d start = new Pose2d(35, -63.1, Math.toRadians(90));
+            Pose2d start = new Pose2d(-35, -63.1, Math.toRadians(90));
             robot.drive.setPoseEstimate(start);
 //            81.60616446739606
 //            0.0
@@ -170,16 +170,16 @@ public class AutonomousFinalRegionalaRosuCredMedium extends LinearOpMode {
 
             //mergi in fata ridica glisiera
             TrajectorySequence Preload = robot.drive.trajectorySequenceBuilder(start)
-                    .lineToConstantHeading(new Vector2d(35, -8.1))
+                    .lineToConstantHeading(new Vector2d(-35, -8.1))
                     .back(4)
-                    .turn(Math.toRadians(108))
+                    .turn(Math.toRadians(-100))
                     .addTemporalMarker(() -> {
                         robot.intake.setSlidePosition(0);
                         ElapsedTime time = new ElapsedTime();
                         while (time.milliseconds() < MAX_MILISECONDS) ;
                     })
-                    .forward(2)
-                    .strafeLeft(9)
+                    .forward(1)
+                    .strafeRight(9)
                     .addTemporalMarker(() -> {
                         robot.intake.setSlidePosition(300);
                     })
@@ -191,7 +191,7 @@ public class AutonomousFinalRegionalaRosuCredMedium extends LinearOpMode {
                     })
                     .waitSeconds(0.2)
                     .addTemporalMarker(() -> {
-                        robot.intake.firstAutonomousIntakeSequence();
+                        robot.intake.setSlidePosition(1640);
                         telemetry.update();
                     })
                     .forward(8)
@@ -199,9 +199,13 @@ public class AutonomousFinalRegionalaRosuCredMedium extends LinearOpMode {
                     .build();
             //stop primu sequence
             robot.drive.followTrajectorySequence(Preload);
-            Pose2d PreloadEnd = Preload.end();
-
             Pose2d preload = Preload.end();
+//            int targetAutonomous = 1400;
+//
+//            while(!robot.intake.isNear()){
+//                robot.intake.setSlidePosition(targetAutonomous++);
+//            }
+
             //start pus pe pole conu si dus glisiera la 0
             TrajectorySequence Preload2 = robot.drive.trajectorySequenceBuilder(preload)
                     .waitSeconds(0.2)
@@ -210,17 +214,21 @@ public class AutonomousFinalRegionalaRosuCredMedium extends LinearOpMode {
                         ElapsedTime time = new ElapsedTime();
                         while (time.milliseconds() < MAX_MILISECONDS) ;
                     })
-                    .waitSeconds(0.2)
+                    .waitSeconds(0.3)
                     .addTemporalMarker(() -> {
                         robot.outtake.desfaCleste();
                     })
                     .waitSeconds(0.1)
                     .addTemporalMarker(() -> {
-                        robot.intake.setSlidePosition(1900);
+                        robot.intake.firstAutonomousIntakeSequence();
                     })
                     .back(8)
                     .addTemporalMarker(() -> {
+                        robot.intake.firstAutonomous2ndIntakeSequence();
                         robot.outtake.setLevel(0,0.75);
+                    })
+                    .waitSeconds(0.3)
+                    .addTemporalMarker(() -> {
                         robot.intake.servoCleste2.setPosition(0);
                     })
                     .build();
@@ -229,7 +237,7 @@ public class AutonomousFinalRegionalaRosuCredMedium extends LinearOpMode {
             Pose2d preloadEnd = Preload2.end();
             //start sequenceul de luat si de pus conul din glisiera orizontala in glisiera verticala
             TrajectorySequence Stack = robot.drive.trajectorySequenceBuilder(preloadEnd)
-                    .waitSeconds(0.4)
+                    .waitSeconds(0.1)
                     .addTemporalMarker(() -> {
                         robot.intake.secondIntakeSequence();
                     })
@@ -242,7 +250,7 @@ public class AutonomousFinalRegionalaRosuCredMedium extends LinearOpMode {
                         somn(400);
                         robot.intake.servoCleste2.setPosition(0.5);
                         somn(600);
-                        robot.intake.setSlidePosition(1400);
+                        robot.intake.setSlidePosition(1640);
                     })
 
                     //pus pe pole
@@ -272,17 +280,17 @@ public class AutonomousFinalRegionalaRosuCredMedium extends LinearOpMode {
                     .addTemporalMarker(() -> {
                         robot.outtake.desfaCleste();
                     })
-                    .waitSeconds(0.2)
+                    .waitSeconds(0.1)
+                    .addTemporalMarker(() -> {
+                        robot.intake.firstAutonomous1stIntakeSequence();
+                    })
                     .back(9)
+                    .addTemporalMarker(() -> {
+                        robot.intake.firstAutonomous2ndIntakeSequence();
+                        robot.outtake.setLevel(0,0.75);
+                    })
                     .waitSeconds(0.4)
                     .addTemporalMarker(() -> {
-                        robot.outtake.setLevel(0,0.65);
-                        robot.intake.setSlidePosition(1800);
-                        ElapsedTime time = new ElapsedTime();
-                        while (time.milliseconds() < MAX_MILISECONDS);
-                        robot.intake.strangeClesteIntake();
-                        ElapsedTime timer = new ElapsedTime();
-                        while (timer.milliseconds() < 400);
                         robot.intake.secondIntakeSequence();
                     })
 
@@ -292,20 +300,9 @@ public class AutonomousFinalRegionalaRosuCredMedium extends LinearOpMode {
             robot.drive.followTrajectorySequence(Stack2);
             TrajectorySequence Stack2nd = robot.drive.trajectorySequenceBuilder(preloadEnd)
                     .waitSeconds(0.3)
-//                    .addTemporalMarker(() -> {
-//                        robot.intake.firstAutonomous2ndIntakeSequence();
-//                        telemetry.update();
-//                    })
-//                    .waitSeconds(0.1)
-//                    .addTemporalMarker(() -> {
-//                        robot.intake.secondIntakeSequence();
-//                    })
-//                    .waitSeconds(0.3)
-//                    .addTemporalMarker(() -> {
-//                        robot.outtake.strangeCleste();
-//                    })
                     .addTemporalMarker(() -> {
                         robot.intake.servoCleste2.setPosition(0);
+                        somn(200);
                         robot.intake.servoY.setPosition(0.5);
                         somn(600);
                         robot.intake.setSlidePosition(300);
@@ -313,6 +310,9 @@ public class AutonomousFinalRegionalaRosuCredMedium extends LinearOpMode {
 
                     //pus pe pole
                     .waitSeconds(0.4)
+                    .addTemporalMarker(() -> {
+                        robot.outtake.strangeCleste();
+                    })
                     .addTemporalMarker(() -> {
                         robot.outtake.setLevel(MEDIUM+100);
                         ElapsedTime time = new ElapsedTime();
@@ -327,29 +327,30 @@ public class AutonomousFinalRegionalaRosuCredMedium extends LinearOpMode {
                     .waitSeconds(0.6)
                     .build();
             robot.drive.followTrajectorySequence(Stack2nd);
-            robot.drive.followTrajectorySequence(Stack2);
 
         }
 
 
             if (tagOfInterest.id == MIDDLE) {
-                Pose2d start = new Pose2d(35, -63.1, Math.toRadians(90));
+                Pose2d start = new Pose2d(-35, -63.1, Math.toRadians(90));
                 robot.intake.setSlidePosition(0);
                 robot.outtake.setLevel(0, 0.65);
                 TrajectorySequence Stack2nd = robot.drive.trajectorySequenceBuilder(start)
-                        .strafeRight(8)
-                        .turn(-18)
+                        .back(5)
+                        .strafeLeft(8)
+                        .turn(Math.toRadians(10))
                         .waitSeconds(1000)
                         .build();
                 robot.drive.followTrajectorySequence(Stack2nd);
             }
          else if (tagOfInterest.id == LEFT) {
-                Pose2d start = new Pose2d(35, -63.1, Math.toRadians(90));
+                Pose2d start = new Pose2d(-35, -63.1, Math.toRadians(90));
                 robot.intake.setSlidePosition(0);
                 robot.outtake.setLevel(0, 0.65);
                 TrajectorySequence Stack2nd = robot.drive.trajectorySequenceBuilder(start)
+                        .back(5)
                         .strafeRight(8)
-                        .turn(-18)
+                        .turn(Math.toRadians(10))
                         .forward(24)
                         .waitSeconds(1000)
                         .build();
@@ -358,12 +359,13 @@ public class AutonomousFinalRegionalaRosuCredMedium extends LinearOpMode {
 
             }
             else if (tagOfInterest.id == RIGHT) {
-                Pose2d start = new Pose2d(35, -63.1, Math.toRadians(90));
+                Pose2d start = new Pose2d(-35, -63.1, Math.toRadians(90));
                 robot.intake.setSlidePosition(0);
                 robot.outtake.setLevel(0, 0.65);
                 TrajectorySequence Stack2nd = robot.drive.trajectorySequenceBuilder(start)
+                        .back(5)
                         .strafeRight(8)
-                        .turn(-18)
+                        .turn(Math.toRadians(10))
                         .back(24)
                         .waitSeconds(1000)
                         .build();

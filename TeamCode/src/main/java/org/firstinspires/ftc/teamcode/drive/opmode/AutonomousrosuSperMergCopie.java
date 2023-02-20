@@ -177,42 +177,6 @@ public class AutonomousrosuSperMergCopie extends LinearOpMode {
 
             Pose2d lastPose = Preload.end();
 
-//            for(int i = 1; i <= 5; i++){
-////              robot.glisiera.manualLevel(ceva + i * altceva);
-//                robot.glisiera.strangeCleste();
-//                timer = new ElapsedTime();
-//                timer.startTime();
-//                while(timer.milliseconds() < MAX_MILISECONDS);
-//                TrajectorySequence Score = robot.drive.trajectorySequenceBuilder(lastPose)
-//                        .lineToConstantHeading(new Vector2d(60.4,-11.4))
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.manualLevel(400);
-//                        })
-//                        .forward(1)
-//                        .addDisplacementMarker(() -> {
-//                          robot.glisiera.strangeCleste();
-//                        })
-//                        .lineToConstantHeading(new Vector2d(34.4,-11.4))
-//                        .turn(Math.toRadians(-135))
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.setLevel(MEDIUM);
-//                        })
-//                        .forward(10)
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.manualLevel(1750);
-//                            robot.glisiera.desfaCleste();
-//                        })
-//                        .back(10)
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.setLevel(ZERO);
-//                        })
-//                        .turn(Math.toRadians(135))
-//                        .waitSeconds(2)
-//                        .build();
-//                robot.drive.followTrajectorySequence(Score);
-//
-//                lastPose = Score.end();
-//            }
 
             if (tagOfInterest.id == MIDDLE) {
                 TrajectorySequence Middle = robot.drive.trajectorySequenceBuilder(lastPose)

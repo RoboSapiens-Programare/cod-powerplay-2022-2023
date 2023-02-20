@@ -142,6 +142,10 @@ public class AutonomousParcare extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
+            robot.intake.servoCleste2.setPosition(0);
+            robot.intake.servoY.setPosition(0.5);
+            robot.intake.setSlidePosition(0);
+            robot.outtake.strangeCleste();
             telemetry.addData("Tag:", tagOfInterest.id);
 //                robot.outtake.strangeCleste();
 

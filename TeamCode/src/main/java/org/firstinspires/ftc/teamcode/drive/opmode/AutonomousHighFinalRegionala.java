@@ -29,9 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
-import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.MEDIUM;
-import static org.firstinspires.ftc.teamcode.drive.opmode.LinearDriveMode.ZERO;
-import static org.firstinspires.ftc.teamcode.drive.opmode.TestEncoder.somn;
+import static org.firstinspires.ftc.teamcode.drive.opmode.AutonomousBlueSperMergCopie.somn;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -41,7 +39,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.drive.Robot;
 import org.firstinspires.ftc.teamcode.drive.visualrecog.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -50,7 +47,6 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-import java.lang.annotation.Target;
 import java.util.ArrayList;
 
 
@@ -67,25 +63,20 @@ import java.util.ArrayList;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "Autonomie roadrunner parcare 2", group="autonomous")
+@Autonomous(name = "Autonomous high 1+1", group="autonomous")
 
-public class AutonomousBlueSperMergCopie extends LinearOpMode {
+public class AutonomousHighFinalRegionala extends LinearOpMode {
 
     // Declare OpMode members.
 //    private ElapsedTime runtime = new ElapsedTime();
     private Robot robot = null;
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
-    public final static void somn(long milliseconds) {
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    }
 
     static final double FEET_PER_METER = 3.28084;
-
+    private int contor = 0;
+    private int contor2 = 0;
+    private boolean flag = true;
     // Lens intrinsics
     // UNITS ARE PIXELS
     // NOTE: this calibration is for the C920 webcam at 800x448.
@@ -104,10 +95,9 @@ public class AutonomousBlueSperMergCopie extends LinearOpMode {
     int RIGHT = 3;
 
     public AprilTagDetection tagOfInterest = null;
-    private ElapsedTime timer;
-    private int TargetSenzor;
-    private final int MAX_MILISECONDS = 2000;
-    private final static int ZERO = 0, GROUND = 100, LOW = 900, MEDIUM = 1550, TALL = 2100;
+    private final int MAX_MILISECONDS = 600;
+    private final static int ZERO = 0, GROUND = 100, LOW = 900, MEDIUM = 1550, TALL = 2400;
+
 
     @Override
     public void runOpMode() {
@@ -123,7 +113,7 @@ public class AutonomousBlueSperMergCopie extends LinearOpMode {
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                camera.startStreaming(1280, 720, OpenCvCameraRotation.UPSIDE_DOWN);
+                camera.startStreaming(1280, 720, OpenCvCameraRotation.SIDEWAYS_LEFT);
             }
 
             @Override
@@ -160,156 +150,174 @@ public class AutonomousBlueSperMergCopie extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            telemetry.addData("Tag:", tagOfInterest.id);
             robot.intake.servoCleste2.setPosition(0);
             robot.intake.servoY.setPosition(0.5);
-            somn(600);
             robot.intake.setSlidePosition(300);
-            robot.outtake.desfaCleste();
-            somn(1000);
-//            telemetry.addData("distance: ", robot.intake.senzorIntake.getDistance(DistanceUnit.CM));
+            robot.outtake.strangeCleste();
+            telemetry.addData("Tag:", tagOfInterest.id);
 
-            Pose2d start = new Pose2d(34.4, -63.4, Math.toRadians(90));
+            Pose2d start = new Pose2d(35, -63.1, Math.toRadians(90));
             robot.drive.setPoseEstimate(start);
+//            81.60616446739606
+//            0.08
+//            59.627343216332676
+//            0.0
+//            0.16628908471283996
+//            0.0
+
+            //mergi in fata ridica glisiera
             TrajectorySequence Preload = robot.drive.trajectorySequenceBuilder(start)
-                    .lineToConstantHeading(new Vector2d(34.4,-11.4))
+                    .lineToConstantHeading(new Vector2d(35, -1.1))
+                    .back(10)
                     .turn(Math.toRadians(47))
                     .back(2)
-                    .addDisplacementMarker(() -> {
-                        robot.outtake.setLevel(TALL+200);
-                    })
-                    .waitSeconds(2)
-                    .forward(12)
-                    .waitSeconds(1)
-                    .addDisplacementMarker(() -> {
-                        robot.outtake.setLevel(TALL-400);
-                    })
-                    .waitSeconds(1)
-                    .addDisplacementMarker(() -> {
-                        robot.outtake.strangeCleste();
-                    })
-                    .waitSeconds(2)
-                    .back(12)
-                    .waitSeconds(1)
-                    .addDisplacementMarker(() -> {
-                        robot.outtake.setLevel(0);
-                    })
-                    .waitSeconds(4)
-                    .turn(Math.toRadians(45))
-                    .addDisplacementMarker(() -> {
-                        robot.intake.manualLevelIntake(750);
-                        telemetry.addData("tick ", robot.intake.motorGlisiera2.getCurrentPosition());
-                        telemetry.update();
-                    })
-                    .waitSeconds(2)
-                    .addDisplacementMarker(() -> {
-                        robot.intake.manualLevelIntake(1150);
-                        robot.intake.servoX.setPosition(0);
-                        robot.intake.servoCleste2.setPosition(0.5);
-                        robot.intake.servoY.setPosition(0.25);
-                    })
-                    .waitSeconds(1)
                     .addTemporalMarker(() -> {
-                        robot.intake.servoCleste2.setPosition(0);
+                        robot.intake.setSlidePosition(300);
                     })
-//                    .waitSeconds(2)
-//                    .addDisplacementMarker(() -> {
-//                        robot.intake.secondIntakeSequence();
-//                    })
-                    .waitSeconds(2)
+                    .forward(2)
+                    .waitSeconds(0.4)
                     .addTemporalMarker(() -> {
-                        robot.outtake.desfaCleste();
+                        robot.outtake.setLevel(TALL + 100);
+                        ElapsedTime time = new ElapsedTime();
+                        while (time.milliseconds() < 3000) ;
                     })
-                    .waitSeconds(1)
-
-                    .turn(Math.toRadians(-45))
-                    .back(2)
-                    .waitSeconds(1)
-                    .addTemporalMarker(() -> {
-                        robot.outtake.setLevel(TALL+200);
-                    })
-                    .waitSeconds(2)
-                    .forward(12)
-                    .waitSeconds(1)
-                    .addTemporalMarker(() -> {
-                        robot.outtake.desfaCleste();
-                    })
-                    .waitSeconds(2)
-                    .back(12)
+                    .forward(8)
+                    .waitSeconds(0.2)
                     .build();
-//
+            //stop primu sequence
             robot.drive.followTrajectorySequence(Preload);
-
-
-
-
-
-//            for(int i = 1; i <= 5; i++){
-////              robot.glisiera.manualLevel(ceva + i * altceva);
-//                robot.glisiera.strangeCleste();
-//                timer = new ElapsedTime();
-//                timer.startTime();
-//                while(timer.milliseconds() < MAX_MILISECONDS);
-//                TrajectorySequence Score = robot.drive.trajectorySequenceBuilder(lastPose)
-//                        .lineToConstantHeading(new Vector2d(60.4,-11.4))
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.manualLevel(400);
-//                        })
-//                        .forward(1)
-//                        .addDisplacementMarker(() -> {
-//                          robot.glisiera.strangeCleste();
-//                        })
-//                        .lineToConstantHeading(new Vector2d(34.4,-11.4))
-//                        .turn(Math.toRadians(-135))
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.setLevel(MEDIUM);
-//                        })
-//                        .forward(10)
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.manualLevel(1750);
-//                            robot.glisiera.desfaCleste();
-//                        })
-//                        .back(10)
-//                        .addDisplacementMarker(() -> {
-//                            robot.glisiera.setLevel(ZERO);
-//                        })
-//                        .turn(Math.toRadians(135))
-//                        .waitSeconds(2)
-//                        .build();
-//                robot.drive.followTrajectorySequence(Score);
+            Pose2d preload = Preload.end();
+//            int targetAutonomous = 1400;
 //
-//                lastPose = Score.end();
+//            while(!robot.intake.isNear()){
+//                robot.intake.setSlidePosition(targetAutonomous++);
 //            }
 
+            //start pus pe pole conu si dus glisiera la 0
+            TrajectorySequence Preload2 = robot.drive.trajectorySequenceBuilder(preload)
+                    .waitSeconds(0.2)
+                    .addTemporalMarker(() -> {
+                        robot.outtake.setLevel(LOW);
+                        ElapsedTime time = new ElapsedTime();
+                        while (time.milliseconds() < MAX_MILISECONDS) ;
+                    })
+                    .waitSeconds(0.3)
+                    .addTemporalMarker(() -> {
+                        robot.outtake.desfaCleste();
+                    })
+                    .back(8)
+                    .waitSeconds(0.1)
+                    .turn(Math.toRadians(44))
+                    .waitSeconds(0.1)
+                    .strafeLeft(5)
+                    .turn(Math.toRadians(-180))
+//                    .addTemporalMarker(() -> {
+//                        robot.intake.firstAutonomousIntakeSequence();
+//                    })
+//                    .addTemporalMarker(() -> {
+//                        robot.intake.firstAutonomous2ndIntakeSequence();
+//                        robot.outtake.setLevel(0,0.75);
+//                    })
+//                    .waitSeconds(0.3)
+//                    .addTemporalMarker(() -> {
+//                        robot.intake.servoCleste2.setPosition(0);
+//                    })
+                    .build();
+            //stop pus pe pole
+            robot.drive.followTrajectorySequence(Preload2);
+            Pose2d preloadEnd = Preload2.end();
+            //start sequenceul de luat si de pus conul din glisiera orizontala in glisiera verticala
+            TrajectorySequence Stack = robot.drive.trajectorySequenceBuilder(preloadEnd)
+                    .waitSeconds(0.1)
+                    .addTemporalMarker(() -> {
+                        robot.intake.secondIntakeSequence();
+                    })
+                    .waitSeconds(0.3)
+                    .addTemporalMarker(() -> {
+                        robot.outtake.strangeCleste();
+                    })
+                    .back(8)
+                    .addTemporalMarker(() -> {
+                        robot.intake.servoY.setPosition(0.3);
+                        somn(400);
+                        robot.intake.servoCleste2.setPosition(0.5);
+                        somn(600);
+                        robot.intake.setSlidePosition(1640);
+                    })
+
+                    //pus pe pole
+                    .waitSeconds(0.1)
+                    .addTemporalMarker(() -> {
+                        robot.outtake.setLevel(TALL + 100);
+                        ElapsedTime time = new ElapsedTime();
+                        while (time.milliseconds() < 3000) ;
+                    })
+                    .waitSeconds(0.2)
+                    .back(2)
+                    .forward(10)
+                    .waitSeconds(0.6)
+                    .build();
+//            robot.drive.followTrajectorySequence(Stack);
+            //stop sequence
+            Pose2d stackEnd = Stack.end();
+
+
+            //start pus pe pole si dus glisiera la 0
+            TrajectorySequence Stack2 = robot.drive.trajectorySequenceBuilder(stackEnd)
+
+                    .addTemporalMarker(() -> {
+                        robot.outtake.setLevel(LOW);
+                    })
+                    .waitSeconds(0.2)
+                    .addTemporalMarker(() -> {
+                        robot.outtake.desfaCleste();
+                    })
+                    .waitSeconds(0.1)
+
+                    .build();
+            //stop pus pe pole si dus glisiera la 0
+
+//            robot.drive.followTrajectorySequence(Stack2);
+
+
             if (tagOfInterest.id == MIDDLE) {
-//                TrajectorySequence Middle = robot.drive.trajectorySequenceBuilder(lastPose)
-//                        .waitSeconds(45)
-//                        .build();
-//                robot.drive.followTrajectorySequence(Middle);
-            }
-         else if (tagOfInterest.id == LEFT) {
+                robot.outtake.setLevel(0, 0.65);
+                somn(500);
+                robot.intake.setSlidePosition(0);
+                TrajectorySequence Stack2nd = robot.drive.trajectorySequenceBuilder(preloadEnd)
+                        .waitSeconds(1000)
+                        .build();
+                robot.drive.followTrajectorySequence(Stack2nd);
+            } else if (tagOfInterest.id == LEFT) {
+                robot.outtake.setLevel(0, 0.65);
+                somn(500);
+                robot.intake.setSlidePosition(0);
+                TrajectorySequence Stack2nd = robot.drive.trajectorySequenceBuilder(preloadEnd)
+                        .back(24)
+                        .waitSeconds(1000)
+                        .build();
+                robot.drive.followTrajectorySequence(Stack2nd);
 
-//             TrajectorySequence Left = robot.drive.trajectorySequenceBuilder(lastPose)
-//                     .forward(24)
-//                     .waitSeconds(45)
-//                     .build();
-//             robot.drive.followTrajectorySequence(Left);
 
+            } else if (tagOfInterest.id == RIGHT) {
+                robot.outtake.setLevel(0, 0.65);
+                somn(500);
+                robot.intake.setSlidePosition(0);
+                TrajectorySequence Stack2nd = robot.drive.trajectorySequenceBuilder(preloadEnd)
+
+                        .forward(24)
+                        .waitSeconds(1000)
+                        .build();
+                robot.drive.followTrajectorySequence(Stack2nd);
             }
-            else if (tagOfInterest.id == RIGHT) {
-//            TrajectorySequence Right = robot.drive.trajectorySequenceBuilder(lastPose)
-//                    .back(24)
-//                    .waitSeconds(45)
-//                    .build();
-//            robot.drive.followTrajectorySequence(Right);
+
+            stop();
+            //            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.update();
         }
-
-        stop();
-        //            telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.update();
     }
 }
-}
+
 
 
 

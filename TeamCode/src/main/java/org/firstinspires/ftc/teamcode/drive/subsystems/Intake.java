@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.drive.subsystems;
 
 import static android.os.SystemClock.sleep;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static org.firstinspires.ftc.teamcode.drive.opmode.TestEncoder.POWER;
+import static org.firstinspires.ftc.teamcode.drive.opmode.TestEncoder.POWERRR;
 import static org.firstinspires.ftc.teamcode.drive.opmode.TestEncoder.somn;
 
 import com.outoftheboxrobotics.photoncore.PhotonCore;
@@ -20,7 +22,8 @@ public class Intake{
     public Servo servoCleste2, servoX, servoY;
     public double target = 0;
     private final int TICKS_PER_CENTIMETER = 22;
-    public DistanceSensor senzorIntake;
+//    public DistanceSensor senzorIntake;
+    public DistanceSensor senzorCleste;
     public int targetSenzor;
     private int it = 0;
     public double manualTarget = 0;
@@ -34,8 +37,8 @@ public class Intake{
         servoX = hardwareMap.servo.get("servoX");
         servoY = hardwareMap.servo.get("servoY");
         servoCleste2 = hardwareMap.servo.get("servoCleste2");
-        senzorIntake = hardwareMap.get(DistanceSensor.class, "senzorIntake");
-
+//        senzorIntake = hardwareMap.get(DistanceSensor.class, "senzorIntake");
+        senzorCleste = hardwareMap.get(DistanceSensor.class, "senzorCleste");
         //Motor initialization
         motorGlisiera2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorGlisiera2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -86,7 +89,7 @@ public class Intake{
             motorGlisiera2.setPower(-POWER);
         }
     }
-
+    //todo bag pl in marinas
     public void AutonomousExtend(){
             motorGlisiera2.setTargetPosition(STACK_TICKS);
             motorGlisiera2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -96,16 +99,16 @@ public class Intake{
         }
 
 
-    public void autoExtend(){
-         targetSenzor = ((((int)senzorIntake.getDistance(DistanceUnit.CM)))) * TICKS_PER_CENTIMETER;
-        if(senzorIntake.getDistance(DistanceUnit.CM) < 120){
-    motorGlisiera2.setTargetPosition(targetSenzor);
+    public void autoExtend(int targetSenzor){
+        if(senzorCleste.getDistance(DistanceUnit.CM) > 6){
+    motorGlisiera2.setTargetPosition(targetSenzor++ * 4);
     motorGlisiera2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if(motorGlisiera2.getCurrentPosition() < targetSenzor)
+        if(motorGlisiera2.getCurrentPosition() < targetSenzor++ * 4)
             motorGlisiera2.setPower(-POWER);
         else motorGlisiera2.setPower(POWER);
+            }
     }
-    }
+
 
     public void setSlidePosition(int target){
         motorGlisiera2.setTargetPosition(target);
@@ -139,37 +142,56 @@ public class Intake{
     }
 
     public void firstAutonomousIntakeSequence(){
-        AutonomousExtend();
+        setSlidePosition(600);
+        somn(500);
         servoX.setPosition(0);
         servoCleste2.setPosition(0.5);
-        servoY.setPosition(0.33);
-        somn(450);
-        while(isGoingAutonomous(STACK_TICKS)){}
+        servoY.setPosition(0.32);
+
+
+    }
+    public void firstAutonomous1stIntakeSequence(){
+        setSlidePosition(600);
+        somn(500);
+        servoX.setPosition(0);
+        servoCleste2.setPosition(0.5);
+        servoY.setPosition(0.3);
 
 
     }
     public void firstAutonomous2ndIntakeSequence(){
-        AutonomousExtend();
-        servoX.setPosition(0);
-        servoCleste2.setPosition(0.5);
-        servoY.setPosition(0.3);
-        somn(550);
-        while(isGoingAutonomous(STACK_TICKS2)){}
+        int TargetSenzorCleste = 600;
+        autoExtend(TargetSenzorCleste);
+        while(!isNear()){autoExtend(TargetSenzorCleste++);}
+        ElapsedTime time = new ElapsedTime();
+        if(time.milliseconds() > 3000){
+            setSlidePosition(1600);
+            somn(500);
+            servoX.setPosition(0);
+            servoCleste2.setPosition(0.5);
+            servoY.setPosition(0.32);
+        }
         servoCleste2.setPosition(0);
-        somn(400);
 
 
     }
 
     public void firstIntakeSequence(){
-        autoExtend();
+        setSlidePosition(600);
+        somn(500);
         servoX.setPosition(0);
         servoCleste2.setPosition(0.5);
-        servoY.setPosition(0.23);
-        somn(250);
-        while(isGoing(targetSenzor)){}
-        somn(300);
-
+        servoY.setPosition(0.26);
+        int TargetSenzorCleste = 600;
+        autoExtend(TargetSenzorCleste * 2);
+        while(!isNear()){
+            if (gamepad1.share) {
+                motorGlisiera2.setPower(0);
+                break;
+            }
+            else autoExtend(TargetSenzorCleste++ * 2);
+        }
+        servoCleste2.setPosition(0);
 
     }
 
@@ -190,7 +212,7 @@ public class Intake{
         servoCleste2.setPosition(0.3);
         somn(500);
         servoY.setPosition(0.72);
-        somn(400);
+        somn(600);
         servoCleste2.setPosition(0);
         somn(300);
         servoY.setPosition(0.4);
@@ -209,6 +231,13 @@ public class Intake{
         else {
             motorGlisiera2.setPower(-POWER);
         }
+    }
+
+    public boolean isNear() {
+        if (senzorCleste.getDistance(DistanceUnit.CM) <= 5){
+            return true;
+        }
+        return false;
     }
 
 }
